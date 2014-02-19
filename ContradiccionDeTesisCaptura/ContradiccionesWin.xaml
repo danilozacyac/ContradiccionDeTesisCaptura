@@ -1,0 +1,766 @@
+﻿<Window x:Class="ContradiccionDeTesisCaptura.ContradiccionesWin"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:igDP="http://infragistics.com/DataPresenter"
+        xmlns:igEditors="http://infragistics.com/Editors"
+        xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
+        Title="ContradiccionesWin"
+        Width="909"
+        Height="800"
+        Loaded="Window_Loaded">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="50" />
+        </Grid.RowDefinitions>
+        <TabControl Name="TabContradicciones"
+                    Grid.Row="1"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch">
+            <TabItem Name="TabGeneral" Header="Info. General">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="150" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Label Name="label1"
+                           Height="28"
+                           Margin="28,25,0,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Top"
+                           Content="Oficio de admisión:" />
+                    <TextBox Name="TxtOficio"
+                             Width="221"
+                             Height="23"
+                             Margin="170,25,0,0"
+                             HorizontalAlignment="Left"
+                             VerticalAlignment="Top"
+                             Text="{Binding Oficio,
+                                            Mode=TwoWay}" />
+                    <Label Name="label2"
+                           Height="28"
+                           Margin="516,25,0,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Top"
+                           Content="Estatus:" />
+                    <RadioButton Name="RadTramite"
+                                 Width="103"
+                                 Height="16"
+                                 Margin="588,30,0,0"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 Content=" En trámite"
+                                 Foreground="Black"
+                                 GroupName="Estatus" />
+                    <RadioButton Name="RadResuelto"
+                                 Width="109"
+                                 Height="16"
+                                 Margin="697,30,0,0"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 Content=" Resuelto"
+                                 Foreground="Black"
+                                 GroupName="Estatus" />
+                    <Label Name="label3"
+                           Width="71"
+                           Height="28"
+                           Margin="495,66,0,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Top"
+                           Content="Expediente:" />
+                    <Label Name="label4"
+                           Height="28"
+                           Margin="47,66,0,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Top"
+                           Content="Tipo de Asunto:" />
+                    <ComboBox Name="CbxTiposAsuntos"
+                              Width="221"
+                              Height="23"
+                              Margin="170,66,0,0"
+                              HorizontalAlignment="Left"
+                              VerticalAlignment="Top"
+                              DisplayMemberPath="Descripcion"
+                              ItemsSource="{Binding}"
+                              SelectedValuePath="IdTipo" />
+
+
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*" />
+                            <ColumnDefinition Width="                                               *" />
+                        </Grid.ColumnDefinitions>
+
+                        <Label Name="label5"
+                               Grid.Column="0"
+                               Width="65"
+                               Height="28"
+                               Margin="28,5,0,0"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Top"
+                               Content="Tema:" />
+                        <TextBox Name="TxtTema"
+                                 Grid.Column="0"
+                                 Margin="28,39,25,25"
+                                 HorizontalAlignment="Stretch"
+                                 VerticalAlignment="Stretch"
+                                 AcceptsReturn="True"
+                                 Text="{Binding Tema,
+                                                Mode=TwoWay}"
+                                 TextWrapping="WrapWithOverflow" />
+                        <Label Name="label31"
+                               Grid.Column="1"
+                               Height="28"
+                               Margin="4,38,0,0"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Top"
+                               Content="Pleno de Circuito:" />
+                        <ComboBox Name="CbxPlenos"
+                                  Grid.Column="1"
+                                  Width="281"
+                                  Height="23"
+                                  Margin="5,59,0,0"
+                                  HorizontalAlignment="Left"
+                                  VerticalAlignment="Top" />
+                        <Label Name="label32"
+                               Grid.Column="1"
+                               Height="28"
+                               Margin="6,102,0,0"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Top"
+                               Content="Presidente:" />
+                        <ComboBox Name="CbxPresidente"
+                                  Grid.Column="1"
+                                  Width="279"
+                                  Height="23"
+                                  Margin="7,125,0,0"
+                                  HorizontalAlignment="Left"
+                                  VerticalAlignment="Top" />
+                        <Label Name="label33"
+                               Grid.Column="1"
+                               Height="28"
+                               Margin="8,173,0,0"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Top"
+                               Content="Ponente:" />
+                        <ComboBox Name="CbxPonente"
+                                  Grid.Column="1"
+                                  Width="277"
+                                  Height="23"
+                                  Margin="9,195,0,0"
+                                  HorizontalAlignment="Left"
+                                  VerticalAlignment="Top" />
+                    </Grid>
+                    <Label Name="label6"
+                           Grid.Row="2"
+                           Height="28"
+                           Margin="28,22,0,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Top"
+                           Content="Órganos y criterios/tesis contendientes:" />
+                    <igDP:XamDataGrid Name="GridCriterios"
+                                      Grid.Row="2"
+                                      Margin="25,57,25,35"
+                                      HorizontalAlignment="Stretch"
+                                      VerticalAlignment="Stretch"
+                                      DataSource="{Binding Criterios,
+                                                           Mode=TwoWay}"
+                                      GroupByAreaLocation="None">
+                        <igDP:XamDataGrid.FieldSettings>
+                            <igDP:FieldSettings AllowEdit="False" CellClickAction="SelectRecord" />
+                        </igDP:XamDataGrid.FieldSettings>
+
+                        <igDP:XamDataGrid.Resources>
+                            <Style TargetType="{x:Type igDP:DataRecordCellArea}">
+                                <Setter Property="BackgroundSelected" Value="#FF757D9D" />
+                                <Setter Property="BackgroundActive" Value="#FFC5CED8" />
+                            </Style>
+                        </igDP:XamDataGrid.Resources>
+
+                        <igDP:XamDataGrid.FieldLayouts>
+                            <igDP:FieldLayout>
+
+                                <igDP:FieldLayout.Fields>
+
+                                    <igDP:Field Name="IdCriterio"
+                                                Width="60"
+                                                Label=" IdCriterio " />
+                                    <igDP:Field Name="IdContradiccion"
+                                                Width="70"
+                                                Label="IdContradiccion" />
+                                    <igDP:Field Name="Orden"
+                                                Width="90"
+                                                Label="Orden" />
+                                    <igDP:Field Name="Criterio"
+                                                Width="*"
+                                                Label="Criterio">
+
+                                        <igDP:Field.Settings>
+                                            <igDP:FieldSettings>
+                                                <igDP:FieldSettings.CellValuePresenterStyle>
+                                                    <Style TargetType="{x:Type igDP:CellValuePresenter}">
+
+                                                        <Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=Value}" />
+
+                                                    </Style>
+                                                </igDP:FieldSettings.CellValuePresenterStyle>
+
+                                            </igDP:FieldSettings>
+                                        </igDP:Field.Settings>
+
+
+                                    </igDP:Field>
+
+                                    <igDP:Field Name="IdOrgano"
+                                                Width="70"
+                                                Label="IdOrgano" />
+                                    <igDP:Field Name="Organo" Label="Organo" />
+
+                                    <igDP:Field Name="TesisContendientesStr" Label="TesisContendientesStr" />
+
+
+                                </igDP:FieldLayout.Fields>
+                            </igDP:FieldLayout>
+                        </igDP:XamDataGrid.FieldLayouts>
+
+                    </igDP:XamDataGrid>
+                    <Label Name="label7"
+                           Width="83"
+                           Height="28"
+                           Margin="47,102,0,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Top"
+                           Content="Fecha de Turno:" />
+                    <telerik:RadDatePicker Name="DateFTurno"
+                                           Width="221"
+                                           Margin="170,100,0,0"
+                                           HorizontalAlignment="Left"
+                                           VerticalAlignment="Top"
+                                           SelectedValue="{Binding FechaTurno,
+                                                                   Mode=TwoWay}" />
+                    <Button Name="BtnAddCriterio"
+                            Grid.Row="2"
+                            Width="130"
+                            Height="23"
+                            Margin="0,212,6,0"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Top"
+                            Click="BtnAddCriterio_Click"
+                            Content="Agregar Criterios" />
+                    <Button Name="BtnEditCriterios"
+                            Grid.Row="2"
+                            Width="116"
+                            Height="23"
+                            Margin="0,212,142,0"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Top"
+                            Content="Modificar Criterios" />
+                    <Label Name="label8"
+                           Height="28"
+                           Margin="495,100,0,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Top"
+                           Content="Denunciante(s):" />
+                    <TextBox Name="textBlock1"
+                             Width="282"
+                             Height="23"
+                             Margin="588,99,0,0"
+                             HorizontalAlignment="Left"
+                             VerticalAlignment="Top"
+                             Text="{Binding Denunciantes,
+                                            Mode=TwoWay}" />
+                    <TextBox Name="TxtExpNumero"
+                             Width="64"
+                             Height="23"
+                             Margin="585,63,0,0"
+                             HorizontalAlignment="Left"
+                             VerticalAlignment="Top"
+                             MaxLength="3"
+                             Text="{Binding ExpedienteNumero,
+                                            Mode=TwoWay}" />
+                    <Label Name="label34"
+                           Height="25"
+                           Margin="650,63,0,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Top"
+                           Content="  /  "
+                           FontSize="14"
+                           FontWeight="Bold" />
+                    <TextBox Name="TxtExpAnio"
+                             Width="63"
+                             Height="23"
+                             Margin="672,62,0,0"
+                             HorizontalAlignment="Left"
+                             VerticalAlignment="Top"
+                             MaxLength="4"
+                             Text="{Binding ExpedienteAnio,
+                                            Mode=TwoWay}" />
+                </Grid>
+            </TabItem>
+
+            <TabItem Name="TabTesis" Header="    Tesis      ">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="70" />
+                        <RowDefinition Height="270" />
+                        <RowDefinition Height="224" />
+                        <RowDefinition Height="67*" />
+                    </Grid.RowDefinitions>
+                    <Label Name="label9" Height="28"
+                           Margin="40,14,0,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Top"
+                           Content="Clave de control:" />
+                    <TextBox Name="TxtCControl" Width="190"
+                             Height="23"
+                             Margin="178,11,0,0"
+                             HorizontalAlignment="Left"
+                             VerticalAlignment="Top" />
+                    <Label Name="label10"
+                           Grid.RowSpan="2"
+                           Height="28"
+                           Margin="485,37,0,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Top"
+                           Content="Tipo de tesis:" />
+                    <RadioButton Name="RadJuris"
+                                 Height="16"
+                                 Margin="583,34,0,0"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 Content="  Jurisprudencia"
+                                 Foreground="Black"
+                                 GroupName="TipoTesis" />
+                    <RadioButton Name="RadAislada"
+                                 Height="16"
+                                 Margin="722,34,0,0"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 Content="  Tesis Aislada"
+                                 Foreground="Black"
+                                 GroupName="TipoTesis" />
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Label Name="label11"
+                               Height="28"
+                               Margin="40,14,0,0"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Top"
+                               Content="Rubro:" />
+                        <TextBox Name="TxtRubro"
+                                 Margin="40,36,20,40"
+                                 HorizontalAlignment="Stretch"
+                                 VerticalAlignment="Stretch"
+                                 AcceptsReturn="True"
+                                 TextWrapping="WrapWithOverflow" />
+                        <Label Name="label12"
+                               Grid.Column="1"
+                               Height="28"
+                               Margin="22,14,0,0"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Top"
+                               Content="Asuntos de los que derivó la tesis:" />
+                        <ListBox Name="LstPrecedentes"
+                                 Grid.Column="1"
+                                 Margin="23,36,20,40"
+                                 HorizontalAlignment="Stretch"
+                                 VerticalAlignment="Stretch" />
+                        <Label Name="label13"
+                               Height="28"
+                               Margin="40,242,0,0"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Top"
+                               Content="Ponente:" />
+                        <TextBox Name="TxtPonente"
+                                 Width="248"
+                                 Height="23"
+                                 Margin="93,239,0,0"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top" />
+                    </Grid>
+                    <Label Name="label14"
+                           Grid.Row="2"
+                           Height="28"
+                           Margin="40,14,0,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Top"
+                           Content="Oficio de publicación:" />
+                    <TextBox Name="TxtOficioPub"
+                             Grid.Row="2"
+                             Width="172"
+                             Height="23"
+                             Margin="169,11,0,0"
+                             HorizontalAlignment="Left"
+                             VerticalAlignment="Top" />
+                    <Label Name="label15"
+                           Grid.Row="2"
+                           Height="28"
+                           Margin="409,14,0,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Top"
+                           Content="Archivo del oficio:" />
+                    <TextBox Name="TxtOPPath"
+                             Grid.Row="2"
+                             Width="249"
+                             Height="23"
+                             Margin="510,11,0,0"
+                             HorizontalAlignment="Left"
+                             VerticalAlignment="Top" />
+                    <Button Name="BtnArchivoOficioPub"
+                            Grid.Row="2"
+                            Width="37"
+                            Height="23"
+                            Margin="765,10,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top">
+                        <Image Source="/ContradiccionDeTesisCaptura;component/Resources/clip.png" />
+                    </Button>
+                    <Label Name="label16"
+                           Grid.Row="2"
+                           Height="28"
+                           Margin="40,57,0,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Top"
+                           Content="Versión pública:" />
+                    <RadioButton Name="RadSiPublica"
+                                 Grid.Row="2"
+                                 Height="16"
+                                 Margin="169,57,0,0"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 Content="  Si"
+                                 Foreground="Black"
+                                 GroupName="Publica" />
+                    <RadioButton Name="RadNoPublica"
+                                 Grid.Row="2"
+                                 Height="16"
+                                 Margin="229,57,0,0"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 Content="   No"
+                                 Foreground="Black"
+                                 GroupName="Publica" />
+                    <Label Name="label17"
+                           Grid.Row="2"
+                           Height="28"
+                           Margin="461,57,0,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Top"
+                           Content="Archivo:" />
+                    <TextBox Name="TxtFileVpPath"
+                             Grid.Row="2"
+                             Width="249"
+                             Height="23"
+                             Margin="510,50,0,0"
+                             HorizontalAlignment="Left"
+                             VerticalAlignment="Top" />
+                    <Button Name="BtnArchivoVP"
+                            Grid.Row="2"
+                            Width="37"
+                            Height="23"
+                            Margin="765,49,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top">
+                        <Image Source="/ContradiccionDeTesisCaptura;component/Resources/clip.png" />
+                    </Button>
+                    <Label Name="label18"
+                           Grid.Row="2"
+                           Height="28"
+                           Margin="40,99,0,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Top"
+                           Content="Copia Certificada:" />
+                    <RadioButton Name="RadSiCopia"
+                                 Grid.Row="2"
+                                 Height="16"
+                                 Margin="169,99,0,0"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 Content="  Si"
+                                 Foreground="Black"
+                                 GroupName="Copia" />
+                    <RadioButton Name="RadNoCopia"
+                                 Grid.Row="2"
+                                 Height="16"
+                                 Margin="229,99,0,0"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 Content="   No"
+                                 Foreground="Black"
+                                 GroupName="Copia" />
+                    <Label Name="label19"
+                           Grid.Row="2"
+                           Height="28"
+                           Margin="461,95,0,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Top"
+                           Content="Archivo:" />
+                    <TextBox Name="TxtFileCopiaPath"
+                             Grid.Row="2"
+                             Width="249"
+                             Height="23"
+                             Margin="510,87,0,0"
+                             HorizontalAlignment="Left"
+                             VerticalAlignment="Top" />
+                    <Button Name="BtnArchivoCC"
+                            Grid.Row="2"
+                            Width="37"
+                            Height="23"
+                            Margin="765,88,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top">
+                        <Image Source="/ContradiccionDeTesisCaptura;component/Resources/clip.png" />
+                    </Button>
+                    <Label Name="label20"
+                           Grid.Row="2"
+                           Height="28"
+                           Margin="40,133,0,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Top"
+                           Content="Para atención de:" />
+                    <TextBox Name="TxtAtencionDe"
+                             Grid.Row="2"
+                             Width="251"
+                             Height="23"
+                             Margin="151,130,0,0"
+                             HorizontalAlignment="Left"
+                             VerticalAlignment="Top" />
+                    <Label Name="label21"
+                           Grid.Row="2"
+                           Height="28"
+                           Margin="40,169,0,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Top"
+                           Content="La tesis motiva cambio de criterio:" />
+                    <RadioButton Name="RadSiCambio"
+                                 Grid.Row="2"
+                                 Height="16"
+                                 Margin="300,169,0,0"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 Content="  Si"
+                                 Foreground="Black"
+                                 GroupName="Cambioo" />
+                    <RadioButton Name="RadNoCambio"
+                                 Grid.Row="2"
+                                 Height="16"
+                                 Margin="360,169,0,0"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 Content="   No"
+                                 Foreground="Black"
+                                 GroupName="Cambio" />
+                    <Label Name="label22"
+                           Grid.Row="2"
+                           Grid.RowSpan="2"
+                           Height="28"
+                           Margin="40,203,0,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Top"
+                           Content="Secretario de tesis o responsable:" />
+                    <TextBox Name="textBox1"
+                             Grid.Row="2"
+                             Width="173"
+                             Height="23"
+                             Margin="229,200,0,0"
+                             HorizontalAlignment="Left"
+                             VerticalAlignment="Top" />
+                    <Label Content="Clave de identificación:" Height="28" HorizontalAlignment="Left" Margin="40,42,0,0" Name="label35" VerticalAlignment="Top" />
+                    <TextBox Height="23" HorizontalAlignment="Left" Margin="178,39,0,0" Name="TxtClaveIdent" VerticalAlignment="Top" Width="190" />
+                </Grid>
+            </TabItem>
+
+            <TabItem Name="TabEjecutoria" Header="   Ejecutoria   ">
+                <Grid>
+                    <Label Name="label23"
+                           Height="28"
+                           Margin="39,37,0,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Top"
+                           Content="Ponente:" />
+                    <ComboBox Name="comboBox1"
+                              Width="385"
+                              Height="23"
+                              Margin="130,37,0,0"
+                              HorizontalAlignment="Left"
+                              VerticalAlignment="Top" />
+                    <Label Name="label24"
+                           Height="28"
+                           Margin="39,98,0,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Top"
+                           Content="Fecha de resolución:" />
+                    <telerik:RadDatePicker Name="DateResolucion"
+                                           Width="174"
+                                           Margin="174,95,0,0"
+                                           HorizontalAlignment="Left"
+                                           VerticalAlignment="Top" />
+                    <Label Name="label25"
+                           Height="28"
+                           Margin="407,98,0,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Top"
+                           Content="Fecha de engrose:" />
+                    <telerik:RadDatePicker Name="DateEngrose"
+                                           Width="174"
+                                           Margin="537,95,0,0"
+                                           HorizontalAlignment="Left"
+                                           VerticalAlignment="Top" />
+                    <Label Name="label26"
+                           Height="28"
+                           Margin="39,149,0,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Top"
+                           Content="Referencia al SISE:" />
+                    <TextBox Name="TxtSise"
+                             Width="174"
+                             Height="23"
+                             Margin="174,146,0,0"
+                             HorizontalAlignment="Left"
+                             VerticalAlignment="Top" />
+                    <GroupBox Name="groupBox1"
+                              Width="309"
+                              Height="249"
+                              Margin="39,199,0,0"
+                              HorizontalAlignment="Left"
+                              VerticalAlignment="Top"
+                              Header="Tesis relacionadas">
+                        <Grid>
+                            <ListBox Name="LstTesisRelacionadas"
+                                     Width="148"
+                                     Height="206"
+                                     Margin="6,6,0,0"
+                                     HorizontalAlignment="Left"
+                                     VerticalAlignment="Top" />
+                            <TextBox Name="TxtRelTesis"
+                                     Width="120"
+                                     Height="23"
+                                     Margin="171,6,0,0"
+                                     HorizontalAlignment="Left"
+                                     VerticalAlignment="Top" />
+                            <Button Name="BtnAgregarTesis"
+                                    Width="75"
+                                    Height="23"
+                                    Margin="171,45,0,0"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Top"
+                                    Content="&lt;&lt; Agregar" />
+                            <Button Name="BtnEliminarTesis"
+                                    Width="75"
+                                    Height="23"
+                                    Margin="171,74,0,0"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Top"
+                                    Content="Eliminar &gt;&gt;" />
+                        </Grid>
+                    </GroupBox>
+                    <GroupBox Name="groupBox2"
+                              Width="309"
+                              Height="249"
+                              Margin="407,199,0,0"
+                              HorizontalAlignment="Left"
+                              VerticalAlignment="Top"
+                              Header="Votos relacionados">
+                        <Grid>
+                            <ListBox Name="LstVotosRelacionados"
+                                     Width="148"
+                                     Height="206"
+                                     Margin="6,6,0,0"
+                                     HorizontalAlignment="Left"
+                                     VerticalAlignment="Top" />
+                            <TextBox Name="TxtRelVotos"
+                                     Width="120"
+                                     Height="23"
+                                     Margin="171,6,0,0"
+                                     HorizontalAlignment="Left"
+                                     VerticalAlignment="Top" />
+                            <Button Name="BtnAgregarVoto"
+                                    Width="75"
+                                    Height="23"
+                                    Margin="171,45,0,0"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Top"
+                                    Content="&lt;&lt; Agregar" />
+                            <Button Name="BtnEliminarVoto"
+                                    Width="75"
+                                    Height="23"
+                                    Margin="171,74,0,0"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Top"
+                                    Content="Eliminar &gt;&gt;" />
+                        </Grid>
+                    </GroupBox>
+                    <Label Name="label27"
+                           Height="28"
+                           Margin="39,482,0,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Top"
+                           Content="Secretario de teis o responsable:" />
+                    <TextBox Name="TxtResponsableEj"
+                             Width="339"
+                             Height="23"
+                             Margin="228,479,0,0"
+                             HorizontalAlignment="Left"
+                             VerticalAlignment="Top" />
+                    <Label Name="label28"
+                           Height="28"
+                           Margin="39,525,0,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Top"
+                           Content="Oficio:" />
+                    <Label Name="label29"
+                           Height="28"
+                           Margin="460,525,0,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Top"
+                           Content="Archivo:" />
+                    <TextBox Name="TxtFileEjecPath"
+                             Width="249"
+                             Height="23"
+                             Margin="509,518,0,0"
+                             HorizontalAlignment="Left"
+                             VerticalAlignment="Top" />
+                    <Button Name="button1"
+                            Width="37"
+                            Height="23"
+                            Margin="764,517,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top">
+                        <Image Source="/ContradiccionDeTesisCaptura;component/Resources/clip.png" />
+                    </Button>
+                    <TextBox Name="TxtOficioEjec"
+                             Width="218"
+                             Height="23"
+                             Margin="130,516,0,0"
+                             HorizontalAlignment="Left"
+                             VerticalAlignment="Top" />
+                    <Label Name="label30"
+                           Height="28"
+                           Margin="39,569,0,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Top"
+                           Content="Signatario del oficio:" />
+                    <TextBox Name="TxtFirmaOficioEjec"
+                             Width="329"
+                             Height="23"
+                             Margin="174,566,0,0"
+                             HorizontalAlignment="Left"
+                             VerticalAlignment="Top" />
+                </Grid>
+            </TabItem>
+        </TabControl>
+        <Button Name="BtnSalvar"
+                Grid.Row="2"
+                Width="130"
+                Height="23"
+                Margin="0,15,12,0"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Top"
+                Content="Salvar y Salir" />
+    </Grid>
+</Window>
