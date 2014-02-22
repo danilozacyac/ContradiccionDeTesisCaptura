@@ -20,7 +20,7 @@
                  HorizontalAlignment="Left"
                  VerticalAlignment="Top"
                  AcceptsReturn="True"
-                 TextWrapping="WrapWithOverflow" />
+                 TextWrapping="Wrap" />
         <Label Name="label2"
                Height="28"
                Margin="28,12,0,0"

@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 
 namespace ContradiccionesDirectorioApi.Dao
 {
@@ -16,14 +15,17 @@ namespace ContradiccionesDirectorioApi.Dao
         private int status;
         private String oficio;
         private DateTime? fechaTurno;
-        private List<Criterios> criterios;
+        private ObservableCollection<Criterios> criterios;
         private String observaciones;
         private String denunciantes;
         private int idPlenoCircuito;
         private int idPresidentePleno;
         private int idPonentePleno;
+        private Tesis miTesis;
 
         
+
+       
 
         public int IdContradiccion
         {
@@ -127,7 +129,7 @@ namespace ContradiccionesDirectorioApi.Dao
             }
         }
 
-        public List<Criterios> Criterios
+        public ObservableCollection<Criterios> Criterios
         {
             get
             {
@@ -205,6 +207,19 @@ namespace ContradiccionesDirectorioApi.Dao
             }
         }
 
+
+        public Tesis MiTesis
+        {
+            get
+            {
+                return this.miTesis;
+            }
+            set
+            {
+                this.miTesis = value;
+                this.OnPropertyChanged("MiTesis");
+            }
+        }
 
         #region INotifyPropertyChanged Members
 

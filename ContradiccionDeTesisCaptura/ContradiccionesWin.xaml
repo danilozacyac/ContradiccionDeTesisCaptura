@@ -109,7 +109,7 @@
                                  AcceptsReturn="True"
                                  Text="{Binding Tema,
                                                 Mode=TwoWay}"
-                                 TextWrapping="WrapWithOverflow" />
+                                 TextWrapping="Wrap" />
                         <Label Name="label31"
                                Grid.Column="1"
                                Height="28"
@@ -300,6 +300,48 @@
                 </Grid>
             </TabItem>
 
+            <TabItem Name="TabReturno" Header="   Returnos/Resolución   ">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Label Name="label36"
+                           Height="28"
+                           Margin="36,25,0,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Top"
+                           Content="Returnos"
+                           FontSize="18"
+                           FontWeight="Bold" />
+                    <igDP:XamDataGrid Name="GridReturnos"
+                                      Margin="36,67,36,50"
+                                      HorizontalAlignment="Stretch"
+                                      VerticalAlignment="Stretch" />
+                    <Button Name="BtnAgregaReturno"
+                            Width="101"
+                            Height="23"
+                            Margin="0,280,36,0"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Top"
+                            Content="Añadir returno" />
+                    <Button Name="BtnEditaReturno"
+                            Width="103"
+                            Height="23"
+                            Margin="631,280,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Content="Editar Returno" />
+                    <Button Name="BtnEliminaReturno"
+                            Width="107"
+                            Height="23"
+                            Margin="518,280,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Content="Eliminar Returno" />
+                </Grid>
+            </TabItem>
+
             <TabItem Name="TabTesis" Header="    Tesis      ">
                 <Grid>
                     <Grid.RowDefinitions>
@@ -308,16 +350,20 @@
                         <RowDefinition Height="224" />
                         <RowDefinition Height="67*" />
                     </Grid.RowDefinitions>
-                    <Label Name="label9" Height="28"
+                    <Label Name="label9"
+                           Height="28"
                            Margin="40,14,0,0"
                            HorizontalAlignment="Left"
                            VerticalAlignment="Top"
                            Content="Clave de control:" />
-                    <TextBox Name="TxtCControl" Width="190"
+                    <TextBox Name="TxtCControl"
+                             Width="190"
                              Height="23"
                              Margin="178,11,0,0"
                              HorizontalAlignment="Left"
-                             VerticalAlignment="Top" />
+                             VerticalAlignment="Top"
+                             Text="{Binding MiTesis.ClaveControl,
+                                            Mode=TwoWay}" />
                     <Label Name="label10"
                            Grid.RowSpan="2"
                            Height="28"
@@ -417,7 +463,8 @@
                             Height="23"
                             Margin="765,10,0,0"
                             HorizontalAlignment="Left"
-                            VerticalAlignment="Top">
+                            VerticalAlignment="Top"
+                            Click="BtnArchivoOficioPub_Click">
                         <Image Source="/ContradiccionDeTesisCaptura;component/Resources/clip.png" />
                     </Button>
                     <Label Name="label16"
@@ -465,7 +512,8 @@
                             Height="23"
                             Margin="765,49,0,0"
                             HorizontalAlignment="Left"
-                            VerticalAlignment="Top">
+                            VerticalAlignment="Top"
+                            Click="BtnArchivoVP_Click">
                         <Image Source="/ContradiccionDeTesisCaptura;component/Resources/clip.png" />
                     </Button>
                     <Label Name="label18"
@@ -513,7 +561,8 @@
                             Height="23"
                             Margin="765,88,0,0"
                             HorizontalAlignment="Left"
-                            VerticalAlignment="Top">
+                            VerticalAlignment="Top"
+                            Click="BtnArchivoCC_Click">
                         <Image Source="/ContradiccionDeTesisCaptura;component/Resources/clip.png" />
                     </Button>
                     <Label Name="label20"
@@ -570,8 +619,20 @@
                              Margin="229,200,0,0"
                              HorizontalAlignment="Left"
                              VerticalAlignment="Top" />
-                    <Label Content="Clave de identificación:" Height="28" HorizontalAlignment="Left" Margin="40,42,0,0" Name="label35" VerticalAlignment="Top" />
-                    <TextBox Height="23" HorizontalAlignment="Left" Margin="178,39,0,0" Name="TxtClaveIdent" VerticalAlignment="Top" Width="190" />
+                    <Label Name="label35"
+                           Height="28"
+                           Margin="40,42,0,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Top"
+                           Content="Clave de identificación:" />
+                    <TextBox Name="TxtClaveIdent"
+                             Width="190"
+                             Height="23"
+                             Margin="178,39,0,0"
+                             HorizontalAlignment="Left"
+                             VerticalAlignment="Top"
+                             Text="{Binding MiTesis.ClaveIdentificacion,
+                                            Mode=TwoWay}" />
                 </Grid>
             </TabItem>
 
@@ -709,47 +770,48 @@
                              VerticalAlignment="Top" />
                     <Label Name="label28"
                            Height="28"
-                           Margin="39,525,0,0"
+                           Margin="176,565,0,0"
                            HorizontalAlignment="Left"
                            VerticalAlignment="Top"
                            Content="Oficio:" />
                     <Label Name="label29"
                            Height="28"
-                           Margin="460,525,0,0"
+                           Margin="495,565,0,0"
                            HorizontalAlignment="Left"
                            VerticalAlignment="Top"
                            Content="Archivo:" />
                     <TextBox Name="TxtFileEjecPath"
                              Width="249"
                              Height="23"
-                             Margin="509,518,0,0"
+                             Margin="555,562,0,0"
                              HorizontalAlignment="Left"
                              VerticalAlignment="Top" />
-                    <Button Name="button1"
+                    <Button Name="BtnFileEjecPath"
                             Width="37"
                             Height="23"
-                            Margin="764,517,0,0"
+                            Margin="814,561,0,0"
                             HorizontalAlignment="Left"
-                            VerticalAlignment="Top">
+                            VerticalAlignment="Top"
+                            Click="BtnFileEjecPath_Click">
                         <Image Source="/ContradiccionDeTesisCaptura;component/Resources/clip.png" />
                     </Button>
                     <TextBox Name="TxtOficioEjec"
                              Width="218"
                              Height="23"
-                             Margin="130,516,0,0"
+                             Margin="228,560,0,0"
                              HorizontalAlignment="Left"
                              VerticalAlignment="Top" />
                     <Label Name="label30"
                            Height="28"
-                           Margin="39,569,0,0"
+                           Margin="102,521,0,0"
                            HorizontalAlignment="Left"
                            VerticalAlignment="Top"
                            Content="Signatario del oficio:" />
                     <TextBox Name="TxtFirmaOficioEjec"
-                             Width="329"
+                             Width="339"
                              Height="23"
-                             Margin="174,566,0,0"
-                             HorizontalAlignment="Left"
+                             Margin="0,518,310,0"
+                             HorizontalAlignment="Right"
                              VerticalAlignment="Top" />
                 </Grid>
             </TabItem>
@@ -761,6 +823,7 @@
                 Margin="0,15,12,0"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Top"
+                Click="BtnSalvar_Click"
                 Content="Salvar y Salir" />
     </Grid>
 </Window>

@@ -10,8 +10,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ContradiccionesDirectorioApi</RootNamespace>
     <AssemblyName>ContradiccionesDirectorioApi</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -45,11 +46,16 @@
   <ItemGroup>
     <Compile Include="Dao\Contradicciones.cs" />
     <Compile Include="Dao\Criterios.cs" />
+    <Compile Include="Dao\Ejecutoria.cs" />
     <Compile Include="Dao\Funcionarios.cs" />
     <Compile Include="Dao\Organismos.cs" />
+    <Compile Include="Dao\Tesis.cs" />
     <Compile Include="Dao\Tipos.cs" />
     <Compile Include="DataAccess\DbConnDac.cs" />
+    <Compile Include="Model\ContradiccionesModel.cs" />
+    <Compile Include="Model\CriteriosModel.cs" />
     <Compile Include="Model\OrganismosModel.cs" />
+    <Compile Include="Model\TesisModel.cs" />
     <Compile Include="Model\TiposModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Singletons\OrganismosSingleton.cs" />

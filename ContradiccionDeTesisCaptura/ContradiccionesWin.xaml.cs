@@ -13,6 +13,7 @@ using System.Windows.Shapes;
 using ContradiccionesDirectorioApi.Model;
 using ContradiccionDeTesisCaptura.DataAccess;
 using ContradiccionesDirectorioApi.Dao;
+using System.Collections.ObjectModel;
 
 namespace ContradiccionDeTesisCaptura
 {
@@ -27,7 +28,7 @@ namespace ContradiccionDeTesisCaptura
         {
             InitializeComponent();
             contradiccion = new Contradicciones();
-            contradiccion.Criterios = new List<Criterios>();
+            contradiccion.Criterios = new ObservableCollection<Criterios>();
         }
 
         public ContradiccionesWin(Contradicciones contradiccion)
@@ -52,9 +53,63 @@ namespace ContradiccionDeTesisCaptura
 
             this.DataContext = contradiccion;
 
-            ContradiccionesWin win = new ContradiccionesWin(contradiccion);
-            win.Show();
 
         }
+
+        private void BtnSalvar_Click(object sender, RoutedEventArgs e)
+        {
+            ContradiccionesModel contra = new ContradiccionesModel();
+            contradiccion.IdContradiccion = contra.SetNewContradiccion(contradiccion);
+        }
+
+
+
+        private String OpenDialogForPath()
+        {
+            // Create OpenFileDialog
+            Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
+
+            // Set filter for file extension and default file extension
+            //dlg.DefaultExt = ".txt";
+            //dlg.Filter = "Text documents (.txt)|*.txt";
+
+            // Display OpenFileDialog by calling ShowDialog method
+            Nullable<bool> result = dlg.ShowDialog();
+
+            // Get the selected file name and display in a TextBox
+            if (result == true)
+            {
+                // Open document
+                return dlg.FileName;
+            }
+            else
+            {
+                return "";
+            }
+        }
+
+        private void BtnArchivoOficioPub_Click(object sender, RoutedEventArgs e)
+        {
+            TxtOPPath.Text = this.OpenDialogForPath();
+        }
+
+        private void BtnArchivoVP_Click(object sender, RoutedEventArgs e)
+        {
+            TxtFileVpPath.Text = this.OpenDialogForPath();
+        }
+
+        private void BtnArchivoCC_Click(object sender, RoutedEventArgs e)
+        {
+            TxtFileCopiaPath.Text = this.OpenDialogForPath();
+        }
+
+        private void BtnFileEjecPath_Click(object sender, RoutedEventArgs e)
+        {
+            TxtFileEjecPath.Text = this.OpenDialogForPath();
+        }
+
+        
+
+       
     }
 }

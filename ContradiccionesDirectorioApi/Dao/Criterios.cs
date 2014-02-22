@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.ComponentModel;
+using System.Collections.ObjectModel;
 
 namespace ContradiccionesDirectorioApi.Dao
 {
-    public class Criterios
+    public class Criterios : INotifyPropertyChanged
     {
         private int idCriterio;
         private int idContradiccion;
@@ -12,7 +14,7 @@ namespace ContradiccionesDirectorioApi.Dao
         private String criterio;
         private int idOrgano;
         private String organo;
-        private List<int> tesisContendientes;
+        private ObservableCollection<int> tesisContendientes;
         private String tesisContendientesStr;
        
         public int IdCriterio
@@ -24,6 +26,7 @@ namespace ContradiccionesDirectorioApi.Dao
             set
             {
                 this.idCriterio = value;
+                this.OnPropertyChanged("IdCriterio");
             }
         }
 
@@ -36,6 +39,7 @@ namespace ContradiccionesDirectorioApi.Dao
             set
             {
                 this.idContradiccion = value;
+                this.OnPropertyChanged("IdContradiccion");
             }
         }
 
@@ -48,6 +52,7 @@ namespace ContradiccionesDirectorioApi.Dao
             set
             {
                 this.orden = value;
+                this.OnPropertyChanged("Orden");
             }
         }
 
@@ -60,6 +65,7 @@ namespace ContradiccionesDirectorioApi.Dao
             set
             {
                 this.criterio = value;
+                this.OnPropertyChanged("Criterio");
             }
         }
 
@@ -72,6 +78,7 @@ namespace ContradiccionesDirectorioApi.Dao
             set
             {
                 this.idOrgano = value;
+                this.OnPropertyChanged("IdOrgano");
             }
         }
 
@@ -84,10 +91,11 @@ namespace ContradiccionesDirectorioApi.Dao
             set
             {
                 this.organo = value;
+                this.OnPropertyChanged("Organo");
             }
         }
 
-        public List<int> TesisContendientes
+        public ObservableCollection<int> TesisContendientes
         {
             get
             {
@@ -96,6 +104,7 @@ namespace ContradiccionesDirectorioApi.Dao
             set
             {
                 this.tesisContendientes = value;
+                this.OnPropertyChanged("TesisContendientes");
             }
         }
 
@@ -108,7 +117,20 @@ namespace ContradiccionesDirectorioApi.Dao
             set
             {
                 this.tesisContendientesStr = value;
+                this.OnPropertyChanged("TesisContendientesStr");
             }
         }
+
+        #region INotifyPropertyChanged Members
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            if (this.PropertyChanged != null)
+                this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        #endregion // INotifyPropertyChanged Members
     }
 }

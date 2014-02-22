@@ -1,0 +1,138 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using ContradiccionesDirectorioApi.Dao;
+using ContradiccionesDirectorioApi.DataAccess;
+using System.Data.OleDb;
+using System.Data;
+using System.Windows.Forms;
+
+namespace ContradiccionesDirectorioApi.Model
+{
+    public class ContradiccionesModel
+    {
+        public int SetNewContradiccion(Contradicciones contradiccion)
+        {
+            OleDbConnection connectionBitacoraSql = DbConnDac.GetConnection();
+            OleDbDataAdapter dataAdapter;
+
+            DataSet dataSet = new DataSet();
+            DataRow dr;
+
+            try
+            {
+                string sqlCadena = "SELECT * FROM Contradicciones WHERE IdContradiccion = 0";
+
+                dataAdapter = new OleDbDataAdapter();
+                dataAdapter.SelectCommand = new OleDbCommand(sqlCadena, connectionBitacoraSql);
+
+                dataAdapter.Fill(dataSet, "Contradiccion");
+
+                dr = dataSet.Tables["Contradiccion"].NewRow();
+                dr["ExpedienteNumero"] = contradiccion.ExpedienteNumero;
+                dr["ExpedienteAnio"] = contradiccion.ExpedienteAnio;
+                dr["IdTipoAsunto"] = contradiccion.IdTipoAsunto;
+                dr["Tema"] = contradiccion.Tema;
+                dr["Status"] = contradiccion.Status;
+                dr["Oficio"] = contradiccion.Oficio;
+                dr["FechaTurno"] = contradiccion.FechaTurno;
+                dr["Observaciones"] = contradiccion.Observaciones;
+                dr["Denunciantes"] = contradiccion.Denunciantes;
+                dr["IdPlenoCircuito"] = contradiccion.IdPlenoCircuito;
+                dr["IdPresidentePleno"] = contradiccion.IdPresidentePleno;
+                dr["IdPonentePleno"] = contradiccion.IdPonentePleno;
+
+                dataSet.Tables["Contradiccion"].Rows.Add(dr);
+
+                dataAdapter.InsertCommand = connectionBitacoraSql.CreateCommand();
+                dataAdapter.InsertCommand.CommandText = "INSERT INTO Contradicciones(ExpedienteNumero,ExpedienteAnio,IdTipoAsunto,Tema,Status,Oficio," +
+                                                        "FechaTurno,Observaciones,Denunciantes,IdPlenoCircuito,IdPresidentePleno,IdPonentePleno)" +
+                                                        " VALUES(@ExpedienteNumero,@ExpedienteAnio,@IdTipoAsunto,@Tema,@Status,@Oficio," +
+                                                        "@FechaTurno,@Observaciones,@Denunciantes,@IdPlenoCircuito,@IdPresidentePleno,@IdPonentePleno)";
+
+                dataAdapter.InsertCommand.Parameters.Add("@ExpedienteNumero", OleDbType.Numeric, 0, "ExpedienteNumero");
+                dataAdapter.InsertCommand.Parameters.Add("@ExpedienteAnio", OleDbType.Numeric, 0, "ExpedienteAnio");
+                dataAdapter.InsertCommand.Parameters.Add("@IdTipoAsunto", OleDbType.Numeric, 0, "IdTipoAsunto");
+                dataAdapter.InsertCommand.Parameters.Add("@Tema", OleDbType.VarChar, 0, "Tema");
+                dataAdapter.InsertCommand.Parameters.Add("@Status", OleDbType.Numeric, 0, "Status");
+                dataAdapter.InsertCommand.Parameters.Add("@Oficio", OleDbType.VarChar, 0, "Oficio");
+                dataAdapter.InsertCommand.Parameters.Add("@FechaTurno", OleDbType.Date, 0, "FechaTurno");
+                dataAdapter.InsertCommand.Parameters.Add("@Observaciones", OleDbType.VarChar, 0, "Observaciones");
+                dataAdapter.InsertCommand.Parameters.Add("@Denunciantes", OleDbType.VarChar, 0, "Denunciantes");
+                dataAdapter.InsertCommand.Parameters.Add("@IdPlenoCircuito", OleDbType.Numeric, 0, "IdPlenoCircuito");
+                dataAdapter.InsertCommand.Parameters.Add("@IdPresidentePleno", OleDbType.Numeric, 0, "IdPresidentePleno");
+                dataAdapter.InsertCommand.Parameters.Add("@IdPonentePleno", OleDbType.Numeric, 0, "IdPonentePleno");
+
+                dataAdapter.Update(dataSet, "Contradiccion");
+
+                dataSet.Dispose();
+                dataAdapter.Dispose();
+            }
+            catch (OleDbException ex)
+            {
+                Console.Write(ex.Message);
+            }
+            finally
+            {
+                connectionBitacoraSql.Close();
+            }
+
+            return this.GetLastinsertId(contradiccion);
+        }
+
+        private int GetLastinsertId(Contradicciones contradiccion)
+        {
+            int lastId = 0;
+
+            string sqlCmd = @"SELECT IdContradiccion FROM Contradicciones " +
+                            " WHERE ExpedienteNumero = @ExpedienteNumero AND ExpedienteAnio = @ExpedienteAnio";
+
+            OleDbConnection connectionBitacoraSql = DbConnDac.GetConnection();
+            OleDbCommand cmd = new OleDbCommand();
+
+            cmd.Connection = connectionBitacoraSql;
+            cmd.CommandText = sqlCmd;
+            cmd.CommandType = CommandType.Text;
+
+            try
+            {
+                OleDbParameter parameter = new OleDbParameter();
+                parameter.ParameterName = "@ExpedienteNumero";
+                parameter.OleDbType = OleDbType.Numeric;
+                parameter.Direction = ParameterDirection.Input;
+                parameter.Value = contradiccion.ExpedienteNumero;
+
+                cmd.Parameters.Add(parameter);
+
+                OleDbParameter parameter2 = new OleDbParameter();
+                parameter2.ParameterName = "@ExpedienteAnio";
+                parameter2.OleDbType = OleDbType.Numeric;
+                parameter2.Direction = ParameterDirection.Input;
+                parameter2.Value = contradiccion.ExpedienteAnio;
+
+                cmd.Parameters.Add(parameter2);
+
+                connectionBitacoraSql.Open();
+
+                OleDbDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    lastId = Convert.ToInt32(reader["IdContradiccion"]);
+                    MessageBox.Show(lastId.ToString());
+                }
+            }
+            catch (OleDbException ex)
+            {
+                Console.Write(ex.Message);
+            }
+            finally
+            {
+                connectionBitacoraSql.Close();
+            }
+
+            return lastId;
+        }
+    }
+}

@@ -15,6 +15,7 @@ using System.Text.RegularExpressions;
 using MantesisVerIusCommonObjects.Model;
 using MantesisVerIusCommonObjects.Dto;
 using ContradiccionesDirectorioApi.Dao;
+using System.Collections.ObjectModel;
 
 namespace ContradiccionDeTesisCaptura
 {
@@ -37,7 +38,7 @@ namespace ContradiccionDeTesisCaptura
             else
             {
                 this.criterios = new Criterios();
-                this.criterios.TesisContendientes = new List<int>();
+                this.criterios.TesisContendientes = new ObservableCollection<int>();
             }
         }
 
@@ -88,6 +89,7 @@ namespace ContradiccionDeTesisCaptura
         private void BtnAceptar_Click(object sender, RoutedEventArgs e)
         {
             criterios.IdOrgano = (Int32)CbxOrganismos.SelectedValue;
+            criterios.Organo = CbxOrganismos.Text;
 
             contradiccion.Criterios.Add(criterios);
 
