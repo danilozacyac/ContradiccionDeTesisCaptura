@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.ComponentModel;
+using System.Collections.ObjectModel;
 
 namespace ContradiccionesDirectorioApi.Dao
 {
     public class Ejecutoria : INotifyPropertyChanged
     {
-        private List<int> tesisRelacionadas;
-        private List<int> votosRelacionados;
+        private ObservableCollection<int> tesisRelacionadas;
+        private ObservableCollection<int> votosRelacionados;
         private DateTime? fechaResolucion;
         private DateTime? fechaEngrose;
         private String sise;
@@ -17,7 +18,7 @@ namespace ContradiccionesDirectorioApi.Dao
         private String oficioRespuestaEj;
         private String fileEjecPath;
 
-        public List<int> TesisRelacionadas
+        public ObservableCollection<int> TesisRelacionadas
         {
             get
             {
@@ -33,12 +34,12 @@ namespace ContradiccionesDirectorioApi.Dao
         public void Agregatesis(int ius)
         {
             if (tesisRelacionadas == null)
-                tesisRelacionadas = new List<int>();
+                tesisRelacionadas = new ObservableCollection<int>();
 
             tesisRelacionadas.Add(ius);
         }
 
-        public List<int> VotosRelacionados
+        public ObservableCollection<int> VotosRelacionados
         {
             get
             {
@@ -54,7 +55,7 @@ namespace ContradiccionesDirectorioApi.Dao
         public void AgregaVoto(int ius)
         {
             if (votosRelacionados == null)
-                votosRelacionados = new List<int>();
+                votosRelacionados = new ObservableCollection<int>();
         }    
 
         public DateTime? FechaResolucion

@@ -54,6 +54,7 @@
     <Compile Include="DataAccess\DbConnDac.cs" />
     <Compile Include="Model\ContradiccionesModel.cs" />
     <Compile Include="Model\CriteriosModel.cs" />
+    <Compile Include="Model\EjecutoriasModel.cs" />
     <Compile Include="Model\OrganismosModel.cs" />
     <Compile Include="Model\TesisModel.cs" />
     <Compile Include="Model\TiposModel.cs" />
