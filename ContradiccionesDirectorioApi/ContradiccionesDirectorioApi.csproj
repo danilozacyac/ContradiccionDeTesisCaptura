@@ -60,6 +60,9 @@
     <Compile Include="Model\TiposModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Singletons\OrganismosSingleton.cs" />
+    <Compile Include="Utils\ConstantMessages.cs" />
+    <Compile Include="Utils\DateTimeFunctions.cs" />
+    <Compile Include="Utils\StringFunctions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

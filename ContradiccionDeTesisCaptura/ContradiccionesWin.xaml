@@ -278,6 +278,7 @@
                              HorizontalAlignment="Left"
                              VerticalAlignment="Top"
                              MaxLength="3"
+                             PreviewTextInput="TxtExpNumero_PreviewTextInput"
                              Text="{Binding ExpedienteNumero,
                                             Mode=TwoWay}" />
                     <Label Name="label34"
@@ -291,10 +292,11 @@
                     <TextBox Name="TxtExpAnio"
                              Width="63"
                              Height="23"
-                             Margin="672,62,0,0"
+                             Margin="672,63,0,0"
                              HorizontalAlignment="Left"
                              VerticalAlignment="Top"
                              MaxLength="4"
+                             PreviewTextInput="TxtExpNumero_PreviewTextInput"
                              Text="{Binding ExpedienteAnio,
                                             Mode=TwoWay}" />
                 </Grid>
@@ -389,7 +391,6 @@
                                  GroupName="TipoTesis" />
                     <Grid Grid.Row="1">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="2*" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <Label Name="label11"
@@ -403,31 +404,9 @@
                                  HorizontalAlignment="Stretch"
                                  VerticalAlignment="Stretch"
                                  AcceptsReturn="True"
+                                 Text="{Binding MiTesis.Rubro,
+                                                Mode=TwoWay}"
                                  TextWrapping="WrapWithOverflow" />
-                        <Label Name="label12"
-                               Grid.Column="1"
-                               Height="28"
-                               Margin="22,14,0,0"
-                               HorizontalAlignment="Left"
-                               VerticalAlignment="Top"
-                               Content="Asuntos de los que derivó la tesis:" />
-                        <ListBox Name="LstPrecedentes"
-                                 Grid.Column="1"
-                                 Margin="23,36,20,40"
-                                 HorizontalAlignment="Stretch"
-                                 VerticalAlignment="Stretch" />
-                        <Label Name="label13"
-                               Height="28"
-                               Margin="40,242,0,0"
-                               HorizontalAlignment="Left"
-                               VerticalAlignment="Top"
-                               Content="Ponente:" />
-                        <TextBox Name="TxtPonente"
-                                 Width="248"
-                                 Height="23"
-                                 Margin="93,239,0,0"
-                                 HorizontalAlignment="Left"
-                                 VerticalAlignment="Top" />
                     </Grid>
                     <Label Name="label14"
                            Grid.Row="2"
@@ -442,7 +421,9 @@
                              Height="23"
                              Margin="169,11,0,0"
                              HorizontalAlignment="Left"
-                             VerticalAlignment="Top" />
+                             VerticalAlignment="Top"
+                             Text="{Binding MiTesis.OficioPublicacio,
+                                            Mode=TwoWay}" />
                     <Label Name="label15"
                            Grid.Row="2"
                            Height="28"
@@ -456,7 +437,9 @@
                              Height="23"
                              Margin="510,11,0,0"
                              HorizontalAlignment="Left"
-                             VerticalAlignment="Top" />
+                             VerticalAlignment="Top"
+                             Text="{Binding MiTesis.OficioPublicacionFilePath,
+                                            Mode=TwoWay}" />
                     <Button Name="BtnArchivoOficioPub"
                             Grid.Row="2"
                             Width="37"
@@ -480,6 +463,7 @@
                                  Margin="169,57,0,0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
+                                 Checked="RadSiPublica_Checked"
                                  Content="  Si"
                                  Foreground="Black"
                                  GroupName="Publica" />
@@ -489,23 +473,28 @@
                                  Margin="229,57,0,0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
+                                 Checked="RadNoPublica_Checked"
                                  Content="   No"
                                  Foreground="Black"
-                                 GroupName="Publica" />
-                    <Label Name="label17"
+                                 GroupName="Publica"
+                                 IsChecked="False" />
+                    <Label Name="LblVersionPublica"
                            Grid.Row="2"
                            Height="28"
                            Margin="461,57,0,0"
                            HorizontalAlignment="Left"
                            VerticalAlignment="Top"
-                           Content="Archivo:" />
+                           Content="Archivo:"
+                           Visibility="Hidden" />
                     <TextBox Name="TxtFileVpPath"
                              Grid.Row="2"
                              Width="249"
                              Height="23"
                              Margin="510,50,0,0"
                              HorizontalAlignment="Left"
-                             VerticalAlignment="Top" />
+                             VerticalAlignment="Top"
+                             Text="{Binding MiTesis.VersionPublicaFilePath}"
+                             Visibility="Hidden" />
                     <Button Name="BtnArchivoVP"
                             Grid.Row="2"
                             Width="37"
@@ -513,8 +502,10 @@
                             Margin="765,49,0,0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
-                            Click="BtnArchivoVP_Click">
+                            Click="BtnArchivoVP_Click"
+                            Visibility="Hidden">
                         <Image Source="/ContradiccionDeTesisCaptura;component/Resources/clip.png" />
+
                     </Button>
                     <Label Name="label18"
                            Grid.Row="2"
@@ -529,6 +520,7 @@
                                  Margin="169,99,0,0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
+                                 Checked="RadSiCopia_Checked"
                                  Content="  Si"
                                  Foreground="Black"
                                  GroupName="Copia" />
@@ -538,10 +530,12 @@
                                  Margin="229,99,0,0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
+                                 Checked="RadNoCopia_Checked"
                                  Content="   No"
                                  Foreground="Black"
-                                 GroupName="Copia" />
-                    <Label Name="label19"
+                                 GroupName="Copia"
+                                 IsChecked="False" />
+                    <Label Name="LblCopiaCertif"
                            Grid.Row="2"
                            Height="28"
                            Margin="461,95,0,0"
@@ -554,7 +548,9 @@
                              Height="23"
                              Margin="510,87,0,0"
                              HorizontalAlignment="Left"
-                             VerticalAlignment="Top" />
+                             VerticalAlignment="Top"
+                             Text="{Binding MiTesis.CopiaCertificadaFilePath,
+                                            Mode=TwoWay}" />
                     <Button Name="BtnArchivoCC"
                             Grid.Row="2"
                             Width="37"
@@ -578,7 +574,9 @@
                              Height="23"
                              Margin="151,130,0,0"
                              HorizontalAlignment="Left"
-                             VerticalAlignment="Top" />
+                             VerticalAlignment="Top"
+                             Text="{Binding MiTesis.Destinatario,
+                                            Mode=TwoWay}" />
                     <Label Name="label21"
                            Grid.Row="2"
                            Height="28"
@@ -603,7 +601,8 @@
                                  VerticalAlignment="Top"
                                  Content="   No"
                                  Foreground="Black"
-                                 GroupName="Cambio" />
+                                 GroupName="Cambio"
+                                 IsChecked="False" />
                     <Label Name="label22"
                            Grid.Row="2"
                            Grid.RowSpan="2"
@@ -618,7 +617,9 @@
                              Height="23"
                              Margin="229,200,0,0"
                              HorizontalAlignment="Left"
-                             VerticalAlignment="Top" />
+                             VerticalAlignment="Top"
+                             Text="{Binding MiTesis.Responsable,
+                                            Mode=TwoWay}" />
                     <Label Name="label35"
                            Height="28"
                            Margin="40,42,0,0"
@@ -638,18 +639,6 @@
 
             <TabItem Name="TabEjecutoria" Header="   Ejecutoria   ">
                 <Grid>
-                    <Label Name="label23"
-                           Height="28"
-                           Margin="39,37,0,0"
-                           HorizontalAlignment="Left"
-                           VerticalAlignment="Top"
-                           Content="Ponente:" />
-                    <ComboBox Name="comboBox1"
-                              Width="385"
-                              Height="23"
-                              Margin="130,37,0,0"
-                              HorizontalAlignment="Left"
-                              VerticalAlignment="Top" />
                     <Label Name="label24"
                            Height="28"
                            Margin="39,98,0,0"
@@ -660,7 +649,9 @@
                                            Width="174"
                                            Margin="174,95,0,0"
                                            HorizontalAlignment="Left"
-                                           VerticalAlignment="Top" />
+                                           VerticalAlignment="Top"
+                                           SelectedDate="{Binding MiEjecutoria.FechaResolucion,
+                                                                  Mode=TwoWay}" />
                     <Label Name="label25"
                            Height="28"
                            Margin="407,98,0,0"
@@ -671,7 +662,9 @@
                                            Width="174"
                                            Margin="537,95,0,0"
                                            HorizontalAlignment="Left"
-                                           VerticalAlignment="Top" />
+                                           VerticalAlignment="Top"
+                                           SelectedDate="{Binding MiEjecutoria.FechaEngrose,
+                                                                  Mode=TwoWay}" />
                     <Label Name="label26"
                            Height="28"
                            Margin="39,149,0,0"
@@ -683,7 +676,9 @@
                              Height="23"
                              Margin="174,146,0,0"
                              HorizontalAlignment="Left"
-                             VerticalAlignment="Top" />
+                             VerticalAlignment="Top"
+                             Text="{Binding MiEjecutoria.Sise,
+                                            Mode=TwoWay}" />
                     <GroupBox Name="groupBox1"
                               Width="309"
                               Height="249"
@@ -697,7 +692,9 @@
                                      Height="206"
                                      Margin="6,6,0,0"
                                      HorizontalAlignment="Left"
-                                     VerticalAlignment="Top" />
+                                     VerticalAlignment="Top"
+                                     ItemsSource="{Binding MiEjecutoria.TesisRelacionadas,
+                                                           Mode=TwoWay}" />
                             <TextBox Name="TxtRelTesis"
                                      Width="120"
                                      Height="23"
@@ -733,7 +730,9 @@
                                      Height="206"
                                      Margin="6,6,0,0"
                                      HorizontalAlignment="Left"
-                                     VerticalAlignment="Top" />
+                                     VerticalAlignment="Top"
+                                     ItemsSource="{Binding MiEjecutoria.VotosRelacionados,
+                                                           Mode=TwoWay}" />
                             <TextBox Name="TxtRelVotos"
                                      Width="120"
                                      Height="23"
@@ -767,7 +766,9 @@
                              Height="23"
                              Margin="228,479,0,0"
                              HorizontalAlignment="Left"
-                             VerticalAlignment="Top" />
+                             VerticalAlignment="Top"
+                             Text="{Binding MiEjecutoria.Responsable,
+                                            Mode=TwoWay}" />
                     <Label Name="label28"
                            Height="28"
                            Margin="176,565,0,0"
@@ -785,7 +786,9 @@
                              Height="23"
                              Margin="555,562,0,0"
                              HorizontalAlignment="Left"
-                             VerticalAlignment="Top" />
+                             VerticalAlignment="Top"
+                             Text="{Binding MiEjecutoria.FileEjecPath,
+                                            Mode=TwoWay}" />
                     <Button Name="BtnFileEjecPath"
                             Width="37"
                             Height="23"
@@ -800,7 +803,9 @@
                              Height="23"
                              Margin="228,560,0,0"
                              HorizontalAlignment="Left"
-                             VerticalAlignment="Top" />
+                             VerticalAlignment="Top"
+                             Text="{Binding MiEjecutoria.OficioRespuestaEj,
+                                            Mode=TwoWay}" />
                     <Label Name="label30"
                            Height="28"
                            Margin="102,521,0,0"
@@ -810,9 +815,11 @@
                     <TextBox Name="TxtFirmaOficioEjec"
                              Width="339"
                              Height="23"
-                             Margin="0,518,310,0"
-                             HorizontalAlignment="Right"
-                             VerticalAlignment="Top" />
+                             Margin="228,518,0,0"
+                             HorizontalAlignment="Left"
+                             VerticalAlignment="Top"
+                             Text="{Binding MiEjecutoria.Signatario,
+                                            Mode=TwoWay}" />
                 </Grid>
             </TabItem>
         </TabControl>

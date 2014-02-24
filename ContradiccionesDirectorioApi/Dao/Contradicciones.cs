@@ -22,11 +22,9 @@ namespace ContradiccionesDirectorioApi.Dao
         private int idPresidentePleno;
         private int idPonentePleno;
         private Tesis miTesis;
+        private Ejecutoria miEjecutoria;
 
         
-
-       
-
         public int IdContradiccion
         {
             get
@@ -218,6 +216,19 @@ namespace ContradiccionesDirectorioApi.Dao
             {
                 this.miTesis = value;
                 this.OnPropertyChanged("MiTesis");
+            }
+        }
+
+        public Ejecutoria MiEjecutoria
+        {
+            get
+            {
+                return this.miEjecutoria;
+            }
+            set
+            {
+                this.miEjecutoria = value;
+                this.OnPropertyChanged("MiEjecutoria");
             }
         }
 

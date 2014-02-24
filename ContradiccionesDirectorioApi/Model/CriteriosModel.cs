@@ -127,7 +127,7 @@ namespace ContradiccionesDirectorioApi.Model
         {
             int maxOrden = 0;
 
-            string sqlCmd = @"SELECT Max(Orden) FROM Criterios " +
+            string sqlCmd = @"SELECT Max(Orden) Orden FROM Criterios " +
                             " WHERE IdContradiccion = @IdContradiccion ";
 
             OleDbConnection connectionBitacoraSql = DbConnDac.GetConnection();

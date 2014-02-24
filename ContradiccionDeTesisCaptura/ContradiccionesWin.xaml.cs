@@ -14,6 +14,7 @@ using ContradiccionesDirectorioApi.Model;
 using ContradiccionDeTesisCaptura.DataAccess;
 using ContradiccionesDirectorioApi.Dao;
 using System.Collections.ObjectModel;
+using ContradiccionesDirectorioApi.Utils;
 
 namespace ContradiccionDeTesisCaptura
 {
@@ -29,6 +30,8 @@ namespace ContradiccionDeTesisCaptura
             InitializeComponent();
             contradiccion = new Contradicciones();
             contradiccion.Criterios = new ObservableCollection<Criterios>();
+            contradiccion.MiTesis = new Tesis();
+            contradiccion.MiEjecutoria = new Ejecutoria();
         }
 
         public ContradiccionesWin(Contradicciones contradiccion)
@@ -42,6 +45,7 @@ namespace ContradiccionDeTesisCaptura
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             CbxTiposAsuntos.DataContext = new TiposModel().GetTiposAsunto(DbConnDac.GetConnection());
+            CbxTiposAsuntos.SelectedIndex = 0;
 
             this.DataContext = contradiccion;
         }
@@ -58,8 +62,38 @@ namespace ContradiccionDeTesisCaptura
 
         private void BtnSalvar_Click(object sender, RoutedEventArgs e)
         {
+            if (RadTramite.IsChecked == false && RadResuelto.IsChecked == false)
+            {
+                MessageBox.Show(ConstantMessages.SeleccionaEstadoExpediente );
+                return;
+            }
+
+            if (RadJuris.IsChecked == false && RadAislada.IsChecked == false)
+            {
+                MessageBox.Show(ConstantMessages.SeleccionaTipoDeTesis);
+                return;
+            }
+
+
+
+
+
+            contradiccion.Status = (RadResuelto.IsChecked == true) ? 1 : 0;
+            contradiccion.IdTipoAsunto = (Int32)CbxTiposAsuntos.SelectedValue;
+
+            
+
             ContradiccionesModel contra = new ContradiccionesModel();
             contradiccion.IdContradiccion = contra.SetNewContradiccion(contradiccion);
+
+            CriteriosModel crit = new CriteriosModel();
+            crit.SetNewCriterios(contradiccion);
+
+            TesisModel tes = new TesisModel();
+            tes.SetNewTesisPorContradiccion(contradiccion);
+
+            EjecutoriasModel eje = new EjecutoriasModel();
+            eje.SetNewEjecutoriaPorContradiccion(contradiccion);
         }
 
 
@@ -108,7 +142,51 @@ namespace ContradiccionDeTesisCaptura
             TxtFileEjecPath.Text = this.OpenDialogForPath();
         }
 
-        
+        private void RadSiPublica_Checked(object sender, RoutedEventArgs e)
+        {
+            LblVersionPublica.Visibility = Visibility.Visible;
+            TxtFileVpPath.Visibility = Visibility.Visible;
+            BtnArchivoVP.Visibility = Visibility.Visible;
+        }
+
+        private void RadNoPublica_Checked(object sender, RoutedEventArgs e)
+        {
+            LblVersionPublica.Visibility = Visibility.Hidden;
+            TxtFileVpPath.Visibility = Visibility.Hidden;
+            BtnArchivoVP.Visibility = Visibility.Hidden;
+
+            TxtFileVpPath.Text = String.Empty;
+        }
+
+        private void RadSiCopia_Checked(object sender, RoutedEventArgs e)
+        {
+            LblCopiaCertif.Visibility = Visibility.Visible;
+            TxtFileCopiaPath.Visibility = Visibility.Visible;
+            BtnArchivoCC.Visibility = Visibility.Visible;
+        }
+
+        private void RadNoCopia_Checked(object sender, RoutedEventArgs e)
+        {
+            LblCopiaCertif.Visibility = Visibility.Hidden;
+            TxtFileCopiaPath.Visibility = Visibility.Hidden;
+            BtnArchivoCC.Visibility = Visibility.Hidden;
+
+            TxtFileCopiaPath.Text = String.Empty;
+        }
+
+
+
+        private void SetInitialSettingsAfterLoad()
+        {
+            RadNoPublica.IsChecked = true;
+            RadNoCopia.IsChecked = true;
+            RadNoCambio.IsChecked = true;
+        }
+
+        private void TxtExpNumero_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            e.Handled = StringFunctions.IsADigit(e.Text);
+        }
 
        
     }

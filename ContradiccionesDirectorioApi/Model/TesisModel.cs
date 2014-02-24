@@ -4,6 +4,7 @@ using System.Data.OleDb;
 using System.Linq;
 using ContradiccionesDirectorioApi.Dao;
 using ContradiccionesDirectorioApi.DataAccess;
+using System.Windows.Forms;
 
 namespace ContradiccionesDirectorioApi.Model
 {
@@ -49,10 +50,10 @@ namespace ContradiccionesDirectorioApi.Model
 
                 dataAdapter.InsertCommand = connectionBitacoraSql.CreateCommand();
                 dataAdapter.InsertCommand.CommandText = "INSERT INTO Tesis(IdContradiccion,Clavecontrol,ClaveIdentificacion,Rubro,tatj,OficioPublicacion," +
-                                                        "OficioPPtah,VersionPublica,VersionPPath,CopiaCertificada,CopiaCPath,Destinatario,CambioCriterio," +
+                                                        "OficioPPath,VersionPublica,VersionPPath,CopiaCertificada,CopiaCPath,Destinatario,CambioCriterio," +
                                                         "Responsable,OficioRespuesta,OficioRPath)" +
                                                         " VALUES(@IdContradiccion,@Clavecontrol,@ClaveIdentificacion,@Rubro,@tatj,@OficioPublicacion," +
-                                                        "@OficioPPtah,@VersionPublica,@VersionPPath,@CopiaCertificada,@CopiaCPath,@Destinatario,@CambioCriterio," +
+                                                        "@OficioPPath,@VersionPublica,@VersionPPath,@CopiaCertificada,@CopiaCPath,@Destinatario,@CambioCriterio," +
                                                         "@Responsable,@OficioRespuesta,@OficioRPath)";
 
                 dataAdapter.InsertCommand.Parameters.Add("@IdContradiccion", OleDbType.Numeric, 0, "IdContradiccion");
@@ -61,7 +62,7 @@ namespace ContradiccionesDirectorioApi.Model
                 dataAdapter.InsertCommand.Parameters.Add("@Rubro", OleDbType.VarChar, 0, "Rubro");
                 dataAdapter.InsertCommand.Parameters.Add("@tatj", OleDbType.Numeric, 0, "tatj");
                 dataAdapter.InsertCommand.Parameters.Add("@OficioPublicacion", OleDbType.VarChar, 0, "OficioPublicacion");
-                dataAdapter.InsertCommand.Parameters.Add("@OficioPPtah", OleDbType.VarChar, 0, "OficioPPtah");
+                dataAdapter.InsertCommand.Parameters.Add("@OficioPPath", OleDbType.VarChar, 0, "OficioPPath");
                 dataAdapter.InsertCommand.Parameters.Add("@VersionPublica", OleDbType.Numeric, 0, "VersionPublica");
                 dataAdapter.InsertCommand.Parameters.Add("@VersionPPath", OleDbType.VarChar, 0, "VersionPPath");
                 dataAdapter.InsertCommand.Parameters.Add("@CopiaCertificada", OleDbType.Numeric, 0, "CopiaCertificada");
@@ -80,7 +81,7 @@ namespace ContradiccionesDirectorioApi.Model
             }
             catch (OleDbException ex)
             {
-                Console.Write(ex.Message);
+                MessageBox.Show(ex.Message);
             }
             finally
             {

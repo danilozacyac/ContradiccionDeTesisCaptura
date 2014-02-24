@@ -4,6 +4,7 @@ using System.Data.OleDb;
 using System.Linq;
 using ContradiccionesDirectorioApi.Dao;
 using ContradiccionesDirectorioApi.DataAccess;
+using ContradiccionesDirectorioApi.Utils;
 
 namespace ContradiccionesDirectorioApi.Model
 {
@@ -29,15 +30,15 @@ namespace ContradiccionesDirectorioApi.Model
 
                 dr = dataSet.Tables["Ejecutorias"].NewRow();
                 dr["IdContradiccion"] = contradiccion.IdContradiccion;
-                dr["FechaResolucion"] = contradiccion.MiTesis.ClaveControl;
-                dr["FechaResolucionInt"] = contradiccion.MiTesis.ClaveIdentificacion;
-                dr["FechaEngrose"] = contradiccion.MiTesis.Rubro;
-                dr["FechaEngroseInt"] = contradiccion.MiTesis.Tatj;
-                dr["SISE"] = contradiccion.MiTesis.OficioPublicacion;
-                dr["Responsable"] = contradiccion.MiTesis.OficioPublicacionFilePath;
-                dr["Signatario"] = contradiccion.MiTesis.VersionPublica;
-                dr["Oficio"] = contradiccion.MiTesis.VersionPublicaFilePath;
-                dr["FileEjecPath"] = contradiccion.MiTesis.CopiaCertificada;
+                dr["FechaResolucion"] = contradiccion.MiEjecutoria.FechaResolucion;
+                dr["FechaResolucionInt"] = DateTimeFunctions.ConvertDateToInt(contradiccion.MiEjecutoria.FechaResolucion);
+                dr["FechaEngrose"] = contradiccion.MiEjecutoria.FechaEngrose;
+                dr["FechaEngroseInt"] = DateTimeFunctions.ConvertDateToInt(contradiccion.MiEjecutoria.FechaEngrose); 
+                dr["SISE"] = contradiccion.MiEjecutoria.Sise;
+                dr["Responsable"] = contradiccion.MiEjecutoria.Responsable;
+                dr["Signatario"] = contradiccion.MiEjecutoria.Signatario;
+                dr["Oficio"] = contradiccion.MiEjecutoria.OficioRespuestaEj;
+                dr["FileEjecPath"] = contradiccion.MiEjecutoria.FileEjecPath;
 
                 dataSet.Tables["Ejecutorias"].Rows.Add(dr);
 
