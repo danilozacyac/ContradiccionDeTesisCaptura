@@ -599,7 +599,8 @@
                            Margin="461,95,0,0"
                            HorizontalAlignment="Left"
                            VerticalAlignment="Top"
-                           Content="Archivo:" />
+                           Content="Archivo:"
+                           Visibility="Hidden" />
                     <TextBox Name="TxtFileCopiaPath"
                              Grid.Row="2"
                              Width="249"
@@ -608,7 +609,8 @@
                              HorizontalAlignment="Left"
                              VerticalAlignment="Top"
                              Text="{Binding MiTesis.CopiaCertificadaFilePath,
-                                            Mode=TwoWay}" />
+                                            Mode=TwoWay}"
+                             Visibility="Hidden" />
                     <Button Name="BtnArchivoCC"
                             Grid.Row="2"
                             Width="37"
@@ -616,8 +618,9 @@
                             Margin="765,88,0,0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
-                            Click="BtnArchivoCC_Click">
-                        <Image Source="/ContradiccionDeTesisCaptura;component/Resources/clip.png" />
+                            Click="BtnArchivoCC_Click"
+                            Visibility="Hidden">
+                        <Image Source="/ContradiccionDeTesisCaptura;component/Resources/clip.png" Visibility="Hidden" />
                     </Button>
                     <Label Name="label20"
                            Grid.Row="2"
