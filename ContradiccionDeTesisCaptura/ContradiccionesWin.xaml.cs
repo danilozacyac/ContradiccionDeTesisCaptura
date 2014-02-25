@@ -15,6 +15,8 @@ using ContradiccionDeTesisCaptura.DataAccess;
 using ContradiccionesDirectorioApi.Dao;
 using System.Collections.ObjectModel;
 using ContradiccionesDirectorioApi.Utils;
+using MantesisVerIusCommonObjects.Model;
+using MantesisVerIusCommonObjects.Dto;
 
 namespace ContradiccionDeTesisCaptura
 {
@@ -24,22 +26,30 @@ namespace ContradiccionDeTesisCaptura
     public partial class ContradiccionesWin : Window
     {
         private Contradicciones contradiccion;
+        private ListadoDeContradicciones listado;
+        private int isUpdatingOrVisual = 0;
 
-        public ContradiccionesWin()
+        public ContradiccionesWin(ListadoDeContradicciones listado)
         {
             InitializeComponent();
+
+            this.listado = listado;
+
             contradiccion = new Contradicciones();
             contradiccion.Criterios = new ObservableCollection<Criterios>();
             contradiccion.MiTesis = new Tesis();
             contradiccion.MiEjecutoria = new Ejecutoria();
+            contradiccion.Criterios = new ObservableCollection<Criterios>();
+            contradiccion.Returnos = new ObservableCollection<ReturnosClass>();
         }
 
-        public ContradiccionesWin(Contradicciones contradiccion)
+        public ContradiccionesWin(Contradicciones contradiccion,int isUpdatingOrVisual)
         {
             InitializeComponent();
             this.contradiccion = contradiccion;
 
-            
+            BtnSalvar.Visibility = Visibility.Collapsed;
+            this.isUpdatingOrVisual = isUpdatingOrVisual;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -48,6 +58,9 @@ namespace ContradiccionDeTesisCaptura
             CbxTiposAsuntos.SelectedIndex = 0;
 
             this.DataContext = contradiccion;
+
+            if (isUpdatingOrVisual > 0)
+                this.LoadNoBindings();
         }
 
         private void BtnAddCriterio_Click(object sender, RoutedEventArgs e)
@@ -74,6 +87,18 @@ namespace ContradiccionDeTesisCaptura
                 return;
             }
 
+            if (DateFTurno.SelectedDate == null)
+            {
+                MessageBox.Show(ConstantMessages.SeleccionaFechaturno);
+                return;
+            }
+
+            if (contradiccion.ExpedienteAnio < 1990 && contradiccion.ExpedienteAnio > DateTime.Now.Year + 2)
+            {
+                MessageBox.Show(ConstantMessages.RangoAnual);
+                return;
+            }
+
 
 
 
@@ -94,6 +119,13 @@ namespace ContradiccionDeTesisCaptura
 
             EjecutoriasModel eje = new EjecutoriasModel();
             eje.SetNewEjecutoriaPorContradiccion(contradiccion);
+
+            ReturnosModel returno = new ReturnosModel();
+            returno.SetNewReturno(contradiccion);
+
+            listado.Listado.Add(contradiccion);
+
+            this.Close();
         }
 
 
@@ -188,6 +220,92 @@ namespace ContradiccionDeTesisCaptura
             e.Handled = StringFunctions.IsADigit(e.Text);
         }
 
-       
+        private void TxtRelTesis_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            e.Handled = StringFunctions.IsADigit(e.Text);
+        }
+
+        private void BtnAgregarTesis_Click(object sender, RoutedEventArgs e)
+        {
+            if (contradiccion.MiEjecutoria.TesisRelacionadas == null)
+                contradiccion.MiEjecutoria.TesisRelacionadas = new ObservableCollection<int>();
+
+            NumIusModel numIusModel = new NumIusModel();
+
+            TesisDto tesis = numIusModel.BuscaTesis(Convert.ToInt32(TxtRelTesis.Text));
+
+            if (tesis != null)
+            {
+                TxtRelTesis.Text = String.Empty;
+                contradiccion.MiEjecutoria.TesisRelacionadas.Add(tesis.Ius);
+            }
+            else
+            {
+                MessageBox.Show("Ingrese un número de registro IUS válido");
+            }
+        }
+
+        private void BtnAgregarVoto_Click(object sender, RoutedEventArgs e)
+        {
+            if (contradiccion.MiEjecutoria.VotosRelacionados == null)
+                contradiccion.MiEjecutoria.VotosRelacionados = new ObservableCollection<int>();
+
+            NumIusModel numIusModel = new NumIusModel();
+
+            TesisDto tesis = numIusModel.BuscaVoto(Convert.ToInt32(TxtRelVotos.Text));
+
+            if (tesis != null)
+            {
+                TxtRelVotos.Text = String.Empty;
+                contradiccion.MiEjecutoria.VotosRelacionados.Add(tesis.Ius);
+            }
+            else
+            {
+                MessageBox.Show("Ingrese un número de registro IUS válido");
+            }
+
+
+
+        }
+
+        private void BtnAgregaReturno_Click(object sender, RoutedEventArgs e)
+        {
+            Returnos returno = new Returnos(contradiccion);
+            returno.Show();
+        }
+
+
+        private void LoadNoBindings()
+        {
+            if (contradiccion.Status == 1)
+                RadResuelto.IsChecked = true;
+            else
+                RadTramite.IsChecked = true;
+
+
+            CbxTiposAsuntos.SelectedValue = contradiccion.IdTipoAsunto;
+
+            if (contradiccion.MiTesis.Tatj == 1)
+                RadJuris.IsChecked = true;
+            else
+                RadAislada.IsChecked = true;
+
+            if (contradiccion.MiTesis.VersionPublica == 1)
+                RadSiPublica.IsChecked = true;
+            else
+                RadNoPublica.IsChecked = true;
+
+            if (contradiccion.MiTesis.CopiaCertificada == 1)
+                RadSiCopia.IsChecked = true;
+            else
+                RadNoCopia.IsChecked = true;
+
+            if (contradiccion.MiTesis.CambioCriterio == 1)
+                RadSiCambio.IsChecked = true;
+            else
+                RadNoCambio.IsChecked = true;
+
+        }
+
     }
 }

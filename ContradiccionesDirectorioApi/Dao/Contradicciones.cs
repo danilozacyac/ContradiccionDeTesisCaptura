@@ -16,6 +16,7 @@ namespace ContradiccionesDirectorioApi.Dao
         private String oficio;
         private DateTime? fechaTurno;
         private ObservableCollection<Criterios> criterios;
+        private ObservableCollection<ReturnosClass> returnos;
         private String observaciones;
         private String denunciantes;
         private int idPlenoCircuito;
@@ -23,8 +24,13 @@ namespace ContradiccionesDirectorioApi.Dao
         private int idPonentePleno;
         private Tesis miTesis;
         private Ejecutoria miEjecutoria;
+        private Resolutivos resolutivo;
 
         
+        
+
+        
+
         public int IdContradiccion
         {
             get
@@ -229,6 +235,32 @@ namespace ContradiccionesDirectorioApi.Dao
             {
                 this.miEjecutoria = value;
                 this.OnPropertyChanged("MiEjecutoria");
+            }
+        }
+
+        public ObservableCollection<ReturnosClass> Returnos
+        {
+            get
+            {
+                return this.returnos;
+            }
+            set
+            {
+                this.returnos = value;
+                this.OnPropertyChanged("Returnos");
+            }
+        }
+
+        public Resolutivos Resolutivo
+        {
+            get
+            {
+                return this.resolutivo;
+            }
+            set
+            {
+                this.resolutivo = value;
+                this.OnPropertyChanged("Resolutivo");
             }
         }
 

@@ -1,6 +1,7 @@
 ﻿<Window x:Class="ContradiccionDeTesisCaptura.ContradiccionesWin"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:converter="clr-namespace:ContradiccionDeTesisCaptura.Converters"
         xmlns:igDP="http://infragistics.com/DataPresenter"
         xmlns:igEditors="http://infragistics.com/Editors"
         xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
@@ -8,6 +9,10 @@
         Width="909"
         Height="800"
         Loaded="Window_Loaded">
+    <Window.Resources>
+        <converter:OrganismosConverter x:Key="orgConverter" />
+        <converter:ListToStringConverter x:Key="listToString" />
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="50" />
@@ -160,72 +165,7 @@
                            HorizontalAlignment="Left"
                            VerticalAlignment="Top"
                            Content="Órganos y criterios/tesis contendientes:" />
-                    <igDP:XamDataGrid Name="GridCriterios"
-                                      Grid.Row="2"
-                                      Margin="25,57,25,35"
-                                      HorizontalAlignment="Stretch"
-                                      VerticalAlignment="Stretch"
-                                      DataSource="{Binding Criterios,
-                                                           Mode=TwoWay}"
-                                      GroupByAreaLocation="None">
-                        <igDP:XamDataGrid.FieldSettings>
-                            <igDP:FieldSettings AllowEdit="False" CellClickAction="SelectRecord" />
-                        </igDP:XamDataGrid.FieldSettings>
 
-                        <igDP:XamDataGrid.Resources>
-                            <Style TargetType="{x:Type igDP:DataRecordCellArea}">
-                                <Setter Property="BackgroundSelected" Value="#FF757D9D" />
-                                <Setter Property="BackgroundActive" Value="#FFC5CED8" />
-                            </Style>
-                        </igDP:XamDataGrid.Resources>
-
-                        <igDP:XamDataGrid.FieldLayouts>
-                            <igDP:FieldLayout>
-
-                                <igDP:FieldLayout.Fields>
-
-                                    <igDP:Field Name="IdCriterio"
-                                                Width="60"
-                                                Label=" IdCriterio " />
-                                    <igDP:Field Name="IdContradiccion"
-                                                Width="70"
-                                                Label="IdContradiccion" />
-                                    <igDP:Field Name="Orden"
-                                                Width="90"
-                                                Label="Orden" />
-                                    <igDP:Field Name="Criterio"
-                                                Width="*"
-                                                Label="Criterio">
-
-                                        <igDP:Field.Settings>
-                                            <igDP:FieldSettings>
-                                                <igDP:FieldSettings.CellValuePresenterStyle>
-                                                    <Style TargetType="{x:Type igDP:CellValuePresenter}">
-
-                                                        <Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=Value}" />
-
-                                                    </Style>
-                                                </igDP:FieldSettings.CellValuePresenterStyle>
-
-                                            </igDP:FieldSettings>
-                                        </igDP:Field.Settings>
-
-
-                                    </igDP:Field>
-
-                                    <igDP:Field Name="IdOrgano"
-                                                Width="70"
-                                                Label="IdOrgano" />
-                                    <igDP:Field Name="Organo" Label="Organo" />
-
-                                    <igDP:Field Name="TesisContendientesStr" Label="TesisContendientesStr" />
-
-
-                                </igDP:FieldLayout.Fields>
-                            </igDP:FieldLayout>
-                        </igDP:XamDataGrid.FieldLayouts>
-
-                    </igDP:XamDataGrid>
                     <Label Name="label7"
                            Width="83"
                            Height="28"
@@ -299,6 +239,39 @@
                              PreviewTextInput="TxtExpNumero_PreviewTextInput"
                              Text="{Binding ExpedienteAnio,
                                             Mode=TwoWay}" />
+                    <telerik:RadGridView Name="RGridCriterios"
+                                         Grid.Row="2"
+                                         Margin="25,57,25,35"
+                                         HorizontalAlignment="Stretch"
+                                         VerticalAlignment="Stretch"
+                                         AutoGenerateColumns="False"
+                                         CanUserDeleteRows="False"
+                                         CanUserInsertRows="False"
+                                         IsReadOnly="True"
+                                         ItemsSource="{Binding Criterios,
+                                                               Mode=TwoWay}"
+                                         ShowGroupPanel="False">
+                        <telerik:RadGridView.Columns>
+
+                            <telerik:GridViewDataColumn Width="80"
+                                                        DataMemberBinding="{Binding Orden}"
+                                                        Header="Consec."
+                                                        IsVisible="True" />
+                            <telerik:GridViewDataColumn Width="*"
+                                                        DataMemberBinding="{Binding Criterio}"
+                                                        Header="Criterio" />
+                            <telerik:GridViewDataColumn Width="250"
+                                                        DataMemberBinding="{Binding IdOrgano,
+                                                                                    Converter={StaticResource orgConverter}}"
+                                                        Header="Organismo"
+                                                        IsFilterable="True" />
+                            <telerik:GridViewDataColumn Width="150"
+                                                        DataMemberBinding="{Binding TesisContendientes,
+                                                                                    Converter={StaticResource listToString}}"
+                                                        Header="Tesis Contendientes" />
+
+                        </telerik:RadGridView.Columns>
+                    </telerik:RadGridView>
                 </Grid>
             </TabItem>
 
@@ -316,16 +289,44 @@
                            Content="Returnos"
                            FontSize="18"
                            FontWeight="Bold" />
-                    <igDP:XamDataGrid Name="GridReturnos"
-                                      Margin="36,67,36,50"
-                                      HorizontalAlignment="Stretch"
-                                      VerticalAlignment="Stretch" />
+
+                    <telerik:RadGridView Name="RGridReturnos"
+                                         Margin="36,67,36,50"
+                                         HorizontalAlignment="Stretch"
+                                         VerticalAlignment="Stretch"
+                                         AutoGenerateColumns="False"
+                                         CanUserDeleteRows="False"
+                                         CanUserInsertRows="False"
+                                         IsReadOnly="True"
+                                         ItemsSource="{Binding Returnos,
+                                                               Mode=TwoWay}"
+                                         ShowGroupPanel="False">
+                        <telerik:RadGridView.Columns>
+
+
+                            <telerik:GridViewDataColumn Width="150"
+                                                        DataFormatString=" {0: dd/MM/yyyy} "
+                                                        DataMemberBinding="{Binding Fecha}"
+                                                        Header="Fecha" />
+                            <telerik:GridViewDataColumn Width="*"
+                                                        DataMemberBinding="{Binding IdOrganoOrigen,
+                                                                                    Converter={StaticResource orgConverter}}"
+                                                        Header="Organismo Origen"
+                                                        IsFilterable="True" />
+                            <telerik:GridViewDataColumn Width="*"
+                                                        DataMemberBinding="{Binding IdOrganoDestino,
+                                                                                    Converter={StaticResource orgConverter}}"
+                                                        Header="Organismo Destino" />
+
+                        </telerik:RadGridView.Columns>
+                    </telerik:RadGridView>
                     <Button Name="BtnAgregaReturno"
                             Width="101"
                             Height="23"
                             Margin="0,280,36,0"
                             HorizontalAlignment="Right"
                             VerticalAlignment="Top"
+                            Click="BtnAgregaReturno_Click"
                             Content="Añadir returno" />
                     <Button Name="BtnEditaReturno"
                             Width="103"
@@ -341,6 +342,63 @@
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
                             Content="Eliminar Returno" />
+                    <Label Name="label12"
+                           Grid.Row="1"
+                           Height="28"
+                           Margin="36,11,0,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Top"
+                           Content="Resolución"
+                           FontSize="18"
+                           FontWeight="Bold" />
+                    <Label Name="label13"
+                           Grid.Row="1"
+                           Height="28"
+                           Margin="36,54,0,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Top"
+                           Content="Registro Ejecutoria:" />
+                    <TextBox Name="TxtRegEjec"
+                             Grid.Row="1"
+                             Width="155"
+                             Height="23"
+                             Margin="153,51,0,0"
+                             HorizontalAlignment="Left"
+                             VerticalAlignment="Top"
+                             Text="{Binding Resolutivo.RegEjecutoria,
+                                            Mode=TwoWay}" />
+                    <Label Name="label17"
+                           Grid.Row="1"
+                           Height="28"
+                           Margin="425,54,0,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Top"
+                           Content="Registro Tesis" />
+                    <TextBox Name="TxtRegTesis"
+                             Grid.Row="1"
+                             Width="155"
+                             Height="23"
+                             Margin="518,51,0,0"
+                             HorizontalAlignment="Left"
+                             VerticalAlignment="Top"
+                             Text="{Binding Resolutivo.RegTesis,
+                                            Mode=TwoWay}" />
+                    <Label Name="label19"
+                           Grid.Row="1"
+                           Height="28"
+                           Margin="36,89,0,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Top"
+                           Content="Rubro" />
+                    <TextBox Name="TxtRubroResol"
+                             Grid.Row="1"
+                             Width="805"
+                             Height="93"
+                             Margin="36,115,0,0"
+                             HorizontalAlignment="Left"
+                             VerticalAlignment="Top"
+                             Text="{Binding Resolutivo.RubroTesis,
+                                            Mode=TwoWay}" />
                 </Grid>
             </TabItem>
 
@@ -422,7 +480,7 @@
                              Margin="169,11,0,0"
                              HorizontalAlignment="Left"
                              VerticalAlignment="Top"
-                             Text="{Binding MiTesis.OficioPublicacio,
+                             Text="{Binding MiTesis.OficioPublicacion,
                                             Mode=TwoWay}" />
                     <Label Name="label15"
                            Grid.Row="2"
@@ -700,13 +758,15 @@
                                      Height="23"
                                      Margin="171,6,0,0"
                                      HorizontalAlignment="Left"
-                                     VerticalAlignment="Top" />
+                                     VerticalAlignment="Top"
+                                     PreviewTextInput="TxtRelTesis_PreviewTextInput" />
                             <Button Name="BtnAgregarTesis"
                                     Width="75"
                                     Height="23"
                                     Margin="171,45,0,0"
                                     HorizontalAlignment="Left"
                                     VerticalAlignment="Top"
+                                    Click="BtnAgregarTesis_Click"
                                     Content="&lt;&lt; Agregar" />
                             <Button Name="BtnEliminarTesis"
                                     Width="75"
@@ -738,13 +798,15 @@
                                      Height="23"
                                      Margin="171,6,0,0"
                                      HorizontalAlignment="Left"
-                                     VerticalAlignment="Top" />
+                                     VerticalAlignment="Top"
+                                     PreviewTextInput="TxtRelTesis_PreviewTextInput" />
                             <Button Name="BtnAgregarVoto"
                                     Width="75"
                                     Height="23"
                                     Margin="171,45,0,0"
                                     HorizontalAlignment="Left"
                                     VerticalAlignment="Top"
+                                    Click="BtnAgregarVoto_Click"
                                     Content="&lt;&lt; Agregar" />
                             <Button Name="BtnEliminarVoto"
                                     Width="75"

@@ -7,11 +7,15 @@ using ContradiccionesDirectorioApi.DataAccess;
 using System.Data.OleDb;
 using System.Data;
 using System.Windows.Forms;
+using System.Collections.ObjectModel;
 
 namespace ContradiccionesDirectorioApi.Model
 {
     public class ContradiccionesModel
     {
+
+
+
         public int SetNewContradiccion(Contradicciones contradiccion)
         {
             OleDbConnection connectionBitacoraSql = DbConnDac.GetConnection();
@@ -133,6 +137,70 @@ namespace ContradiccionesDirectorioApi.Model
             }
 
             return lastId;
+        }
+
+
+        public ObservableCollection<Contradicciones> GetContradicciones()
+        {
+            ObservableCollection<Contradicciones> contradicciones = new ObservableCollection<Contradicciones>();
+
+            OleDbConnection oleConnection = DbConnDac.GetConnection();
+            OleDbCommand cmd;
+            OleDbDataReader reader;
+
+            CriteriosModel critModel = new CriteriosModel();
+            TesisModel tesModel = new TesisModel();
+            EjecutoriasModel ejecModel = new EjecutoriasModel();
+
+            string oleCadena = "SELECT * FROM Contradicciones";
+
+            try
+            {
+                oleConnection.Open();
+
+                cmd = new OleDbCommand(oleCadena, oleConnection);
+                reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    Contradicciones contra = new Contradicciones();
+                    contra.IdContradiccion = (Int32)reader["IdContradiccion"];
+                    contra.ExpedienteNumero = Convert.ToInt32(reader["ExpedienteNumero"]);
+                    contra.ExpedienteAnio = Convert.ToInt32(reader["ExpedienteAnio"]);
+                    contra.IdTipoAsunto = Convert.ToInt32(reader["IdTipoAsunto"]);
+                    contra.Tema = reader["Tema"].ToString();
+                    contra.Status = Convert.ToInt32(reader["Status"]);
+                    contra.Oficio = reader["Oficio"].ToString();
+                    contra.FechaTurno = Convert.ToDateTime(reader["FechaTurno"]);
+                    contra.Observaciones = reader["Observaciones"].ToString();
+                    contra.Denunciantes = reader["Denunciantes"].ToString();
+                    contra.IdPlenoCircuito = Convert.ToInt32(reader["IdPlenoCircuito"]);
+                    contra.IdPresidentePleno = Convert.ToInt32(reader["IdPresidentePleno"]);
+                    contra.IdPonentePleno = Convert.ToInt32(reader["IdPonentePleno"]);
+                    contra.Criterios = critModel.GetCriterios(contra.IdContradiccion);
+                    contra.MiTesis = tesModel.GetTesisPorContradiccion(contra.IdContradiccion);
+                    contra.MiEjecutoria = ejecModel.GetEjecutoriasPorContradiccion(contra.IdContradiccion);
+
+                    contradicciones.Add(contra);
+                }
+
+                reader.Close();
+                cmd.Dispose();
+            }
+            catch (OleDbException ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                oleConnection.Close();
+            }
+
+            return contradicciones;
         }
     }
 }

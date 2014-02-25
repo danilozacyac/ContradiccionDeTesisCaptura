@@ -6,6 +6,7 @@ using System.Linq;
 using ContradiccionesDirectorioApi.Dao;
 using ContradiccionesDirectorioApi.DataAccess;
 using System.Collections.ObjectModel;
+using System.Windows.Forms;
 
 namespace ContradiccionesDirectorioApi.Model
 {
@@ -220,6 +221,59 @@ namespace ContradiccionesDirectorioApi.Model
             }
 
             return lastId;
+        }
+
+
+        public ObservableCollection<Criterios> GetCriterios(int idContradiccion)
+        {
+            ObservableCollection<Criterios> criterios = new ObservableCollection<Criterios>();
+
+            OleDbConnection oleConnection = DbConnDac.GetConnection();
+            OleDbCommand cmd;
+            OleDbDataReader reader;
+
+            string oleCadena = "SELECT * FROM Criterios WHERE idContradiccion = " + idContradiccion;
+
+            try
+            {
+                oleConnection.Open();
+
+                cmd = new OleDbCommand(oleCadena, oleConnection);
+                reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    Criterios criterio = new Criterios();
+                    criterio.IdContradiccion = Convert.ToInt32(reader["IdContradiccion"]);
+                    criterio.IdCriterio = Convert.ToInt32(reader["IdCriterio"]);
+                    criterio.Orden = Convert.ToInt32(reader["Orden"]);
+                    criterio.Criterio = reader["Criterio"].ToString();
+                    criterio.IdOrgano = Convert.ToInt32(reader["IdOrgano"]);
+                    criterio.Organo = (from n in Singletons.OrganismosSingleton.Colegiados
+                                       where n.IdOrganismo == criterio.IdOrgano
+                                       select n.Organismo).ToList()[0];
+                    
+
+                    criterios.Add(criterio);
+                }
+
+                reader.Close();
+                cmd.Dispose();
+            }
+            catch (OleDbException ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                oleConnection.Close();
+            }
+
+            return criterios;
         }
     }
 }

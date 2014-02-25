@@ -91,7 +91,63 @@ namespace ContradiccionesDirectorioApi.Model
             
         }
 
+        public Tesis GetTesisPorContradiccion(int idContradiccion)
+        {
+            Tesis tesis = null;
 
+            OleDbConnection oleConnection = DbConnDac.GetConnection();
+            OleDbCommand cmd;
+            OleDbDataReader reader;
+
+            string oleCadena = "SELECT * FROM Tesis WHERE IdContradiccion = " + idContradiccion;
+
+            try
+            {
+                oleConnection.Open();
+
+                cmd = new OleDbCommand(oleCadena, oleConnection);
+                reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    tesis = new Tesis();
+                    tesis.IdContradiccion = Convert.ToInt32(reader["IdContradiccion"]);
+                    tesis.ClaveControl = reader["Clavecontrol"].ToString();
+                    tesis.ClaveIdentificacion = reader["ClaveIdentificacion"].ToString();
+                    tesis.Rubro = reader["Rubro"].ToString();
+                    tesis.Tatj = Convert.ToInt32(reader["tatj"]);
+                    tesis.OficioPublicacion = reader["OficioPublicacion"].ToString();
+                    tesis.OficioPublicacionFilePath = reader["OficioPPath"].ToString();
+                    tesis.VersionPublica = Convert.ToInt32(reader["VersionPublica"].ToString());
+                    tesis.VersionPublicaFilePath = reader["VersionPPath"].ToString();
+                    tesis.CopiaCertificada = Convert.ToInt32(reader["CopiaCertificada"].ToString());
+                    tesis.CopiaCertificadaFilePath = reader["CopiaCPath"].ToString();
+                    tesis.Destinatario = reader["Destinatario"].ToString();
+                    tesis.CambioCriterio = Convert.ToInt32(reader["CambioCriterio"]);
+                    tesis.Responsable = reader["Responsable"].ToString();
+                    tesis.OficioRespuesta = reader["OficioRespuesta"].ToString();
+                    tesis.OficioRespuestaFilePath = reader["OficioRPath"].ToString();
+
+                }
+
+                reader.Close();
+                cmd.Dispose();
+            }
+            catch (OleDbException ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                oleConnection.Close();
+            }
+
+            return tesis;
+        }
 
         //public Tesis GetTesisPorContradiccion(int idContradiccion)
         //{

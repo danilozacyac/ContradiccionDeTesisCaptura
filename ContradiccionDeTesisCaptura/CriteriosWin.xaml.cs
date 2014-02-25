@@ -16,6 +16,7 @@ using MantesisVerIusCommonObjects.Model;
 using MantesisVerIusCommonObjects.Dto;
 using ContradiccionesDirectorioApi.Dao;
 using System.Collections.ObjectModel;
+using ContradiccionesDirectorioApi.Utils;
 
 namespace ContradiccionDeTesisCaptura
 {
@@ -50,17 +51,12 @@ namespace ContradiccionDeTesisCaptura
 
         private void TxtTesis_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            e.Handled = IsTextAllowed(e.Text);
+            e.Handled = StringFunctions.IsADigit(e.Text);
         }
 
-        private static bool IsTextAllowed(string text)
-        {
-            // Regex NumEx = new Regex(@"^\d+(?:.\d{0,2})?$"); 
-            Regex regex = new Regex("[^0-9.-]+"); //regex that matches disallowed text 
-            return regex.IsMatch(text);
-        }
 
-        private void TxtNumIus_KeyDown(object sender, KeyEventArgs e)
+
+        private void TxtTesis_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
             {
@@ -76,7 +72,6 @@ namespace ContradiccionDeTesisCaptura
 
             if (tesis != null)
             {
-                LstTesisContendientes.Items.Add(tesis.Ius);
                 TxtTesis.Text = String.Empty;
                 criterios.TesisContendientes.Add(tesis.Ius);
             }
@@ -94,6 +89,11 @@ namespace ContradiccionDeTesisCaptura
             contradiccion.Criterios.Add(criterios);
 
             this.Close();
+        }
+
+        private void BtnQuitar_Click(object sender, RoutedEventArgs e)
+        {
+            criterios.TesisContendientes.Remove((Int32)LstTesisContendientes.SelectedItem);
         }
     }
 }

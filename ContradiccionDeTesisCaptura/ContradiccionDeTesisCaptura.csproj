@@ -39,10 +39,12 @@
     <Reference Include="Infragistics3.Wpf.DataPresenter.v10.1, Version=10.1.20101.1000, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb" />
     <Reference Include="Infragistics3.Wpf.Editors.v10.1, Version=10.1.20101.1000, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb" />
     <Reference Include="Infragistics3.Wpf.v10.1, Version=10.1.20101.1000, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb" />
-    <Reference Include="MantesisVerIusCommonObjects">
-      <HintPath>..\..\MantesisWpf\MantesisWpf\bin\Debug\MantesisVerIusCommonObjects.dll</HintPath>
+    <Reference Include="MantesisVerIusCommonObjects, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\MantesisWpf\MantesisVerIusCommonObjects\bin\Debug\MantesisVerIusCommonObjects.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
@@ -51,8 +53,10 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Telerik.Windows.Controls, Version=2013.3.1204.40, Culture=neutral, PublicKeyToken=5803cfa389c90ce7" />
-    <Reference Include="Telerik.Windows.Controls.Input, Version=2013.3.1204.40, Culture=neutral, PublicKeyToken=5803cfa389c90ce7" />
+    <Reference Include="Telerik.Windows.Controls, Version=2013.3.1316.40, Culture=neutral, PublicKeyToken=5803cfa389c90ce7" />
+    <Reference Include="Telerik.Windows.Controls.GridView, Version=2013.3.1316.40, Culture=neutral, PublicKeyToken=5803cfa389c90ce7" />
+    <Reference Include="Telerik.Windows.Controls.Input, Version=2013.3.1316.40, Culture=neutral, PublicKeyToken=5803cfa389c90ce7" />
+    <Reference Include="Telerik.Windows.Data, Version=2013.3.1316.40, Culture=neutral, PublicKeyToken=5803cfa389c90ce7" />
     <Reference Include="UIAutomationProvider" />
     <Reference Include="UIAutomationTypes" />
     <Reference Include="WindowsBase" />
@@ -64,6 +68,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Returnos.xaml.cs">
+      <DependentUpon>Returnos.xaml</DependentUpon>
+    </Compile>
     <Page Include="ContradiccionesWin.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -83,6 +90,9 @@
     <Compile Include="ContradiccionesWin.xaml.cs">
       <DependentUpon>ContradiccionesWin.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converters\ListToStringConverter.cs" />
+    <Compile Include="Converters\OrganismosConverter.cs" />
+    <Compile Include="Converters\StatusConverter.cs" />
     <Compile Include="CriteriosWin.xaml.cs">
       <DependentUpon>CriteriosWin.xaml</DependentUpon>
     </Compile>
@@ -91,6 +101,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Returnos.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Themes\Botones.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
