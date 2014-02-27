@@ -31,21 +31,30 @@ namespace ContradiccionDeTesisCaptura
 
         private void BtnAgregar_Click(object sender, RoutedEventArgs e)
         {
-            ContradiccionesWin contra = new ContradiccionesWin(contradicciones);
+            ContraInfoGral contra = new ContraInfoGral(contradicciones);
             contra.ShowDialog();
         }
 
         private void BtnModificar_Click(object sender, RoutedEventArgs e)
         {
-            Contradicciones contradiccion = (Contradicciones)RGridContradicciones.SelectedItem;
-            ContradiccionesWin contra = new ContradiccionesWin(contradiccion,1);
-            contra.ShowDialog();
+            if (RGridContradicciones.SelectedItem != null)
+            {
+                Contradicciones contradiccion = (Contradicciones)RGridContradicciones.SelectedItem;
+                contradiccion.IsUpdating = true;
+                ContradiccionesWin contra = new ContradiccionesWin(contradiccion, true);
+                contra.ShowDialog();
+                contradiccion.IsUpdating = false;
+            }
+            else
+            {
+                MessageBox.Show("Seleccione el elemento que desea modificar");
+            }
         }
 
         private void BtnVisualizar_Click(object sender, RoutedEventArgs e)
         {
             Contradicciones contra = (Contradicciones)RGridContradicciones.SelectedItem;
-            ContradiccionesWin win = new ContradiccionesWin(contra,2);
+            ContradiccionesWin win = new ContradiccionesWin(contra,false);
             win.ShowDialog();
         }
     }

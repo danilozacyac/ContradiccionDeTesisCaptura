@@ -7,6 +7,7 @@ namespace ContradiccionesDirectorioApi.Dao
 {
     public class Contradicciones : INotifyPropertyChanged
     {
+        private bool isUpdating;
         private int idContradiccion;
         private int expedienteNumero;
         private int expedienteAnio;
@@ -30,6 +31,19 @@ namespace ContradiccionesDirectorioApi.Dao
         
 
         
+
+        public bool IsUpdating
+        {
+            get
+            {
+                return this.isUpdating;
+            }
+            set
+            {
+                this.isUpdating = value;
+                this.OnPropertyChanged("IsUpdating");
+            }
+        }
 
         public int IdContradiccion
         {

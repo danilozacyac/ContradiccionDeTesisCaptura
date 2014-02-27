@@ -1,18 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Data;
 using System.Data.OleDb;
 using System.Linq;
+using System.Windows.Forms;
 using ContradiccionesDirectorioApi.Dao;
 using ContradiccionesDirectorioApi.DataAccess;
-using System.Collections.ObjectModel;
-using System.Windows.Forms;
 
 namespace ContradiccionesDirectorioApi.Model
 {
     public class CriteriosModel
     {
-
+        /// <summary>
+        /// Guarda los criterios de una contradiccion cuando se esta capturando la misma 
+        /// por primera vez
+        /// </summary>
+        /// <param name="contradiccion"></param>
         public void SetNewCriterios(Contradicciones contradiccion)
         {
             OleDbConnection connectionBitacoraSql = DbConnDac.GetConnection();
@@ -21,12 +24,12 @@ namespace ContradiccionesDirectorioApi.Model
             DataSet dataSet = new DataSet();
             DataRow dr;
 
+            int currentOrder = 1;
+
             try
             {
                 foreach (Criterios criterio in contradiccion.Criterios)
                 {
-                    int maxOrden = this.GetMaxOrderCriterio(contradiccion.IdContradiccion);
-
                     string sqlCadena = "SELECT * FROM Criterios WHERE IdCriterio = 0";
 
                     dataAdapter = new OleDbDataAdapter();
@@ -36,7 +39,7 @@ namespace ContradiccionesDirectorioApi.Model
 
                     dr = dataSet.Tables["Criterios"].NewRow();
                     dr["IdContradiccion"] = contradiccion.IdContradiccion;
-                    dr["Orden"] = maxOrden;
+                    dr["Orden"] = currentOrder;
                     dr["Criterio"] = criterio.Criterio;
                     dr["IdOrgano"] = criterio.IdOrgano;
 
@@ -56,20 +59,169 @@ namespace ContradiccionesDirectorioApi.Model
                     dataSet.Dispose();
                     dataAdapter.Dispose();
 
-                    criterio.IdCriterio = this.GetLastCriterioId(contradiccion.IdContradiccion, maxOrden);
+                    criterio.IdCriterio = this.GetLastCriterioId(contradiccion.IdContradiccion, currentOrder);
 
                     this.SetNewCriteriosTesis(criterio);
+                    currentOrder++;
                 }
             }
-            catch (OleDbException ex)
+            catch (OleDbException sql)
             {
-                Console.Write(ex.Message);
+                MessageBox.Show("Error ({0}) : {1}" + sql.Source + sql.Message, "Error Interno --- SalvarRegistroMantesisSql");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, "Error Interno --- SalvarRegistroMantesisSql");
             }
             finally
             {
                 connectionBitacoraSql.Close();
             }
+        }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="criterio"></param>
+        /// <param name="idContradiccion"></param>
+        public void SetNewCriterios(Criterios criterio, int idContradiccion)
+        {
+            OleDbConnection connectionBitacoraSql = DbConnDac.GetConnection();
+            OleDbDataAdapter dataAdapter;
+
+            DataSet dataSet = new DataSet();
+            DataRow dr;
+
+            try
+            {
+                int currentOrder = this.GetMaxOrderCriterio(idContradiccion);
+                string sqlCadena = "SELECT * FROM Criterios WHERE IdCriterio = 0";
+
+                dataAdapter = new OleDbDataAdapter();
+                dataAdapter.SelectCommand = new OleDbCommand(sqlCadena, connectionBitacoraSql);
+
+                dataAdapter.Fill(dataSet, "Criterios");
+
+                dr = dataSet.Tables["Criterios"].NewRow();
+                dr["IdContradiccion"] = idContradiccion;
+                dr["Orden"] = currentOrder;
+                dr["Criterio"] = criterio.Criterio;
+                dr["IdOrgano"] = criterio.IdOrgano;
+
+                dataSet.Tables["Criterios"].Rows.Add(dr);
+
+                dataAdapter.InsertCommand = connectionBitacoraSql.CreateCommand();
+                dataAdapter.InsertCommand.CommandText = "INSERT INTO Criterios(IdContradiccion,Orden,Criterio,IdOrgano)" +
+                                                        " VALUES(@IdContradiccion,@Orden,@Criterio,@IdOrgano)";
+
+                dataAdapter.InsertCommand.Parameters.Add("@IdContradiccion", OleDbType.Numeric, 0, "IdContradiccion");
+                dataAdapter.InsertCommand.Parameters.Add("@Orden", OleDbType.Numeric, 0, "Orden");
+                dataAdapter.InsertCommand.Parameters.Add("@Criterio", OleDbType.VarChar, 0, "Criterio");
+                dataAdapter.InsertCommand.Parameters.Add("@IdOrgano", OleDbType.Numeric, 0, "IdOrgano");
+
+                dataAdapter.Update(dataSet, "Criterios");
+
+                dataSet.Dispose();
+                dataAdapter.Dispose();
+
+                criterio.IdCriterio = this.GetLastCriterioId(idContradiccion, currentOrder);
+
+                this.SetNewCriteriosTesis(criterio);
+                currentOrder++;
+            }
+            catch (OleDbException sql)
+            {
+                MessageBox.Show("Error ({0}) : {1}" + sql.Source + sql.Message, "Error Interno --- SalvarRegistroMantesisSql");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, "Error Interno --- SalvarRegistroMantesisSql");
+            }
+            finally
+            {
+                connectionBitacoraSql.Close();
+            }
+        }
+
+        public void UpdateCriterios(Criterios criterio, int idContradiccion)
+        {
+            OleDbConnection connectionBitacoraSql = DbConnDac.GetConnection();
+            OleDbDataAdapter dataAdapter;
+
+            DataSet dataSet = new DataSet();
+            DataRow dr;
+
+            try
+            {
+                string sqlCadena = "SELECT * FROM Criterios WHERE IdCriterio =" + criterio.IdCriterio;
+
+                dataAdapter = new OleDbDataAdapter();
+                dataAdapter.SelectCommand = new OleDbCommand(sqlCadena, connectionBitacoraSql);
+
+                dataAdapter.Fill(dataSet, "Criterios");
+
+                dr = dataSet.Tables[0].Rows[0];
+                dr.BeginEdit();
+                dr["Criterio"] = criterio.Criterio;
+                dr["IdOrgano"] = criterio.IdCriterio;
+                dr.EndEdit();
+
+                dataAdapter.UpdateCommand = connectionBitacoraSql.CreateCommand();
+
+                string sSql = "UPDATE Criterios SET Criterio = @Criterio, IdOrgano = @IdOrgano " +
+                              " WHERE IdCriterio = @IdCriterio";
+
+                dataAdapter.UpdateCommand.CommandText = sSql;
+
+                AddParms(dataAdapter.UpdateCommand, "Criterio", "IdOrgano", "IdCriterio");
+
+                dataAdapter.Update(dataSet, "Criterios");
+                dataSet.Dispose();
+                dataAdapter.Dispose();
+            }
+            catch (OleDbException sql)
+            {
+                MessageBox.Show("Error ({0}) : {1}" + sql.Source + sql.Message, "Error Interno --- SalvarRegistroMantesisSql");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, "Error Interno --- SalvarRegistroMantesisSql");
+            }
+            finally
+            {
+                connectionBitacoraSql.Close();
+            }
+        }
+
+        public void DeleteCriterio(Criterios criterio)
+        {
+            OleDbConnection connectionBitacoraSql = DbConnDac.GetConnection();
+            OleDbCommand cmd ;
+
+            cmd = connectionBitacoraSql.CreateCommand();
+            cmd.Connection = connectionBitacoraSql;
+
+            try
+            {
+                connectionBitacoraSql.Open();
+
+                cmd.CommandText = "DELETE FROM Criterios WHERE IdCriterio = @IdCriterio";
+                cmd.Parameters.AddWithValue("@IdCriterio", criterio.IdCriterio);
+                cmd.ExecuteNonQuery();
+
+            }
+            catch (OleDbException sql)
+            {
+                MessageBox.Show("Error ({0}) : {1}" + sql.Source + sql.Message, "Error Interno --- SalvarRegistroMantesisSql");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, "Error Interno --- SalvarRegistroMantesisSql");
+            }
+            finally
+            {
+                connectionBitacoraSql.Close();
+            }
         }
 
 
@@ -109,26 +261,27 @@ namespace ContradiccionesDirectorioApi.Model
 
                     dataSet.Dispose();
                     dataAdapter.Dispose();
-
                 }
             }
-            catch (OleDbException ex)
+            catch (OleDbException sql)
             {
-                Console.Write(ex.Message);
+                MessageBox.Show("Error ({0}) : {1}" + sql.Source + sql.Message, "Error Interno --- SalvarRegistroMantesisSql");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, "Error Interno --- SalvarRegistroMantesisSql");
             }
             finally
             {
                 connectionBitacoraSql.Close();
             }
-
         }
-
 
         private int GetMaxOrderCriterio(int idContradiccion)
         {
             int maxOrden = 0;
 
-            string sqlCmd = @"SELECT Max(Orden) Orden FROM Criterios " +
+            string sqlCmd = @"SELECT Max(Orden) AS Orden FROM Criterios " +
                             " WHERE IdContradiccion = @IdContradiccion ";
 
             OleDbConnection connectionBitacoraSql = DbConnDac.GetConnection();
@@ -147,7 +300,6 @@ namespace ContradiccionesDirectorioApi.Model
                 parameter.Value = idContradiccion;
 
                 cmd.Parameters.Add(parameter);
-
                 
                 connectionBitacoraSql.Open();
 
@@ -158,9 +310,13 @@ namespace ContradiccionesDirectorioApi.Model
                     maxOrden = Convert.ToInt32(reader["Orden"]);
                 }
             }
-            catch (OleDbException ex)
+            catch (OleDbException sql)
             {
-                Console.Write(ex.Message);
+                MessageBox.Show("Error ({0}) : {1}" + sql.Source + sql.Message, "Error Interno --- SalvarRegistroMantesisSql");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, "Error Interno --- SalvarRegistroMantesisSql");
             }
             finally
             {
@@ -170,7 +326,7 @@ namespace ContradiccionesDirectorioApi.Model
             return maxOrden + 1;
         }
 
-        private int GetLastCriterioId(int idContradiccion,int maxOrden)
+        private int GetLastCriterioId(int idContradiccion, int maxOrden)
         {
             int lastId = 0;
 
@@ -211,9 +367,13 @@ namespace ContradiccionesDirectorioApi.Model
                     lastId = Convert.ToInt32(reader["IdCriterio"]);
                 }
             }
-            catch (OleDbException ex)
+            catch (OleDbException sql)
             {
-                Console.Write(ex.Message);
+                MessageBox.Show("Error ({0}) : {1}" + sql.Source + sql.Message, "Error Interno --- SalvarRegistroMantesisSql");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, "Error Interno --- SalvarRegistroMantesisSql");
             }
             finally
             {
@@ -222,7 +382,6 @@ namespace ContradiccionesDirectorioApi.Model
 
             return lastId;
         }
-
 
         public ObservableCollection<Criterios> GetCriterios(int idContradiccion)
         {
@@ -252,7 +411,6 @@ namespace ContradiccionesDirectorioApi.Model
                     criterio.Organo = (from n in Singletons.OrganismosSingleton.Colegiados
                                        where n.IdOrganismo == criterio.IdOrgano
                                        select n.Organismo).ToList()[0];
-                    
 
                     criterios.Add(criterio);
                 }
@@ -274,6 +432,16 @@ namespace ContradiccionesDirectorioApi.Model
             }
 
             return criterios;
+        }
+
+        private void AddParms(OleDbCommand cmd, params string[] cols)
+        {
+            // Add each parameter. Note that each colum in
+            // table "Customers" is of type VARCHAR !
+            foreach (String column in cols)
+            {
+                cmd.Parameters.Add("@" + column, OleDbType.Char, 0, column);
+            }
         }
     }
 }

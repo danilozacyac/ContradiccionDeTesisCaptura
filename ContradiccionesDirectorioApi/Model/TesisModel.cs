@@ -93,7 +93,7 @@ namespace ContradiccionesDirectorioApi.Model
 
         public Tesis GetTesisPorContradiccion(int idContradiccion)
         {
-            Tesis tesis = null;
+            Tesis tesis = new Tesis();
 
             OleDbConnection oleConnection = DbConnDac.GetConnection();
             OleDbCommand cmd;
@@ -110,7 +110,6 @@ namespace ContradiccionesDirectorioApi.Model
 
                 while (reader.Read())
                 {
-                    tesis = new Tesis();
                     tesis.IdContradiccion = Convert.ToInt32(reader["IdContradiccion"]);
                     tesis.ClaveControl = reader["Clavecontrol"].ToString();
                     tesis.ClaveIdentificacion = reader["ClaveIdentificacion"].ToString();
@@ -149,11 +148,86 @@ namespace ContradiccionesDirectorioApi.Model
             return tesis;
         }
 
-        //public Tesis GetTesisPorContradiccion(int idContradiccion)
-        //{
+        public void UpdateTesis(Contradicciones contradiccion)
+        {
+            OleDbConnection connectionBitacoraSql = DbConnDac.GetConnection();
+            OleDbDataAdapter dataAdapter;
 
+            DataSet dataSet = new DataSet();
+            DataRow dr;
 
-        //}
+            try
+            {
+                string sqlCadena = "SELECT * FROM Tesis WHERE IdContradiccion =" + contradiccion.IdContradiccion;
+
+                dataAdapter = new OleDbDataAdapter();
+                dataAdapter.SelectCommand = new OleDbCommand(sqlCadena, connectionBitacoraSql);
+
+                dataAdapter.Fill(dataSet, "Tesis");
+
+                dr = dataSet.Tables[0].Rows[0];
+                dr.BeginEdit();
+                dr["ClaveControl"] = contradiccion.MiTesis.ClaveControl;
+                dr["ClaveIdentificacion"] = contradiccion.MiTesis.ClaveIdentificacion;
+                dr["Rubro"] = contradiccion.MiTesis.Rubro;
+                dr["tatj"] = contradiccion.MiTesis.Tatj;
+                dr["OficioPublicacion"] = contradiccion.MiTesis.OficioPublicacion;
+                dr["OficioPPath"] = contradiccion.MiTesis.OficioPublicacionFilePath;
+                dr["VersionPublica"] = contradiccion.MiTesis.VersionPublica;
+                dr["VersionPPath"] = contradiccion.MiTesis.VersionPublicaFilePath;
+                dr["CopiaCertificada"] = contradiccion.MiTesis.CopiaCertificada;
+                dr["CopiaCPath"] = contradiccion.MiTesis.CopiaCertificadaFilePath;
+                dr["Destinatario"] = contradiccion.MiTesis.Destinatario;
+                dr["CambioCriterio"] = contradiccion.MiTesis.CambioCriterio;
+                dr["Responsable"] = contradiccion.MiTesis.Responsable;
+                dr["OficioRespuesta"] = contradiccion.MiTesis.OficioRespuesta;
+                dr["OficioRPath"] = contradiccion.MiTesis.OficioRespuestaFilePath;
+                dr.EndEdit();
+
+                dataAdapter.UpdateCommand = connectionBitacoraSql.CreateCommand();
+                dataAdapter.UpdateCommand.CommandText =
+                                                       "UPDATE Tesis SET ClaveControl = @ClaveControl,ClaveIdentificacion = @ClaveIdentificacion," +
+                                                       "Rubro = @Rubro,tatj = @tatj,OficioPublicacion = @OficioPublicacion,OficioPPath = @OficioPPath," +
+                                                       "VersionPublica = @VersionPublica,VersionPPath = @VersionPPath,CopiaCertificada = @CopiaCertificada," +
+                                                       "CopiaCPath = @CopiaCPath,Destinatario = @Destinatario,CambioCriterio = @CambioCriterio, " +
+                                                       "Responsable = @Responsable,OficioRespuesta = @OficioRespuesta,OficioRPath = @OficioRPath " +
+                                                       " WHERE IdContradiccion = @IdContradiccion";
+
+                dataAdapter.UpdateCommand.Parameters.Add("@ClaveControl", OleDbType.VarChar, 0, "ClaveControl");
+                dataAdapter.UpdateCommand.Parameters.Add("@ClaveIdentificacion", OleDbType.VarChar, 0, "ClaveIdentificacion");
+                dataAdapter.UpdateCommand.Parameters.Add("@Rubro", OleDbType.VarChar, 0, "Rubro");
+                dataAdapter.UpdateCommand.Parameters.Add("@tatj", OleDbType.Numeric, 0, "tatj");
+                dataAdapter.UpdateCommand.Parameters.Add("@OficioPublicacion", OleDbType.VarChar, 0, "OficioPublicacion");
+                dataAdapter.UpdateCommand.Parameters.Add("@OficioPPath", OleDbType.VarChar, 0, "OficioPPath");
+                dataAdapter.UpdateCommand.Parameters.Add("@VersionPublica", OleDbType.Numeric, 0, "VersionPublica");
+                dataAdapter.UpdateCommand.Parameters.Add("@VersionPPath", OleDbType.VarChar, 0, "VersionPPath");
+                dataAdapter.UpdateCommand.Parameters.Add("@CopiaCertificada", OleDbType.Numeric, 0, "CopiaCertificada");
+                dataAdapter.UpdateCommand.Parameters.Add("@CopiaCPath", OleDbType.VarChar, 0, "CopiaCPath");
+                dataAdapter.UpdateCommand.Parameters.Add("@Destinatario", OleDbType.VarChar, 0, "Destinatario");
+                dataAdapter.UpdateCommand.Parameters.Add("@CambioCriterio", OleDbType.Numeric, 0, "CambioCriterio");
+                dataAdapter.UpdateCommand.Parameters.Add("@Responsable", OleDbType.VarChar, 0, "Responsable");
+                dataAdapter.UpdateCommand.Parameters.Add("@OficioRespuesta", OleDbType.VarChar, 0, "OficioRespuesta");
+                dataAdapter.UpdateCommand.Parameters.Add("@OficioRPath", OleDbType.VarChar, 0, "OficioRPath");
+
+                dataAdapter.Update(dataSet, "Tesis");
+                dataSet.Dispose();
+                dataAdapter.Dispose();
+            }
+            catch (OleDbException sql)
+            {
+                MessageBox.Show("Error ({0}) : {1}" + sql.Source + sql.Message);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message);
+            }
+            finally
+            {
+                connectionBitacoraSql.Close();
+            }
+        }
+
+       
 
     }
 }

@@ -1,22 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using ContradiccionesDirectorioApi.Model;
-using ContradiccionDeTesisCaptura.DataAccess;
-using ContradiccionesDirectorioApi.Dao;
 using System.Collections.ObjectModel;
+using System.Linq;
+using System.Windows;
+using System.Windows.Input;
+using ContradiccionesDirectorioApi.Dao;
+using ContradiccionesDirectorioApi.Model;
+using ContradiccionesDirectorioApi.Singletons;
 using ContradiccionesDirectorioApi.Utils;
-using MantesisVerIusCommonObjects.Model;
 using MantesisVerIusCommonObjects.Dto;
+using MantesisVerIusCommonObjects.Model;
 
 namespace ContradiccionDeTesisCaptura
 {
@@ -27,108 +19,99 @@ namespace ContradiccionDeTesisCaptura
     {
         private Contradicciones contradiccion;
         private ListadoDeContradicciones listado;
-        private int isUpdatingOrVisual = 0;
+        private readonly bool isUpdating = false;
 
-        public ContradiccionesWin(ListadoDeContradicciones listado)
-        {
-            InitializeComponent();
-
-            this.listado = listado;
-
-            contradiccion = new Contradicciones();
-            contradiccion.Criterios = new ObservableCollection<Criterios>();
-            contradiccion.MiTesis = new Tesis();
-            contradiccion.MiEjecutoria = new Ejecutoria();
-            contradiccion.Criterios = new ObservableCollection<Criterios>();
-            contradiccion.Returnos = new ObservableCollection<ReturnosClass>();
-        }
-
-        public ContradiccionesWin(Contradicciones contradiccion,int isUpdatingOrVisual)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="contradiccion">Expediente de contradiccion a ser visualizado o modificado</param>
+        /// <param name="isUpdating">false indica que solo se visualiza y true que se podrá actualizar</param>
+        public ContradiccionesWin(Contradicciones contradiccion, bool isUpdating)
         {
             InitializeComponent();
             this.contradiccion = contradiccion;
+            this.isUpdating = isUpdating;
 
-            BtnSalvar.Visibility = Visibility.Collapsed;
-            this.isUpdatingOrVisual = isUpdatingOrVisual;
+            contradiccion.MiTesis = (contradiccion.MiTesis == null) ? new Tesis() : contradiccion.MiTesis;
+            contradiccion.MiEjecutoria = (contradiccion.MiEjecutoria == null) ? new Ejecutoria() : contradiccion.MiEjecutoria;
+            contradiccion.Returnos = (contradiccion.Returnos == null) ? new ObservableCollection<ReturnosClass>() : contradiccion.Returnos;
+            contradiccion.Resolutivo = (contradiccion.Resolutivo == null) ? new Resolutivos() : contradiccion.Resolutivo;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            CbxTiposAsuntos.DataContext = new TiposModel().GetTiposAsunto(DbConnDac.GetConnection());
-            CbxTiposAsuntos.SelectedIndex = 0;
+            CbxTiposAsuntos.DataContext = TipoAsuntoSingleton.TipoAsunto;
 
             this.DataContext = contradiccion;
 
-            if (isUpdatingOrVisual > 0)
-                this.LoadNoBindings();
+            this.LoadNoBindings();
         }
 
         private void BtnAddCriterio_Click(object sender, RoutedEventArgs e)
         {
-            CriteriosWin criterios = new CriteriosWin(contradiccion,null);
+            CriteriosWin criterios = new CriteriosWin(contradiccion,null,false);
             criterios.ShowDialog();
-
-            this.DataContext = contradiccion;
-
-
         }
 
         private void BtnSalvar_Click(object sender, RoutedEventArgs e)
         {
-            if (RadTramite.IsChecked == false && RadResuelto.IsChecked == false)
-            {
-                MessageBox.Show(ConstantMessages.SeleccionaEstadoExpediente );
-                return;
-            }
-
+            ///Validaciones
             if (RadJuris.IsChecked == false && RadAislada.IsChecked == false)
             {
                 MessageBox.Show(ConstantMessages.SeleccionaTipoDeTesis);
                 return;
             }
 
-            if (DateFTurno.SelectedDate == null)
-            {
-                MessageBox.Show(ConstantMessages.SeleccionaFechaturno);
-                return;
-            }
 
-            if (contradiccion.ExpedienteAnio < 1990 && contradiccion.ExpedienteAnio > DateTime.Now.Year + 2)
-            {
-                MessageBox.Show(ConstantMessages.RangoAnual);
-                return;
-            }
-
-
-
-
+            ///Valores ComboBox y RadioButtons
 
             contradiccion.Status = (RadResuelto.IsChecked == true) ? 1 : 0;
             contradiccion.IdTipoAsunto = (Int32)CbxTiposAsuntos.SelectedValue;
 
-            
-
+            ///Actualiza Info General de Contradiccion
             ContradiccionesModel contra = new ContradiccionesModel();
-            contradiccion.IdContradiccion = contra.SetNewContradiccion(contradiccion);
+            contra.UpdateContradiccion(contradiccion);
+            
+            
+            ///Actualiza info Resolucion
+            ResolucionModel resol = new ResolucionModel();
+            if (resol.CheckIfExist(contradiccion.IdContradiccion))
+            {
+                resol.UpdateResolucion(contradiccion.Resolutivo, contradiccion.IdContradiccion);
+            }
+            else
+            {
+                resol.SetNewResolucion(contradiccion);
+            }
 
-            CriteriosModel crit = new CriteriosModel();
-            crit.SetNewCriterios(contradiccion);
-
+            //Actualiza Info Tesis
             TesisModel tes = new TesisModel();
-            tes.SetNewTesisPorContradiccion(contradiccion);
+            Tesis tesis = tes.GetTesisPorContradiccion(contradiccion.IdContradiccion);
 
+            if (tesis.IdContradiccion == 0)
+            {
+                tes.SetNewTesisPorContradiccion(contradiccion);
+            }
+            else
+            {
+                tes.UpdateTesis(contradiccion);
+            }
+            tesis = null;
+
+            //Actualiza Info ejecutoria
             EjecutoriasModel eje = new EjecutoriasModel();
-            eje.SetNewEjecutoriaPorContradiccion(contradiccion);
 
-            ReturnosModel returno = new ReturnosModel();
-            returno.SetNewReturno(contradiccion);
-
-            listado.Listado.Add(contradiccion);
-
+            if (eje.CheckIsExist(contradiccion.IdContradiccion))
+            {
+                eje.UpdateEjecutoria(contradiccion);
+            }
+            else
+            {
+                eje.SetNewEjecutoriaPorContradiccion(contradiccion);
+            }
+            
             this.Close();
         }
-
-
 
         private String OpenDialogForPath()
         {
@@ -206,8 +189,6 @@ namespace ContradiccionDeTesisCaptura
             TxtFileCopiaPath.Text = String.Empty;
         }
 
-
-
         private void SetInitialSettingsAfterLoad()
         {
             RadNoPublica.IsChecked = true;
@@ -236,6 +217,8 @@ namespace ContradiccionDeTesisCaptura
 
             if (tesis != null)
             {
+                EjecutoriasModel model = new EjecutoriasModel();
+                model.SetRelacionesEjecutorias(tesis.Ius, contradiccion.IdContradiccion, 1);
                 TxtRelTesis.Text = String.Empty;
                 contradiccion.MiEjecutoria.TesisRelacionadas.Add(tesis.Ius);
             }
@@ -256,6 +239,8 @@ namespace ContradiccionDeTesisCaptura
 
             if (tesis != null)
             {
+                EjecutoriasModel model = new EjecutoriasModel();
+                model.SetRelacionesEjecutorias(tesis.Ius, contradiccion.IdContradiccion, 3);
                 TxtRelVotos.Text = String.Empty;
                 contradiccion.MiEjecutoria.VotosRelacionados.Add(tesis.Ius);
             }
@@ -263,9 +248,6 @@ namespace ContradiccionDeTesisCaptura
             {
                 MessageBox.Show("Ingrese un número de registro IUS válido");
             }
-
-
-
         }
 
         private void BtnAgregaReturno_Click(object sender, RoutedEventArgs e)
@@ -274,14 +256,12 @@ namespace ContradiccionDeTesisCaptura
             returno.Show();
         }
 
-
         private void LoadNoBindings()
         {
             if (contradiccion.Status == 1)
                 RadResuelto.IsChecked = true;
             else
                 RadTramite.IsChecked = true;
-
 
             CbxTiposAsuntos.SelectedValue = contradiccion.IdTipoAsunto;
 
@@ -304,8 +284,69 @@ namespace ContradiccionDeTesisCaptura
                 RadSiCambio.IsChecked = true;
             else
                 RadNoCambio.IsChecked = true;
-
         }
 
+        private void BtnEditCriterios_Click(object sender, RoutedEventArgs e)
+        {
+            Criterios editCriterio = (Criterios)RGridCriterios.SelectedItem;
+
+            CriteriosWin criterios = new CriteriosWin(contradiccion, editCriterio, true);
+            criterios.ShowDialog();
+        }
+
+        private void BtnDelCriterio_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult result = MessageBox.Show("¿Deseas eliminar el criterio seleccionado?", "Atención:", MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+            if (result == MessageBoxResult.Yes)
+            {
+                Criterios criterio = (Criterios)RGridCriterios.SelectedItem;
+                CriteriosModel model = new CriteriosModel();
+                model.DeleteCriterio(criterio);
+
+                contradiccion.Criterios.Remove(criterio);
+            }
+        }
+
+        private void BtnAddResolutivo_Click(object sender, RoutedEventArgs e)
+        {
+            PuntoResolutivo punto = new PuntoResolutivo(contradiccion);
+            punto.ShowDialog();
+        }
+
+        private void BtnEditResolutivo_Click(object sender, RoutedEventArgs e)
+        {
+            PResolutivos resolutivo = (PResolutivos)RGridResolutivos.SelectedItem;
+
+            PuntoResolutivo punto = new PuntoResolutivo(contradiccion,resolutivo);
+            punto.ShowDialog();
+        }
+
+        private void BtnDltResolutivo_Click(object sender, RoutedEventArgs e)
+        {
+            PResolutivos resolutivo = (PResolutivos)RGridResolutivos.SelectedItem;
+
+            ResolucionModel model = new ResolucionModel();
+            model.DeleteResolutivo(resolutivo.IdResolutivo);
+
+            contradiccion.Resolutivo.PuntosResolutivos.Remove(resolutivo);
+        }
+
+        private void BtnEditaReturno_Click(object sender, RoutedEventArgs e)
+        {
+            ReturnosClass returno = (ReturnosClass)RGridReturnos.SelectedItem;
+
+            Returnos retWin = new Returnos(contradiccion, returno, true);
+            retWin.ShowDialog();
+        }
+
+        private void BtnEliminaReturno_Click(object sender, RoutedEventArgs e)
+        {
+            ReturnosClass returno = (ReturnosClass)RGridReturnos.SelectedItem;
+            ReturnosModel model = new ReturnosModel();
+            model.DeleteReturno(returno.IdReturno);
+
+            contradiccion.Returnos.Remove(returno);
+        }
     }
 }

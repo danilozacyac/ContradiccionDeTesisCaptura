@@ -4,7 +4,8 @@
         xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
         Title="Returnos"
         Width="583"
-        Height="428" Loaded="Window_Loaded">
+        Height="428"
+        Loaded="Window_Loaded">
     <Grid>
         <Label Name="label1"
                Height="28"
@@ -15,9 +16,9 @@
         <telerik:RadDatePicker Name="RDateReturno"
                                Width="146"
                                Margin="144,22,0,0"
-                               SelectedValue="{Binding Fecha}"
                                HorizontalAlignment="Left"
-                               VerticalAlignment="Top" />
+                               VerticalAlignment="Top"
+                               SelectedValue="{Binding Fecha}" />
         <GroupBox Name="groupBox1"
                   Width="503"
                   Height="134"
@@ -36,11 +37,11 @@
                           Width="446"
                           Height="23"
                           Margin="19,29,0,0"
-                          ItemsSource="{Binding}"
-                          DisplayMemberPath="Organismo"
-                          SelectedValuePath="IdOrganismo"
                           HorizontalAlignment="Left"
-                          VerticalAlignment="Top" />
+                          VerticalAlignment="Top"
+                          DisplayMemberPath="Organismo"
+                          ItemsSource="{Binding}"
+                          SelectedValuePath="IdOrganismo" />
                 <Label Name="label3"
                        Height="28"
                        Margin="19,69,0,0"
@@ -51,9 +52,9 @@
                          Width="239"
                          Height="23"
                          Margin="86,66,0,0"
-                         Text="{Binding ExpOrigen}"
                          HorizontalAlignment="Left"
-                         VerticalAlignment="Top" />
+                         VerticalAlignment="Top"
+                         Text="{Binding ExpOrigen}" />
             </Grid>
         </GroupBox>
         <GroupBox Name="groupBox2"
@@ -74,11 +75,11 @@
                           Width="446"
                           Height="23"
                           Margin="19,29,0,0"
-                          ItemsSource="{Binding}"
-                          DisplayMemberPath="Organismo"
-                          SelectedValuePath="IdOrganismo"
                           HorizontalAlignment="Left"
-                          VerticalAlignment="Top" />
+                          VerticalAlignment="Top"
+                          DisplayMemberPath="Organismo"
+                          ItemsSource="{Binding}"
+                          SelectedValuePath="IdOrganismo" />
                 <Label Name="label5"
                        Height="28"
                        Margin="19,69,0,0"
@@ -89,9 +90,9 @@
                          Width="239"
                          Height="23"
                          Margin="86,66,0,0"
-                         Text="{Binding ExpDestino}"
                          HorizontalAlignment="Left"
-                         VerticalAlignment="Top" />
+                         VerticalAlignment="Top"
+                         Text="{Binding ExpDestino}" />
             </Grid>
         </GroupBox>
         <Button Name="BtnAceptar"
@@ -100,13 +101,15 @@
                 Margin="0,354,27,0"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Top"
-                Content="Aceptar" Click="BtnAceptar_Click" />
+                Click="BtnAceptar_Click"
+                Content="Aceptar" />
         <Button Name="BtnCancelar"
                 Width="75"
                 Height="23"
                 Margin="378,354,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
-                Content="Cancelar" Click="BtnCancelar_Click" />
+                Click="BtnCancelar_Click"
+                Content="Cancelar" />
     </Grid>
 </Window>

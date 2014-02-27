@@ -4,6 +4,7 @@ using System.Data.OleDb;
 using System.Linq;
 using ContradiccionesDirectorioApi.Dao;
 using System.Windows.Forms;
+using ContradiccionesDirectorioApi.DataAccess;
 
 namespace ContradiccionesDirectorioApi.Model
 {
@@ -11,8 +12,9 @@ namespace ContradiccionesDirectorioApi.Model
     {
 
 
-        public List<Tipos> GetTiposAsunto(OleDbConnection oleConnection)
+        public List<Tipos> GetTiposAsunto()
         {
+            OleDbConnection connectionBitacoraSql = DbConnDac.GetConnection();
             List<Tipos> tipoAuntos = new List<Tipos>();
 
             OleDbCommand cmd;
@@ -22,9 +24,9 @@ namespace ContradiccionesDirectorioApi.Model
 
             try
             {
-                oleConnection.Open();
+                connectionBitacoraSql.Open();
 
-                cmd = new OleDbCommand(sqlCadena, oleConnection);
+                cmd = new OleDbCommand(sqlCadena, connectionBitacoraSql);
                 reader = cmd.ExecuteReader();
 
                 if (reader.HasRows)
@@ -50,7 +52,7 @@ namespace ContradiccionesDirectorioApi.Model
             finally
             {
                 reader.Close();
-                oleConnection.Close();
+                connectionBitacoraSql.Close();
             }
 
             return tipoAuntos;

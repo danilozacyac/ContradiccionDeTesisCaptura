@@ -1,19 +1,30 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.ComponentModel;
+using System.Linq;
 
 namespace ContradiccionesDirectorioApi.Dao
 {
     public class ReturnosClass : INotifyPropertyChanged
     {
+        private int idReturno;
         private int idContradiccion;
         private DateTime? fecha;
         private int idOrganoOrigen;
         private int idOrganoDestino;
         private String expOrigen;
         private String expDestino;
+
+        public int IdReturno
+        {
+            get
+            {
+                return this.idReturno;
+            }
+            set
+            {
+                this.idReturno = value;
+            }
+        }
 
         public int IdContradiccion
         {

@@ -1,13 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Data;
+using System.Data.OleDb;
 using System.Linq;
-using System.Text;
+using System.Windows.Forms;
 using ContradiccionesDirectorioApi.Dao;
 using ContradiccionesDirectorioApi.DataAccess;
-using System.Data.OleDb;
-using System.Data;
-using System.Windows.Forms;
-using System.Collections.ObjectModel;
 
 namespace ContradiccionesDirectorioApi.Model
 {
@@ -124,7 +122,7 @@ namespace ContradiccionesDirectorioApi.Model
                 while (reader.Read())
                 {
                     lastId = Convert.ToInt32(reader["IdContradiccion"]);
-                    MessageBox.Show(lastId.ToString());
+                    //MessageBox.Show(lastId.ToString());
                 }
             }
             catch (OleDbException ex)
@@ -151,6 +149,8 @@ namespace ContradiccionesDirectorioApi.Model
             CriteriosModel critModel = new CriteriosModel();
             TesisModel tesModel = new TesisModel();
             EjecutoriasModel ejecModel = new EjecutoriasModel();
+            ReturnosModel returnoModel = new ReturnosModel();
+            ResolucionModel resolucion = new ResolucionModel();
 
             string oleCadena = "SELECT * FROM Contradicciones";
 
@@ -180,6 +180,8 @@ namespace ContradiccionesDirectorioApi.Model
                     contra.Criterios = critModel.GetCriterios(contra.IdContradiccion);
                     contra.MiTesis = tesModel.GetTesisPorContradiccion(contra.IdContradiccion);
                     contra.MiEjecutoria = ejecModel.GetEjecutoriasPorContradiccion(contra.IdContradiccion);
+                    contra.Returnos = returnoModel.GetReturnos(contra.IdContradiccion);
+                    contra.Resolutivo = resolucion.GetResolucion(contra.IdContradiccion);
 
                     contradicciones.Add(contra);
                 }
@@ -201,6 +203,79 @@ namespace ContradiccionesDirectorioApi.Model
             }
 
             return contradicciones;
+        }
+
+
+        public void UpdateContradiccion(Contradicciones contradiccion)
+        {
+            OleDbConnection connectionBitacoraSql = DbConnDac.GetConnection();
+            OleDbDataAdapter dataAdapter;
+
+            DataSet dataSet = new DataSet();
+            DataRow dr;
+
+            try
+            {
+                string sqlCadena = "SELECT * FROM Contradicciones WHERE IdContradiccion =" + contradiccion.IdContradiccion;
+
+                dataAdapter = new OleDbDataAdapter();
+                dataAdapter.SelectCommand = new OleDbCommand(sqlCadena, connectionBitacoraSql);
+
+                dataAdapter.Fill(dataSet, "Contradicciones");
+
+                dr = dataSet.Tables[0].Rows[0];
+                dr.BeginEdit();
+                dr["ExpedienteNumero"] = contradiccion.ExpedienteNumero;
+                dr["ExpedienteAnio"] = contradiccion.ExpedienteAnio;
+                dr["IdTipoAsunto"] = contradiccion.IdTipoAsunto;
+                dr["Tema"] = contradiccion.Tema;
+                dr["Status"] = contradiccion.Status;
+                dr["Oficio"] = contradiccion.Oficio;
+                dr["FechaTurno"] = contradiccion.FechaTurno;
+                dr["Observaciones"] = contradiccion.Observaciones;
+                dr["Denunciantes"] = contradiccion.Denunciantes;
+                dr["IdPlenoCircuito"] = contradiccion.IdPlenoCircuito;
+                dr["IdPresidentePleno"] = contradiccion.IdPresidentePleno;
+                dr["IdPonentePleno"] = contradiccion.IdPonentePleno;
+                dr.EndEdit();
+
+                dataAdapter.UpdateCommand = connectionBitacoraSql.CreateCommand();
+                dataAdapter.UpdateCommand.CommandText =
+                                                       "UPDATE Contradicciones SET ExpedienteNumero = @ExpedienteNumero,ExpedienteAnio = @ExpedienteAnio," +
+                                                       "IdTipoAsunto = @IdTipoAsunto,Tema = @Tema,Status = @Status,Oficio = @Oficio," +
+                                                       "FechaTurno = @FechaTurno,Observaciones = @Observaciones,Denunciantes = @Denunciantes," +
+                                                       "IdPlenoCircuito = @IdPlenoCircuito,IdPresidentePleno = @IdPresidentePleno,IdPonentePleno = @IdPonentePleno " +
+                                                       " WHERE IdContradiccion = @Idcontradiccion";
+
+                dataAdapter.UpdateCommand.Parameters.Add("@ExpedienteNumero", OleDbType.Numeric, 0, "ExpedienteNumero");
+                dataAdapter.UpdateCommand.Parameters.Add("@ExpedienteAnio", OleDbType.Numeric, 0, "ExpedienteAnio");
+                dataAdapter.UpdateCommand.Parameters.Add("@IdTipoAsunto", OleDbType.Numeric, 0, "IdTipoAsunto");
+                dataAdapter.UpdateCommand.Parameters.Add("@Tema", OleDbType.VarChar, 0, "Tema");
+                dataAdapter.UpdateCommand.Parameters.Add("@Status", OleDbType.Numeric, 0, "Status");
+                dataAdapter.UpdateCommand.Parameters.Add("@Oficio", OleDbType.VarChar, 0, "Oficio");
+                dataAdapter.UpdateCommand.Parameters.Add("@FechaTurno", OleDbType.Date, 0, "FechaTurno");
+                dataAdapter.UpdateCommand.Parameters.Add("@Observaciones", OleDbType.VarChar, 0, "Observaciones");
+                dataAdapter.UpdateCommand.Parameters.Add("@Denunciantes", OleDbType.VarChar, 0, "Denunciantes");
+                dataAdapter.UpdateCommand.Parameters.Add("@IdPlenoCircuito", OleDbType.Numeric, 0, "IdPlenoCircuito");
+                dataAdapter.UpdateCommand.Parameters.Add("@IdPresidentePleno", OleDbType.Numeric, 0, "IdPresidentePleno");
+                dataAdapter.UpdateCommand.Parameters.Add("@IdPonentePleno", OleDbType.Numeric, 0, "IdPonentePleno");
+
+                dataAdapter.Update(dataSet, "Contradicciones");
+                dataSet.Dispose();
+                dataAdapter.Dispose();
+            }
+            catch (OleDbException sql)
+            {
+                MessageBox.Show("Error ({0}) : {1}" + sql.Source + sql.Message);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message);
+            }
+            finally
+            {
+                connectionBitacoraSql.Close();
+            }
         }
     }
 }

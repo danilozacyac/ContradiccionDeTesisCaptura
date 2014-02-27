@@ -1,15 +1,17 @@
 ﻿<Window x:Class="ContradiccionDeTesisCaptura.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:converter="clr-namespace:ContradiccionDeTesisCaptura.Converters"
         xmlns:igDP="http://infragistics.com/DataPresenter"
         xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
-        xmlns:converter="clr-namespace:ContradiccionDeTesisCaptura.Converters"
         Title="MainWindow"
         Width="1005"
         Height="404"
-        Loaded="Window_Loaded">
+        Loaded="Window_Loaded"
+        WindowState="Maximized">
     <Window.Resources>
         <converter:StatusConverter x:Key="statusConverter" />
+        <converter:TipoAsuntoConverter x:Key="tiposConverter" />
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -34,7 +36,8 @@
                 HorizontalAlignment="Right"
                 VerticalAlignment="Top"
                 Click="BtnModificar_Click"
-                Content="Modificar" IsEnabled="False" />
+                Content="Modificar"
+                IsEnabled="True" />
         <telerik:RadGridView Name="RGridContradicciones"
                              Grid.Row="1"
                              Margin="25,25,25,25"
@@ -60,22 +63,23 @@
                                             Header="Año"
                                             IsFilterable="True" />
                 <telerik:GridViewDataColumn Width="Auto"
-                                            DataMemberBinding="{Binding IdTipoAsunto}"
+                                            DataMemberBinding="{Binding IdTipoAsunto,Converter={StaticResource tiposConverter}}"
                                             Header="Tipo de Asunto"
                                             IsFilterable="True" />
                 <telerik:GridViewDataColumn Width="*"
                                             DataMemberBinding="{Binding Tema}"
                                             Header="Tema" />
                 <telerik:GridViewDataColumn Width="100"
-                                            DataMemberBinding="{Binding Status,Converter={StaticResource statusConverter}}"
+                                            DataMemberBinding="{Binding Status,
+                                                                        Converter={StaticResource statusConverter}}"
                                             Header="Estado" />
                 <telerik:GridViewDataColumn Width="150"
                                             DataMemberBinding="{Binding Oficio}"
                                             Header="Oficio"
                                             IsFilterable="False" />
                 <telerik:GridViewDataColumn Width="150"
-                                            DataMemberBinding="{Binding FechaTurno}"
                                             DataFormatString=" {0: dd/MM/yyyy} "
+                                            DataMemberBinding="{Binding FechaTurno}"
                                             Header="Fecha de turno"
                                             IsFilterable="True" />
                 <telerik:GridViewDataColumn Width="150"
@@ -85,6 +89,14 @@
 
             </telerik:RadGridView.Columns>
         </telerik:RadGridView>
-        <Button Content="Visualizar" Grid.Row="2" Height="23" HorizontalAlignment="Left" Margin="720,0,0,0" Name="BtnVisualizar" VerticalAlignment="Top" Width="75" Click="BtnVisualizar_Click" />
+        <Button Name="BtnVisualizar"
+                Grid.Row="2"
+                Width="75"
+                Height="23"
+                Margin="0,0,188,0"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Top"
+                Click="BtnVisualizar_Click"
+                Content="Visualizar" />
     </Grid>
 </Window>

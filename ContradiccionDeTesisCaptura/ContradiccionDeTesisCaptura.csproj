@@ -35,6 +35,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>1393376608_86548.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Infragistics3.Wpf.DataPresenter.v10.1, Version=10.1.20101.1000, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb" />
     <Reference Include="Infragistics3.Wpf.Editors.v10.1, Version=10.1.20101.1000, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb" />
@@ -68,10 +71,21 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ContraInfoGral.xaml.cs">
+      <DependentUpon>ContraInfoGral.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Converters\TipoAsuntoConverter.cs" />
+    <Compile Include="PuntoResolutivo.xaml.cs">
+      <DependentUpon>PuntoResolutivo.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Returnos.xaml.cs">
       <DependentUpon>Returnos.xaml</DependentUpon>
     </Compile>
     <Page Include="ContradiccionesWin.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ContraInfoGral.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -101,6 +115,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="PuntoResolutivo.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Returnos.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -154,6 +172,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\clip.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="1393376608_86548.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

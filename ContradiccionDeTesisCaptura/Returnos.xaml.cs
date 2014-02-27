@@ -1,15 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using ContradiccionesDirectorioApi.Dao;
 using ContradiccionesDirectorioApi.Singletons;
 using ContradiccionesDirectorioApi.Model;
@@ -23,12 +14,22 @@ namespace ContradiccionDeTesisCaptura
     {
         private Contradicciones contradiccion;
         private ReturnosClass returno;
+        private readonly bool isUpdatingReturno;
 
         public Returnos(Contradicciones contradiccion)
         {
             InitializeComponent();
             returno = new ReturnosClass();
             this.contradiccion = contradiccion;
+            
+        }
+
+        public Returnos(Contradicciones contradiccion, ReturnosClass returno, bool isUpdatingReturno)
+        {
+            InitializeComponent();
+            this.contradiccion = contradiccion;
+            this.returno = returno;
+            this.isUpdatingReturno = isUpdatingReturno;
         }
 
         
@@ -39,14 +40,34 @@ namespace ContradiccionDeTesisCaptura
 
             CbxOrigen.DataContext = OrganismosSingleton.Colegiados;
             CbxDestino.DataContext = OrganismosSingleton.Colegiados;
+
+            if (isUpdatingReturno)
+            {
+                CbxOrigen.SelectedValue = returno.IdOrganoOrigen;
+                CbxDestino.SelectedValue = returno.IdOrganoDestino;
+            }
+
+
         }
 
         private void BtnAceptar_Click(object sender, RoutedEventArgs e)
         {
+            ReturnosModel model = new ReturnosModel();
+
             returno.IdOrganoOrigen = (Int32)CbxOrigen.SelectedValue;
             returno.IdOrganoDestino = (Int32)CbxDestino.SelectedValue;
 
-            contradiccion.Returnos.Add(returno);
+            if (isUpdatingReturno)//Actualiza
+            {
+                model.UpdateReturno(returno);
+            }
+            else //Agrega nuevo returno
+            {
+                model.SetNewReturno(contradiccion, returno);
+                contradiccion.Returnos.Add(returno);
+            }
+
+            
             this.Close();
         }
 

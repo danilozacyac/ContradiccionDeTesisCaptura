@@ -1,22 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using ContradiccionesDirectorioApi.Singletons;
-using System.Text.RegularExpressions;
-using MantesisVerIusCommonObjects.Model;
-using MantesisVerIusCommonObjects.Dto;
-using ContradiccionesDirectorioApi.Dao;
 using System.Collections.ObjectModel;
+using System.Linq;
+using System.Windows;
+using System.Windows.Input;
+using ContradiccionesDirectorioApi.Dao;
+using ContradiccionesDirectorioApi.Model;
+using ContradiccionesDirectorioApi.Singletons;
 using ContradiccionesDirectorioApi.Utils;
+using MantesisVerIusCommonObjects.Dto;
+using MantesisVerIusCommonObjects.Model;
 
 namespace ContradiccionDeTesisCaptura
 {
@@ -27,13 +19,18 @@ namespace ContradiccionDeTesisCaptura
     {
         private Contradicciones contradiccion;
         private Criterios criterios;
+        private readonly bool isUpdatingCriterio;
 
 
-        public CriteriosWin(Contradicciones contradiccion,Criterios criterios)
+        public CriteriosWin(Contradicciones contradiccion,Criterios criterios,bool isUpdatingCriterio)
         {
 
             InitializeComponent();
             this.contradiccion = contradiccion;
+            this.isUpdatingCriterio = isUpdatingCriterio;
+
+         
+
             if (criterios != null)
                 this.criterios = criterios;
             else
@@ -47,6 +44,9 @@ namespace ContradiccionDeTesisCaptura
         {
             CbxOrganismos.DataContext = OrganismosSingleton.Colegiados;
             this.DataContext = criterios;
+
+            if (isUpdatingCriterio)
+                CbxOrganismos.SelectedValue = criterios.IdOrgano;
         }
 
         private void TxtTesis_PreviewTextInput(object sender, TextCompositionEventArgs e)
@@ -83,8 +83,19 @@ namespace ContradiccionDeTesisCaptura
 
         private void BtnAceptar_Click(object sender, RoutedEventArgs e)
         {
-            criterios.IdOrgano = (Int32)CbxOrganismos.SelectedValue;
-            criterios.Organo = CbxOrganismos.Text;
+            CriteriosModel model = new CriteriosModel();  
+                criterios.IdOrgano = (Int32)CbxOrganismos.SelectedValue;
+                criterios.Organo = CbxOrganismos.Text;
+
+                if (isUpdatingCriterio)
+                {
+                    model.UpdateCriterios(criterios, contradiccion.IdContradiccion);
+                }
+                else if (contradiccion.IsUpdating)
+                {
+                    
+                    model.SetNewCriterios(criterios, contradiccion.IdContradiccion);
+                }
 
             contradiccion.Criterios.Add(criterios);
 

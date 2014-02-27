@@ -58,11 +58,13 @@
     <Compile Include="Model\CriteriosModel.cs" />
     <Compile Include="Model\EjecutoriasModel.cs" />
     <Compile Include="Model\OrganismosModel.cs" />
+    <Compile Include="Model\ResolucionModel.cs" />
     <Compile Include="Model\ReturnosModel.cs" />
     <Compile Include="Model\TesisModel.cs" />
     <Compile Include="Model\TiposModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Singletons\OrganismosSingleton.cs" />
+    <Compile Include="Singletons\TipoAsuntoSingleton.cs" />
     <Compile Include="Utils\ConstantMessages.cs" />
     <Compile Include="Utils\DateTimeFunctions.cs" />
     <Compile Include="Utils\StringFunctions.cs" />

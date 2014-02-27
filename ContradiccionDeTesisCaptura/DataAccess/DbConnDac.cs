@@ -8,7 +8,7 @@ namespace ContradiccionDeTesisCaptura.DataAccess
     {
         public static OleDbConnection GetConnection()
         {
-            OleDbConnection oleConne = new OleDbConnection("Provider=Microsoft.ACE.OLEDB.12.0;Data Source=Dir_Org.mdb;Persist Security Info=False;");
+            OleDbConnection oleConne = new OleDbConnection("Provider=Microsoft.ACE.OLEDB.12.0;Data Source=CT.accdb;Persist Security Info=False;");
 
             return oleConne;
         }

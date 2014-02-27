@@ -4,7 +4,7 @@
         Title="CriteriosWin"
         Width="600"
         Height="474"
-        Loaded="Window_Loaded">
+        Loaded="Window_Loaded" xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation">
     <Grid>
         <Label Name="label1"
                Height="28"
@@ -27,7 +27,8 @@
                HorizontalAlignment="Left"
                VerticalAlignment="Top"
                Content="Organo denunciante:" />
-        <ComboBox Name="CbxOrganismos"
+        
+        <telerik:RadComboBox Name="CbxOrganismos"
                   Width="538"
                   Height="23"
                   Margin="28,46,0,0"
@@ -35,7 +36,7 @@
                   VerticalAlignment="Top"
                   DisplayMemberPath="Organismo"
                   ItemsSource="{Binding}"
-                  SelectedValuePath="IdOrganismo" />
+                  SelectedValuePath="IdOrganismo" FontSize="15" />
         <TextBox Name="TxtTesis"
                  Width="197"
                  Height="23"
