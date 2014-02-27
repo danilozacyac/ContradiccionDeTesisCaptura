@@ -405,7 +405,7 @@
                                  HorizontalAlignment="Stretch"
                                  VerticalAlignment="Stretch"
                                  Text="{Binding Resolutivo.RubroTesis,
-                                                Mode=TwoWay}" />
+                                                Mode=TwoWay}" TextWrapping="Wrap" />
                         <Label Name="label23"
                                Grid.Column="1"
                                Height="28"
@@ -422,14 +422,14 @@
                                              CanUserDeleteRows="False"
                                              CanUserInsertRows="False"
                                              IsReadOnly="True"
-                                             ItemsSource="{Binding Resolutivo.PuntosResolutivos}"
+                                             ItemsSource="{Binding}"
                                              ShowGroupPanel="False">
                             <telerik:RadGridView.Columns>
 
 
 
                                 <telerik:GridViewDataColumn Width="*"
-                                                            DataMemberBinding="{Binding Resolutivo.PuntosResolutivos.Resolutivo}"
+                                                            DataMemberBinding="{Binding Resolutivo}"
                                                             Header="Puntos Resolutivos" />
 
                             </telerik:RadGridView.Columns>

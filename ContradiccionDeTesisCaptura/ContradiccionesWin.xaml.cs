@@ -43,6 +43,7 @@ namespace ContradiccionDeTesisCaptura
             CbxTiposAsuntos.DataContext = TipoAsuntoSingleton.TipoAsunto;
 
             this.DataContext = contradiccion;
+            this.RGridResolutivos.DataContext = contradiccion.Resolutivo.PuntosResolutivos;
 
             this.LoadNoBindings();
         }
@@ -67,6 +68,10 @@ namespace ContradiccionDeTesisCaptura
 
             contradiccion.Status = (RadResuelto.IsChecked == true) ? 1 : 0;
             contradiccion.IdTipoAsunto = (Int32)CbxTiposAsuntos.SelectedValue;
+            contradiccion.MiTesis.Tatj = (RadJuris.IsChecked == true) ? 1 : 0;
+            contradiccion.MiTesis.VersionPublica = (RadSiPublica.IsChecked == true) ? 1 : 0;
+            contradiccion.MiTesis.CopiaCertificada = (RadSiCopia.IsChecked == true) ? 1 : 0;
+            contradiccion.MiTesis.CambioCriterio = (RadSiCambio.IsChecked == true) ? 1 : 0;
 
             ///Actualiza Info General de Contradiccion
             ContradiccionesModel contra = new ContradiccionesModel();
