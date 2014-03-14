@@ -5,12 +5,44 @@ namespace ContradiccionesDirectorioApi.Dao
 {
     public class Funcionarios
     {
+        private bool isSelected;
         private int idFuncionario;
-        private int idCargo;
-        private int idOrgano;
+        private int idOrganismo;
+        private String puesto;
         private String apellidos;
         private String nombre;
-        private String abrevCargo;
+        private String nombreCompleto;
+        private int activo;
+        /// <summary>
+        /// Fecha a partir de la cual entra en funciones
+        /// </summary>
+        private String texto;
+
+
+
+        public string NombreCompleto
+        {
+            get
+            {
+                return this.nombreCompleto;
+            }
+            set
+            {
+                this.nombreCompleto = value;
+            }
+        }
+
+        public bool IsSelected
+        {
+            get
+            {
+                return this.isSelected;
+            }
+            set
+            {
+                this.isSelected = value;
+            }
+        }
 
         public int IdFuncionario
         {
@@ -24,31 +56,31 @@ namespace ContradiccionesDirectorioApi.Dao
             }
         }
 
-        public int IdCargo
+        public int IdOrganismo
         {
             get
             {
-                return this.idCargo;
+                return this.idOrganismo;
             }
             set
             {
-                this.idCargo = value;
+                this.idOrganismo = value;
             }
         }
 
-        public int IdOrgano
+        public String Puesto
         {
             get
             {
-                return this.idOrgano;
+                return this.puesto;
             }
             set
             {
-                this.idOrgano = value;
+                this.puesto = value;
             }
         }
 
-        public string Apellidos
+        public String Apellidos
         {
             get
             {
@@ -60,7 +92,7 @@ namespace ContradiccionesDirectorioApi.Dao
             }
         }
 
-        public string Nombre
+        public String Nombre
         {
             get
             {
@@ -72,16 +104,29 @@ namespace ContradiccionesDirectorioApi.Dao
             }
         }
 
-        public string AbrevCargo
+        public int Activo
         {
             get
             {
-                return this.abrevCargo;
+                return this.activo;
             }
             set
             {
-                this.abrevCargo = value;
+                this.activo = value;
             }
         }
+
+        public String Texto
+        {
+            get
+            {
+                return this.texto;
+            }
+            set
+            {
+                this.texto = value;
+            }
+        }
+
     }
 }

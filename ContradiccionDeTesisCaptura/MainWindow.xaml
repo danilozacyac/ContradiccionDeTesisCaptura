@@ -7,6 +7,7 @@
         Title="MainWindow"
         Width="1005"
         Height="404"
+        Icon="/ContradiccionDeTesisCaptura;component/1393376608_86548.ico"
         Loaded="Window_Loaded"
         WindowState="Maximized">
     <Window.Resources>
@@ -48,6 +49,7 @@
                              CanUserInsertRows="False"
                              IsReadOnly="True"
                              ItemsSource="{Binding}"
+                             SelectionChanged="RGridContradicciones_SelectionChanged"
                              ShowGroupPanel="False">
             <telerik:RadGridView.Columns>
                 <telerik:GridViewDataColumn Width="40"
@@ -63,7 +65,8 @@
                                             Header="Año"
                                             IsFilterable="True" />
                 <telerik:GridViewDataColumn Width="Auto"
-                                            DataMemberBinding="{Binding IdTipoAsunto,Converter={StaticResource tiposConverter}}"
+                                            DataMemberBinding="{Binding IdTipoAsunto,
+                                                                        Converter={StaticResource tiposConverter}}"
                                             Header="Tipo de Asunto"
                                             IsFilterable="True" />
                 <telerik:GridViewDataColumn Width="*"
@@ -98,5 +101,14 @@
                 VerticalAlignment="Top"
                 Click="BtnVisualizar_Click"
                 Content="Visualizar" />
+        <Button Name="BtnDelete"
+                Grid.Row="2"
+                Width="75"
+                Height="23"
+                Margin="0,0,269,0"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Top"
+                Click="BtnDelete_Click"
+                Content="Eliminar" />
     </Grid>
 </Window>

@@ -55,6 +55,10 @@ namespace ContradiccionDeTesisCaptura
                 else
                 {
                     model.SetNewResolutivo(resolutivo, contradiccion.IdContradiccion);
+
+                    if (contradiccion.Resolutivo.PuntosResolutivos == null)
+                        contradiccion.Resolutivo.PuntosResolutivos = new System.Collections.ObjectModel.ObservableCollection<PResolutivos>();
+                    
                     contradiccion.Resolutivo.PuntosResolutivos.Add(resolutivo);
                 }
             }

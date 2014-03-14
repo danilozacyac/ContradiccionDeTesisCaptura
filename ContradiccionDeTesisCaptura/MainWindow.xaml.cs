@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows;
 using ContradiccionesDirectorioApi.Dao;
 using ContradiccionesDirectorioApi.Model;
+using ContradiccionesDirectorioApi.Utils;
 
 namespace ContradiccionDeTesisCaptura
 {
@@ -14,6 +15,7 @@ namespace ContradiccionDeTesisCaptura
     public partial class MainWindow : Window
     {
         private ListadoDeContradicciones contradicciones;
+        private Contradicciones selectedContradiction;
 
         public MainWindow()
         {
@@ -57,6 +59,57 @@ namespace ContradiccionDeTesisCaptura
             ContradiccionesWin win = new ContradiccionesWin(contra,false);
             win.ShowDialog();
         }
+
+        private void BtnDelete_Click(object sender, RoutedEventArgs e)
+        {
+            if (selectedContradiction == null)
+            {
+                MessageBox.Show("Antes de continuar debes de seleccionar un elemento de la lista", "ATENCIÓN:", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
+            MessageBoxResult result = MessageBox.Show(ConstantMessages.DeseaEliminar, "ATENCIÓN:", MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+            if (MessageBoxResult.Yes == result)
+            {
+                try
+                {
+                    this.CheckCorrectdelete(new TesisModel().DeleteTesis(selectedContradiction));
+                    this.CheckCorrectdelete(new ReturnosModel().DeleteReturno(selectedContradiction));
+                    this.CheckCorrectdelete(new ResolucionModel().DeleteResolutivo(selectedContradiction));
+                    this.CheckCorrectdelete(new ResolucionModel().DeleteResolucion(selectedContradiction));
+                    this.CheckCorrectdelete(new EjecutoriasModel().DeleteEjecutoria(selectedContradiction));
+                    this.CheckCorrectdelete(new CriteriosModel().DeleteCriterio(selectedContradiction));
+                    this.CheckCorrectdelete(new ContradiccionesModel().DeleteContradiccion(selectedContradiction));
+
+                    contradicciones.Listado.Remove(selectedContradiction);
+                    selectedContradiction = null;
+                }
+                catch (Exception)
+                {
+                    result = MessageBox.Show(ConstantMessages.DeleteNoComplete, "ERROR:", MessageBoxButton.YesNoCancel, MessageBoxImage.Error);
+
+                    if (MessageBoxResult.Yes == result)
+                    {
+                        BtnDelete_Click(null, null);
+                    }
+                }
+            }
+
+        }
+
+        private void CheckCorrectdelete(bool isDeleteComplete)
+        {
+            if (!isDeleteComplete)
+                throw new Exception();
+        }
+
+        private void RGridContradicciones_SelectionChanged(object sender, Telerik.Windows.Controls.SelectionChangeEventArgs e)
+        {
+            selectedContradiction = RGridContradicciones.SelectedItem as Contradicciones;
+        }
+
+
     }
 
     public class ListadoDeContradicciones : INotifyPropertyChanged

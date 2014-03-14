@@ -65,13 +65,13 @@ namespace ContradiccionesDirectorioApi.Model
                     currentOrder++;
                 }
             }
-            catch (OleDbException sql)
+            catch (OleDbException ex)
             {
-                MessageBox.Show("Error ({0}) : {1}" + sql.Source + sql.Message, "Error Interno --- SalvarRegistroMantesisSql");
+                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, "Error Interno --- SalvarRegistroMantesisSql");
+                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             finally
             {
@@ -129,13 +129,13 @@ namespace ContradiccionesDirectorioApi.Model
                 this.SetNewCriteriosTesis(criterio);
                 currentOrder++;
             }
-            catch (OleDbException sql)
+            catch (OleDbException ex)
             {
-                MessageBox.Show("Error ({0}) : {1}" + sql.Source + sql.Message, "Error Interno --- SalvarRegistroMantesisSql");
+                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, "Error Interno --- SalvarRegistroMantesisSql");
+                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             finally
             {
@@ -179,13 +179,13 @@ namespace ContradiccionesDirectorioApi.Model
                 dataSet.Dispose();
                 dataAdapter.Dispose();
             }
-            catch (OleDbException sql)
+            catch (OleDbException ex)
             {
-                MessageBox.Show("Error ({0}) : {1}" + sql.Source + sql.Message, "Error Interno --- SalvarRegistroMantesisSql");
+                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, "Error Interno --- SalvarRegistroMantesisSql");
+                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             finally
             {
@@ -193,8 +193,14 @@ namespace ContradiccionesDirectorioApi.Model
             }
         }
 
-        public void DeleteCriterio(Criterios criterio)
+        /// <summary>
+        /// Elimina el criterio seleccionado
+        /// </summary>
+        /// <param name="criterio"></param>
+        public bool DeleteCriterio(Criterios criterio)
         {
+            bool isDeleteComplete = true;
+
             OleDbConnection connectionBitacoraSql = DbConnDac.GetConnection();
             OleDbCommand cmd ;
 
@@ -209,22 +215,48 @@ namespace ContradiccionesDirectorioApi.Model
                 cmd.Parameters.AddWithValue("@IdCriterio", criterio.IdCriterio);
                 cmd.ExecuteNonQuery();
 
+                cmd.CommandText = "DELETE FROM CriteriosTesis WHERE IdCriterio = @IdCriterio";
+                cmd.Parameters.AddWithValue("@IdCriterio", criterio.IdCriterio);
+                cmd.ExecuteNonQuery();
+
             }
-            catch (OleDbException sql)
+            catch (OleDbException ex)
             {
-                MessageBox.Show("Error ({0}) : {1}" + sql.Source + sql.Message, "Error Interno --- SalvarRegistroMantesisSql");
+                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                isDeleteComplete = false;
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, "Error Interno --- SalvarRegistroMantesisSql");
+                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                isDeleteComplete = false;
             }
             finally
             {
                 connectionBitacoraSql.Close();
             }
+
+            return isDeleteComplete;
         }
 
+        /// <summary>
+        /// Elimina todos los criterios asociados a una contradicción
+        /// </summary>
+        /// <param name="contradiccion"></param>
+        public bool DeleteCriterio(Contradicciones contradiccion)
+        {
+            bool isDeleteComplete = true;
 
+            foreach (Criterios criterio in contradiccion.Criterios)
+            {
+                isDeleteComplete = this.DeleteCriterio(criterio);
+                if (!isDeleteComplete)
+                    break;
+            }
+
+            return isDeleteComplete;
+        }
+
+        
         private void SetNewCriteriosTesis(Criterios criterio)
         {
             OleDbConnection connectionBitacoraSql = DbConnDac.GetConnection();
@@ -263,13 +295,13 @@ namespace ContradiccionesDirectorioApi.Model
                     dataAdapter.Dispose();
                 }
             }
-            catch (OleDbException sql)
+            catch (OleDbException ex)
             {
-                MessageBox.Show("Error ({0}) : {1}" + sql.Source + sql.Message, "Error Interno --- SalvarRegistroMantesisSql");
+                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, "Error Interno --- SalvarRegistroMantesisSql");
+                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             finally
             {
@@ -310,13 +342,13 @@ namespace ContradiccionesDirectorioApi.Model
                     maxOrden = Convert.ToInt32(reader["Orden"]);
                 }
             }
-            catch (OleDbException sql)
+            catch (OleDbException ex)
             {
-                MessageBox.Show("Error ({0}) : {1}" + sql.Source + sql.Message, "Error Interno --- SalvarRegistroMantesisSql");
+                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, "Error Interno --- SalvarRegistroMantesisSql");
+                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             finally
             {
@@ -367,13 +399,13 @@ namespace ContradiccionesDirectorioApi.Model
                     lastId = Convert.ToInt32(reader["IdCriterio"]);
                 }
             }
-            catch (OleDbException sql)
+            catch (OleDbException ex)
             {
-                MessageBox.Show("Error ({0}) : {1}" + sql.Source + sql.Message, "Error Interno --- SalvarRegistroMantesisSql");
+                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, "Error Interno --- SalvarRegistroMantesisSql");
+                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             finally
             {
@@ -420,11 +452,11 @@ namespace ContradiccionesDirectorioApi.Model
             }
             catch (OleDbException ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             finally
             {

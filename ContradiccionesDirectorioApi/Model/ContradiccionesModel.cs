@@ -6,14 +6,12 @@ using System.Linq;
 using System.Windows.Forms;
 using ContradiccionesDirectorioApi.Dao;
 using ContradiccionesDirectorioApi.DataAccess;
+using System.Reflection;
 
 namespace ContradiccionesDirectorioApi.Model
 {
     public class ContradiccionesModel
     {
-
-
-
         public int SetNewContradiccion(Contradicciones contradiccion)
         {
             OleDbConnection connectionBitacoraSql = DbConnDac.GetConnection();
@@ -73,7 +71,11 @@ namespace ContradiccionesDirectorioApi.Model
             }
             catch (OleDbException ex)
             {
-                Console.Write(ex.Message);
+                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             finally
             {
@@ -127,7 +129,11 @@ namespace ContradiccionesDirectorioApi.Model
             }
             catch (OleDbException ex)
             {
-                Console.Write(ex.Message);
+                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             finally
             {
@@ -136,7 +142,6 @@ namespace ContradiccionesDirectorioApi.Model
 
             return lastId;
         }
-
 
         public ObservableCollection<Contradicciones> GetContradicciones()
         {
@@ -191,11 +196,11 @@ namespace ContradiccionesDirectorioApi.Model
             }
             catch (OleDbException ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             finally
             {
@@ -204,7 +209,6 @@ namespace ContradiccionesDirectorioApi.Model
 
             return contradicciones;
         }
-
 
         public void UpdateContradiccion(Contradicciones contradiccion)
         {
@@ -259,23 +263,71 @@ namespace ContradiccionesDirectorioApi.Model
                 dataAdapter.UpdateCommand.Parameters.Add("@IdPlenoCircuito", OleDbType.Numeric, 0, "IdPlenoCircuito");
                 dataAdapter.UpdateCommand.Parameters.Add("@IdPresidentePleno", OleDbType.Numeric, 0, "IdPresidentePleno");
                 dataAdapter.UpdateCommand.Parameters.Add("@IdPonentePleno", OleDbType.Numeric, 0, "IdPonentePleno");
+                dataAdapter.UpdateCommand.Parameters.Add("@IdContradiccion", OleDbType.Numeric, 0, "IdContradiccion");
 
                 dataAdapter.Update(dataSet, "Contradicciones");
                 dataSet.Dispose();
                 dataAdapter.Dispose();
             }
-            catch (OleDbException sql)
+            catch (OleDbException ex)
             {
-                MessageBox.Show("Error ({0}) : {1}" + sql.Source + sql.Message);
+                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message);
+                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             finally
             {
                 connectionBitacoraSql.Close();
             }
+        }
+
+        public bool DeleteContradiccion(Contradicciones contradiccion)
+        {
+            bool isDeleteComplete = true;
+
+            string sqlCmd = @"DELETE FROM Contradicciones " +
+                            " WHERE IdContradiccion = @IdContradiccion";
+
+            OleDbConnection connectionBitacoraSql = DbConnDac.GetConnection();
+            OleDbCommand cmd = new OleDbCommand();
+
+            cmd.Connection = connectionBitacoraSql;
+            cmd.CommandText = sqlCmd;
+            cmd.CommandType = CommandType.Text;
+
+            try
+            {
+                OleDbParameter parameter = new OleDbParameter();
+                parameter.ParameterName = "@IdContradiccion";
+                parameter.OleDbType = OleDbType.Numeric;
+                parameter.Direction = ParameterDirection.Input;
+                parameter.Value = contradiccion.IdContradiccion;
+
+                cmd.Parameters.Add(parameter);
+
+                connectionBitacoraSql.Open();
+                cmd.ExecuteNonQuery();
+
+                
+            }
+            catch (OleDbException ex)
+            {
+                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                isDeleteComplete = false;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                isDeleteComplete = false;
+            }
+            finally
+            {
+                connectionBitacoraSql.Close();
+            }
+
+            return isDeleteComplete;
         }
     }
 }

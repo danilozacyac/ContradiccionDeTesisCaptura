@@ -44,19 +44,19 @@ namespace ContradiccionesDirectorioApi.Model
                 while (reader.Read())
                 {
                     resolutivos.RegEjecutoria = Convert.ToInt32(reader["RegEjecutoria"]);
-                    resolutivos.RegTesis = Convert.ToInt32(reader["RegEjecutoria"]);
+                    resolutivos.RegTesis = Convert.ToInt32(reader["RegTesis"]);
                     resolutivos.RubroTesis = reader["RubroTesis"].ToString();
                 }
 
                 resolutivos.PuntosResolutivos = this.GetResolutivos(idContradiccion);
             }
-            catch (OleDbException sql)
+            catch (OleDbException ex)
             {
-                MessageBox.Show("Error ({0}) : {1}" + sql.Source + sql.Message, "Error Interno --- SalvarRegistroMantesisSql");
+                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, "Error Interno --- SalvarRegistroMantesisSql");
+                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             finally
             {
@@ -100,13 +100,13 @@ namespace ContradiccionesDirectorioApi.Model
                 }
 
             }
-            catch (OleDbException sql)
+            catch (OleDbException ex)
             {
-                MessageBox.Show("Error ({0}) : {1}" + sql.Source + sql.Message, "Error Interno --- SalvarRegistroMantesisSql");
+                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, "Error Interno --- SalvarRegistroMantesisSql");
+                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             finally
             {
@@ -143,7 +143,7 @@ namespace ContradiccionesDirectorioApi.Model
 
                 dataAdapter.InsertCommand = connectionBitacoraSql.CreateCommand();
                 dataAdapter.InsertCommand.CommandText = "INSERT INTO Resolucion(IdContradiccion,RegEjecutoria,RegTesis,RubroTesis)" +
-                                                        " VALUES(@IdContradiccion,RegEjecutoria,RegTesis,@RubroTesis)";
+                                                        " VALUES(@IdContradiccion,@RegEjecutoria,@RegTesis,@RubroTesis)";
 
                 dataAdapter.InsertCommand.Parameters.Add("@IdContradiccion", OleDbType.Numeric, 0, "IdContradiccion");
                 dataAdapter.InsertCommand.Parameters.Add("@RegEjecutoria", OleDbType.Numeric, 0, "RegEjecutoria");
@@ -156,13 +156,13 @@ namespace ContradiccionesDirectorioApi.Model
                 dataAdapter.Dispose();
 
             }
-            catch (OleDbException sql)
+            catch (OleDbException ex)
             {
-                MessageBox.Show("Error ({0}) : {1}" + sql.Source + sql.Message, "Error Interno --- SalvarRegistroMantesisSql");
+                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, "Error Interno --- SalvarRegistroMantesisSql");
+                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             finally
             {
@@ -210,18 +210,60 @@ namespace ContradiccionesDirectorioApi.Model
                 dataSet.Dispose();
                 dataAdapter.Dispose();
             }
-            catch (OleDbException sql)
+            catch (OleDbException ex)
             {
-                MessageBox.Show("Error ({0}) : {1}" + sql.Source + sql.Message);
+                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message);
+                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             finally
             {
                 connectionBitacoraSql.Close();
             }
+        }
+
+        /// <summary>
+        /// Elimina la resolucion asociada a una Contradicción de Tesis
+        /// </summary>
+        /// <param name="contradiccion"></param>
+        /// <returns></returns>
+        public bool DeleteResolucion(Contradicciones contradiccion)
+        {
+            bool isDeleteComplete = true;
+
+            OleDbConnection connectionBitacoraSql = DbConnDac.GetConnection();
+            OleDbCommand cmd;
+
+            cmd = connectionBitacoraSql.CreateCommand();
+            cmd.Connection = connectionBitacoraSql;
+
+            try
+            {
+                connectionBitacoraSql.Open();
+
+                cmd.CommandText = "DELETE FROM Resolucion WHERE IdContradiccion = @IdContradiccion";
+                cmd.Parameters.AddWithValue("@IdContradiccion", contradiccion.IdContradiccion);
+                cmd.ExecuteNonQuery();
+
+            }
+            catch (OleDbException ex)
+            {
+                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                isDeleteComplete = false;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                isDeleteComplete = false;
+            }
+            finally
+            {
+                connectionBitacoraSql.Close();
+            }
+
+            return isDeleteComplete;
         }
 
 
@@ -265,13 +307,13 @@ namespace ContradiccionesDirectorioApi.Model
                     dataSet.Dispose();
                     dataAdapter.Dispose();
             }
-            catch (OleDbException sql)
+            catch (OleDbException ex)
             {
-                MessageBox.Show("Error ({0}) : {1}" + sql.Source + sql.Message, "Error Interno --- SalvarRegistroMantesisSql");
+                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, "Error Interno --- SalvarRegistroMantesisSql");
+                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             finally
             {
@@ -321,13 +363,13 @@ namespace ContradiccionesDirectorioApi.Model
 
 
             }
-            catch (OleDbException sql)
+            catch (OleDbException ex)
             {
-                MessageBox.Show("Error ({0}) : {1}" + sql.Source + sql.Message, "Error Interno --- SalvarRegistroMantesisSql");
+                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, "Error Interno --- SalvarRegistroMantesisSql");
+                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             finally
             {
@@ -371,13 +413,13 @@ namespace ContradiccionesDirectorioApi.Model
                 dataSet.Dispose();
                 dataAdapter.Dispose();
             }
-            catch (OleDbException sql)
+            catch (OleDbException ex)
             {
-                MessageBox.Show("Error ({0}) : {1}" + sql.Source + sql.Message);
+                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message);
+                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             finally
             {
@@ -385,8 +427,14 @@ namespace ContradiccionesDirectorioApi.Model
             }
         }
 
-        public void DeleteResolutivo(int idResolutivo)
+        /// <summary>
+        /// Elimina el punto resolutivo seleccionado
+        /// </summary>
+        /// <param name="idResolutivo"></param>
+        /// <returns></returns>
+        public bool DeleteResolutivo(int idResolutivo)
         {
+            bool isDeleteComplete = true;
             OleDbConnection connectionBitacoraSql = DbConnDac.GetConnection();
             OleDbCommand cmd;
 
@@ -402,18 +450,42 @@ namespace ContradiccionesDirectorioApi.Model
                 cmd.ExecuteNonQuery();
 
             }
-            catch (OleDbException sql)
+            catch (OleDbException ex)
             {
-                MessageBox.Show("Error ({0}) : {1}" + sql.Source + sql.Message, "Error Interno --- SalvarRegistroMantesisSql");
+                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                isDeleteComplete = false;
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, "Error Interno --- SalvarRegistroMantesisSql");
+                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                isDeleteComplete = false;
             }
             finally
             {
                 connectionBitacoraSql.Close();
             }
+
+            return isDeleteComplete;
+        }
+
+        /// <summary>
+        /// Elimina todos los puntos resolutivos asociados a una contradicción
+        /// </summary>
+        /// <param name="contradiccion"></param>
+        /// <returns></returns>
+        public bool DeleteResolutivo(Contradicciones contradiccion)
+        {
+            bool isDeleteComplete = true;
+
+            foreach (PResolutivos resolutivo in contradiccion.Resolutivo.PuntosResolutivos)
+            {
+                isDeleteComplete = this.DeleteResolutivo(resolutivo.IdResolutivo);
+
+                if (!isDeleteComplete)
+                    break;
+            }
+
+            return isDeleteComplete;
         }
 
         #endregion

@@ -38,6 +38,9 @@ namespace ContradiccionDeTesisCaptura
             contradiccion.Criterios = new ObservableCollection<Criterios>();
             this.DataContext = contradiccion;
             CbxTiposAsuntos.DataContext = TipoAsuntoSingleton.TipoAsunto;
+
+            CbxPresidente.DataContext = FuncionariosSingleton.FuncionariosCollection;
+            CbxPonente.DataContext = FuncionariosSingleton.FuncionariosCollection;
         }
 
         private void BtnAddCriterio_Click(object sender, RoutedEventArgs e)
@@ -71,10 +74,19 @@ namespace ContradiccionDeTesisCaptura
                 MessageBox.Show(ConstantMessages.RangoAnual);
                 return;
             }
+
+            if (contradiccion.FechaTurno == null)
+            {
+                MessageBox.Show(ConstantMessages.SeleccionaFechaturno);
+                return;
+            }
+
             contradiccion.IdTipoAsunto = (Int32)CbxTiposAsuntos.SelectedValue;
             //contradiccion.IdPlenoCircuito = (Int32)CbxPlenos.SelectedValue;
-            //contradiccion.IdPresidentePleno = (Int32)CbxPresidente.SelectedValue;
-            //contradiccion.IdPonentePleno = (Int32)CbxPonente.SelectedValue;
+
+
+            contradiccion.IdPresidentePleno = (CbxPresidente.SelectedValue != null) ? (Int32)CbxPresidente.SelectedValue : 0;
+            contradiccion.IdPonentePleno = (CbxPonente.SelectedValue != null) ? (Int32)CbxPonente.SelectedValue : 0;
 
             ContradiccionesModel contra = new ContradiccionesModel();
             CriteriosModel crit = new CriteriosModel();

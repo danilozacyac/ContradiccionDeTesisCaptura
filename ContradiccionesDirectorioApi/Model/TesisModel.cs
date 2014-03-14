@@ -208,6 +208,7 @@ namespace ContradiccionesDirectorioApi.Model
                 dataAdapter.UpdateCommand.Parameters.Add("@Responsable", OleDbType.VarChar, 0, "Responsable");
                 dataAdapter.UpdateCommand.Parameters.Add("@OficioRespuesta", OleDbType.VarChar, 0, "OficioRespuesta");
                 dataAdapter.UpdateCommand.Parameters.Add("@OficioRPath", OleDbType.VarChar, 0, "OficioRPath");
+                dataAdapter.UpdateCommand.Parameters.Add("@IdContradiccion", OleDbType.Numeric, 0, "IdContradiccion");
 
                 dataAdapter.Update(dataSet, "Tesis");
                 dataSet.Dispose();
@@ -227,7 +228,46 @@ namespace ContradiccionesDirectorioApi.Model
             }
         }
 
-       
+        /// <summary>
+        /// Elimina la información de la tesis asociada a la contradiccion de Tesis que se esta eliminando
+        /// </summary>
+        /// <param name="contradiccion"></param>
+        /// <returns></returns>
+        public bool DeleteTesis(Contradicciones contradiccion)
+        {
+            bool isDeleteComplete = true;
+            OleDbConnection connectionBitacoraSql = DbConnDac.GetConnection();
+            OleDbCommand cmd;
+
+            cmd = connectionBitacoraSql.CreateCommand();
+            cmd.Connection = connectionBitacoraSql;
+
+            try
+            {
+                connectionBitacoraSql.Open();
+
+                cmd.CommandText = "DELETE FROM Tesis WHERE IdContradiccion = @IdContradiccion";
+                cmd.Parameters.AddWithValue("@IdContradiccion", contradiccion.IdContradiccion);
+                cmd.ExecuteNonQuery();
+
+            }
+            catch (OleDbException ex)
+            {
+                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                isDeleteComplete = false;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                isDeleteComplete = false;
+            }
+            finally
+            {
+                connectionBitacoraSql.Close();
+            }
+
+            return isDeleteComplete;
+        }
 
     }
 }

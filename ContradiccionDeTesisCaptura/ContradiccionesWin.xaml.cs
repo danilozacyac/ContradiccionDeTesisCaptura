@@ -45,6 +45,12 @@ namespace ContradiccionDeTesisCaptura
             this.DataContext = contradiccion;
             this.RGridResolutivos.DataContext = contradiccion.Resolutivo.PuntosResolutivos;
 
+            CbxPresidente.DataContext = FuncionariosSingleton.FuncionariosCollection;
+            CbxPonente.DataContext = FuncionariosSingleton.FuncionariosCollection;
+
+            CbxPresidente.SelectedValue = contradiccion.IdPresidentePleno;
+            CbxPonente.SelectedValue = contradiccion.IdPonentePleno;
+
             this.LoadNoBindings();
         }
 
@@ -63,9 +69,12 @@ namespace ContradiccionDeTesisCaptura
                 return;
             }
 
+            
+
 
             ///Valores ComboBox y RadioButtons
-
+            contradiccion.IdPresidentePleno = (CbxPresidente.SelectedValue != null) ? (Int32)CbxPresidente.SelectedValue : 0;
+            contradiccion.IdPonentePleno = (CbxPonente.SelectedValue != null) ? (Int32)CbxPonente.SelectedValue : 0;
             contradiccion.Status = (RadResuelto.IsChecked == true) ? 1 : 0;
             contradiccion.IdTipoAsunto = (Int32)CbxTiposAsuntos.SelectedValue;
             contradiccion.MiTesis.Tatj = (RadJuris.IsChecked == true) ? 1 : 0;

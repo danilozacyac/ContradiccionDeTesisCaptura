@@ -4,10 +4,11 @@
         xmlns:converter="clr-namespace:ContradiccionDeTesisCaptura.Converters"
         xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
         Title="Agregar expediente"
+        Icon="/ContradiccionDeTesisCaptura;component/1393376608_86548.ico"
         Width="900"
         Height="700"
         ResizeMode="NoResize"
-        Loaded="Window_Loaded">
+        Loaded="Window_Loaded" WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <converter:OrganismosConverter x:Key="orgConverter" />
         <converter:ListToStringConverter x:Key="listToString" />
@@ -130,6 +131,9 @@
                       Width="279"
                       Height="23"
                       Margin="7,125,0,0"
+                      ItemsSource="{Binding}"
+                                  DisplayMemberPath="NombreCompleto"
+                                  SelectedValuePath="IdFuncionario"
                       HorizontalAlignment="Left"
                       VerticalAlignment="Top" />
             <Label Name="label33"
@@ -144,6 +148,9 @@
                       Width="277"
                       Height="23"
                       Margin="9,195,0,0"
+                      ItemsSource="{Binding}"
+                                  DisplayMemberPath="NombreCompleto"
+                                  SelectedValuePath="IdFuncionario"
                       HorizontalAlignment="Left"
                       VerticalAlignment="Top" />
         </Grid>

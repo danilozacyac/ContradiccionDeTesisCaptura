@@ -117,7 +117,11 @@ namespace ContradiccionesDirectorioApi.Model
             }
             catch (OleDbException ex)
             {
-                Console.Write(ex.Message);
+                MessageBox.Show(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
             }
             finally
             {
@@ -184,8 +188,13 @@ namespace ContradiccionesDirectorioApi.Model
             }
         }
 
-        public void DeleteReturno(int idReturno)
+        /// <summary>
+        /// Elimina el returno seleccionado
+        /// </summary>
+        /// <param name="idReturno">Identificador del returno a eliminar</param>
+        public bool DeleteReturno(int idReturno)
         {
+            bool isDeleteComplete = true;
             OleDbConnection connectionBitacoraSql = DbConnDac.GetConnection();
             OleDbCommand cmd;
 
@@ -201,18 +210,42 @@ namespace ContradiccionesDirectorioApi.Model
                 cmd.ExecuteNonQuery();
 
             }
-            catch (OleDbException sql)
+            catch (OleDbException ex)
             {
-                MessageBox.Show("Error ({0}) : {1}" + sql.Source + sql.Message, "Error Interno --- SalvarRegistroMantesisSql");
+                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                isDeleteComplete = false;
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, "Error Interno --- SalvarRegistroMantesisSql");
+                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                isDeleteComplete = false;
             }
             finally
             {
                 connectionBitacoraSql.Close();
             }
+
+            return isDeleteComplete;
+        }
+
+        /// <summary>
+        /// Elimina todos los returnos asociados a una contradiccion de tesis
+        /// </summary>
+        /// <param name="contradiccion"></param>
+        /// <returns></returns>
+        public bool DeleteReturno(Contradicciones contradiccion)
+        {
+            bool isDeleteComplete = true;
+
+            foreach (ReturnosClass returno in contradiccion.Returnos)
+            {
+                isDeleteComplete = this.DeleteReturno(returno.IdReturno);
+
+                if (!isDeleteComplete)
+                    break;
+            }
+
+            return isDeleteComplete;
         }
     }
 }

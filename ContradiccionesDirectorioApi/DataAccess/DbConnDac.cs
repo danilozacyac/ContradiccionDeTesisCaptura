@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data.OleDb;
 using System.Linq;
+using System.Configuration;
 
 namespace ContradiccionesDirectorioApi.DataAccess
 {
@@ -9,7 +10,19 @@ namespace ContradiccionesDirectorioApi.DataAccess
 
         public static OleDbConnection GetConnection()
         {
-            OleDbConnection oleConne = new OleDbConnection("Provider=Microsoft.ACE.OLEDB.12.0;Data Source=CT.accdb;Persist Security Info=False;");
+            String bdStringSql = ConfigurationManager.ConnectionStrings["CT"].ConnectionString;
+
+            OleDbConnection oleConne = new OleDbConnection(bdStringSql);
+
+            return oleConne;
+        }
+
+
+        public static OleDbConnection GetConnectionDirectorio()
+        {
+            String bdStringSql = ConfigurationManager.ConnectionStrings["Directorio"].ConnectionString;
+
+            OleDbConnection oleConne = new OleDbConnection(bdStringSql);
 
             return oleConne;
         }

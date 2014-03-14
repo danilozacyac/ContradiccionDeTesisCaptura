@@ -225,9 +225,17 @@ namespace ContradiccionesDirectorioApi.Model
 
                 while (reader.Read())
                 {
-                    
-                    ejecutoria.FechaResolucion = (reader["FechaResolucion"] != DBNull.Value) ? Convert.ToDateTime(reader["FechaResolucion"]) : new DateTime();
-                    ejecutoria.FechaEngrose = (reader["FechaResolucion"] != DBNull.Value) ? Convert.ToDateTime(reader["FechaEngrose"]) : new DateTime();
+
+                    if (reader["FechaResolucion"] == DBNull.Value)
+                        ejecutoria.FechaResolucion = null;
+                    else
+                        ejecutoria.FechaResolucion = Convert.ToDateTime(reader["FechaResolucion"]);
+
+                    if (reader["FechaEngrose"] == DBNull.Value)
+                        ejecutoria.FechaEngrose = null;
+                    else
+                        ejecutoria.FechaEngrose = Convert.ToDateTime(reader["FechaEngrose"]);
+
                     ejecutoria.Sise = reader["SISE"].ToString();
                     ejecutoria.Responsable = reader["Responsable"].ToString();
                     ejecutoria.Signatario = reader["Signatario"].ToString();
@@ -343,6 +351,52 @@ namespace ContradiccionesDirectorioApi.Model
             }
 
             return regIus;
+        }
+
+        /// <summary>
+        /// Elimina la ejecutoria asociada a una Contradicción de Tesis
+        /// </summary>
+        /// <param name="contradiccion"></param>
+        /// <returns></returns>
+        public bool DeleteEjecutoria(Contradicciones contradiccion)
+        {
+            bool isDeleteComplete = true;
+
+            OleDbConnection connectionBitacoraSql = DbConnDac.GetConnection();
+            OleDbCommand cmd;
+
+            cmd = connectionBitacoraSql.CreateCommand();
+            cmd.Connection = connectionBitacoraSql;
+
+            try
+            {
+                connectionBitacoraSql.Open();
+
+                cmd.CommandText = "DELETE FROM Ejecutorias WHERE IdContradiccion = @IdContradiccion";
+                cmd.Parameters.AddWithValue("@IdContradiccion", contradiccion.IdContradiccion);
+                cmd.ExecuteNonQuery();
+
+                cmd.CommandText = "DELETE FROM RelacionesEjecutoria WHERE IdContradiccion = @IdContradiccion";
+                cmd.Parameters.AddWithValue("@IdContradiccion", contradiccion.IdContradiccion);
+                cmd.ExecuteNonQuery();
+
+            }
+            catch (OleDbException ex)
+            {
+                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                isDeleteComplete = false;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                isDeleteComplete = false;
+            }
+            finally
+            {
+                connectionBitacoraSql.Close();
+            }
+
+            return isDeleteComplete;
         }
     }
 }
