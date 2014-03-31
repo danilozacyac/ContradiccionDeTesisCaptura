@@ -81,6 +81,7 @@ namespace ContradiccionDeTesisCaptura
                 return;
             }
 
+            contradiccion.Status = (RadTramite.IsChecked == true) ? 0 : 1;
             contradiccion.IdTipoAsunto = (Int32)CbxTiposAsuntos.SelectedValue;
             //contradiccion.IdPlenoCircuito = (Int32)CbxPlenos.SelectedValue;
 

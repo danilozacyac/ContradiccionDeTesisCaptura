@@ -5,10 +5,11 @@
         xmlns:igEditors="http://infragistics.com/Editors"
         xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
         Title="ContradiccionesWin"
-        Icon="/ContradiccionDeTesisCaptura;component/1393376608_86548.ico"
         Width="909"
         Height="800"
-        Loaded="Window_Loaded" WindowStartupLocation="CenterScreen">
+        Icon="/ContradiccionDeTesisCaptura;component/1393376608_86548.ico"
+        Loaded="Window_Loaded"
+        WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <converter:OrganismosConverter x:Key="orgConverter" />
         <converter:ListToStringConverter x:Key="listToString" />
@@ -141,11 +142,11 @@
                                   Width="279"
                                   Height="23"
                                   Margin="7,125,0,0"
-                                  ItemsSource="{Binding}"
-                                  DisplayMemberPath="NombreCompleto"
-                                  SelectedValuePath="IdFuncionario"
                                   HorizontalAlignment="Left"
-                                  VerticalAlignment="Top" />
+                                  VerticalAlignment="Top"
+                                  DisplayMemberPath="NombreCompleto"
+                                  ItemsSource="{Binding}"
+                                  SelectedValuePath="IdFuncionario" />
                         <Label Name="label33"
                                Grid.Column="1"
                                Height="28"
@@ -158,11 +159,11 @@
                                   Width="277"
                                   Height="23"
                                   Margin="9,195,0,0"
-                                  ItemsSource="{Binding}"
-                                  DisplayMemberPath="NombreCompleto"
-                                  SelectedValuePath="IdFuncionario"
                                   HorizontalAlignment="Left"
-                                  VerticalAlignment="Top" />
+                                  VerticalAlignment="Top"
+                                  DisplayMemberPath="NombreCompleto"
+                                  ItemsSource="{Binding}"
+                                  SelectedValuePath="IdFuncionario" />
                     </Grid>
                     <Label Name="label6"
                            Grid.Row="2"
@@ -350,14 +351,16 @@
                             Margin="0,0,143,12"
                             HorizontalAlignment="Right"
                             VerticalAlignment="Bottom"
-                            Content="Editar Returno" Click="BtnEditaReturno_Click" />
+                            Click="BtnEditaReturno_Click"
+                            Content="Editar Returno" />
                     <Button Name="BtnEliminaReturno"
                             Width="107"
                             Height="23"
                             Margin="0,0,252,12"
                             HorizontalAlignment="Right"
                             VerticalAlignment="Bottom"
-                            Content="Eliminar Returno" Click="BtnEliminaReturno_Click" />
+                            Click="BtnEliminaReturno_Click"
+                            Content="Eliminar Returno" />
                     <Grid Grid.Row="1">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="394" />
@@ -412,7 +415,8 @@
                                  HorizontalAlignment="Stretch"
                                  VerticalAlignment="Stretch"
                                  Text="{Binding Resolutivo.RubroTesis,
-                                                Mode=TwoWay}" TextWrapping="Wrap" />
+                                                Mode=TwoWay}"
+                                 TextWrapping="Wrap" />
                         <Label Name="label23"
                                Grid.Column="1"
                                Height="28"
@@ -429,7 +433,8 @@
                                              CanUserDeleteRows="False"
                                              CanUserInsertRows="False"
                                              IsReadOnly="True"
-                                             ItemsSource="{Binding}"
+                                             ItemsSource="{Binding Resolutivo.PuntosResolutivos,
+                                                                   Mode=TwoWay}"
                                              ShowGroupPanel="False">
                             <telerik:RadGridView.Columns>
 
@@ -448,7 +453,8 @@
                                 Margin="0,0,36,6"
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Bottom"
-                                Content="Añadir resolutivo" Click="BtnAddResolutivo_Click" />
+                                Click="BtnAddResolutivo_Click"
+                                Content="Añadir resolutivo" />
                         <Button Name="BtnEditResolutivo"
                                 Grid.Column="1"
                                 Width="102"
@@ -456,7 +462,8 @@
                                 Margin="0,0,143,6"
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Bottom"
-                                Content="Editar resolutivo" Click="BtnEditResolutivo_Click" />
+                                Click="BtnEditResolutivo_Click"
+                                Content="Editar resolutivo" />
                         <Button Name="BtnDltResolutivo"
                                 Grid.Column="1"
                                 Width="106"
@@ -464,7 +471,8 @@
                                 Margin="0,0,252,6"
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Bottom"
-                                Content="Eliminar Resolutivo" Click="BtnDltResolutivo_Click" />
+                                Click="BtnDltResolutivo_Click"
+                                Content="Eliminar Resolutivo" />
                     </Grid>
                 </Grid>
             </TabItem>

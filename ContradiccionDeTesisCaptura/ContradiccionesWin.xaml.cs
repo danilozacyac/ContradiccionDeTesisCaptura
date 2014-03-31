@@ -43,7 +43,7 @@ namespace ContradiccionDeTesisCaptura
             CbxTiposAsuntos.DataContext = TipoAsuntoSingleton.TipoAsunto;
 
             this.DataContext = contradiccion;
-            this.RGridResolutivos.DataContext = contradiccion.Resolutivo.PuntosResolutivos;
+            //this.RGridResolutivos.DataContext = contradiccion.Resolutivo.PuntosResolutivos;
 
             CbxPresidente.DataContext = FuncionariosSingleton.FuncionariosCollection;
             CbxPonente.DataContext = FuncionariosSingleton.FuncionariosCollection;

@@ -34,6 +34,7 @@ namespace ContradiccionesDirectorioApi.Model
 
                     dataAdapter = new OleDbDataAdapter();
                     dataAdapter.SelectCommand = new OleDbCommand(sqlCadena, connectionBitacoraSql);
+                    criterio.Orden = currentOrder;
 
                     dataAdapter.Fill(dataSet, "Criterios");
 
@@ -94,7 +95,7 @@ namespace ContradiccionesDirectorioApi.Model
 
             try
             {
-                int currentOrder = this.GetMaxOrderCriterio(idContradiccion);
+                criterio.Orden = this.GetMaxOrderCriterio(idContradiccion);
                 string sqlCadena = "SELECT * FROM Criterios WHERE IdCriterio = 0";
 
                 dataAdapter = new OleDbDataAdapter();
@@ -104,7 +105,7 @@ namespace ContradiccionesDirectorioApi.Model
 
                 dr = dataSet.Tables["Criterios"].NewRow();
                 dr["IdContradiccion"] = idContradiccion;
-                dr["Orden"] = currentOrder;
+                dr["Orden"] = criterio.Orden;
                 dr["Criterio"] = criterio.Criterio;
                 dr["IdOrgano"] = criterio.IdOrgano;
 
@@ -124,10 +125,10 @@ namespace ContradiccionesDirectorioApi.Model
                 dataSet.Dispose();
                 dataAdapter.Dispose();
 
-                criterio.IdCriterio = this.GetLastCriterioId(idContradiccion, currentOrder);
+                criterio.IdCriterio = this.GetLastCriterioId(idContradiccion, criterio.Orden);
 
                 this.SetNewCriteriosTesis(criterio);
-                currentOrder++;
+                //currentOrder++;
             }
             catch (OleDbException ex)
             {
@@ -435,7 +436,7 @@ namespace ContradiccionesDirectorioApi.Model
                 while (reader.Read())
                 {
                     Criterios criterio = new Criterios();
-                    criterio.IdContradiccion = Convert.ToInt32(reader["IdContradiccion"]);
+                    criterio.IdContradiccion = Convert.ToInt32(reader["idContradiccion"]);
                     criterio.IdCriterio = Convert.ToInt32(reader["IdCriterio"]);
                     criterio.Orden = Convert.ToInt32(reader["Orden"]);
                     criterio.Criterio = reader["Criterio"].ToString();
