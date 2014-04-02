@@ -362,5 +362,11 @@ namespace ContradiccionDeTesisCaptura
 
             contradiccion.Returnos.Remove(returno);
         }
+
+        private void BtnObservaciones_Click(object sender, RoutedEventArgs e)
+        {
+            Observaciones observ = new Observaciones(contradiccion);
+            observ.ShowDialog();
+        }
     }
 }

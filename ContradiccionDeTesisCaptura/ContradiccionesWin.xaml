@@ -164,6 +164,7 @@
                                   DisplayMemberPath="NombreCompleto"
                                   ItemsSource="{Binding}"
                                   SelectedValuePath="IdFuncionario" />
+                        <Button Content="Observaciones" Grid.Column="1" Height="23" HorizontalAlignment="Left" Margin="188,5,0,0" Name="BtnObservaciones" VerticalAlignment="Top" Width="98" Click="BtnObservaciones_Click" />
                     </Grid>
                     <Label Name="label6"
                            Grid.Row="2"

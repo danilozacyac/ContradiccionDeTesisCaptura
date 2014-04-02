@@ -4,11 +4,12 @@
         xmlns:converter="clr-namespace:ContradiccionDeTesisCaptura.Converters"
         xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
         Title="Agregar expediente"
-        Icon="/ContradiccionDeTesisCaptura;component/1393376608_86548.ico"
         Width="900"
         Height="700"
+        Icon="/ContradiccionDeTesisCaptura;component/1393376608_86548.ico"
+        Loaded="Window_Loaded"
         ResizeMode="NoResize"
-        Loaded="Window_Loaded" WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <converter:OrganismosConverter x:Key="orgConverter" />
         <converter:ListToStringConverter x:Key="listToString" />
@@ -131,11 +132,11 @@
                       Width="279"
                       Height="23"
                       Margin="7,125,0,0"
-                      ItemsSource="{Binding}"
-                                  DisplayMemberPath="NombreCompleto"
-                                  SelectedValuePath="IdFuncionario"
                       HorizontalAlignment="Left"
-                      VerticalAlignment="Top" />
+                      VerticalAlignment="Top"
+                      DisplayMemberPath="NombreCompleto"
+                      ItemsSource="{Binding}"
+                      SelectedValuePath="IdFuncionario" />
             <Label Name="label33"
                    Grid.Column="1"
                    Height="28"
@@ -148,11 +149,19 @@
                       Width="277"
                       Height="23"
                       Margin="9,195,0,0"
-                      ItemsSource="{Binding}"
-                                  DisplayMemberPath="NombreCompleto"
-                                  SelectedValuePath="IdFuncionario"
                       HorizontalAlignment="Left"
-                      VerticalAlignment="Top" />
+                      VerticalAlignment="Top"
+                      DisplayMemberPath="NombreCompleto"
+                      ItemsSource="{Binding}"
+                      SelectedValuePath="IdFuncionario" />
+            <Button Name="BtnObservaciones"
+                    Grid.Column="1"
+                    Width="93"
+                    Height="23"
+                    Margin="192,10,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Content="Observaciones" Click="BtnObservaciones_Click" />
         </Grid>
         <Label Name="label6"
                Grid.Row="2"

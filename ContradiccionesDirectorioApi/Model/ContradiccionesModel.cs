@@ -6,7 +6,6 @@ using System.Linq;
 using System.Windows.Forms;
 using ContradiccionesDirectorioApi.Dao;
 using ContradiccionesDirectorioApi.DataAccess;
-using System.Reflection;
 
 namespace ContradiccionesDirectorioApi.Model
 {

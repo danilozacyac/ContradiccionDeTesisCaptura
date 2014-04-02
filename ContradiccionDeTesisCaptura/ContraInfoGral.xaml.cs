@@ -98,5 +98,11 @@ namespace ContradiccionDeTesisCaptura
             listado.Listado.Add(contradiccion);
             this.Close();
         }
+
+        private void BtnObservaciones_Click(object sender, RoutedEventArgs e)
+        {
+            Observaciones obsr = new Observaciones(contradiccion);
+            obsr.ShowDialog();
+        }
     }
 }

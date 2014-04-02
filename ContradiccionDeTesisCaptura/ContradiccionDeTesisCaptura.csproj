@@ -76,6 +76,9 @@
       <DependentUpon>ContraInfoGral.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\TipoAsuntoConverter.cs" />
+    <Compile Include="Observaciones.xaml.cs">
+      <DependentUpon>Observaciones.xaml</DependentUpon>
+    </Compile>
     <Compile Include="PuntoResolutivo.xaml.cs">
       <DependentUpon>PuntoResolutivo.xaml</DependentUpon>
     </Compile>
@@ -116,6 +119,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Observaciones.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="PuntoResolutivo.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
