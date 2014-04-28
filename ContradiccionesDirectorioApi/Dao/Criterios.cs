@@ -15,6 +15,8 @@ namespace ContradiccionesDirectorioApi.Dao
         private String organo;
         private ObservableCollection<int> tesisContendientes;
         private String tesisContendientesStr;
+        private string observaciones;
+
        
         public int IdCriterio
         {
@@ -117,6 +119,19 @@ namespace ContradiccionesDirectorioApi.Dao
             {
                 this.tesisContendientesStr = value;
                 this.OnPropertyChanged("TesisContendientesStr");
+            }
+        }
+
+        public string Observaciones
+        {
+            get
+            {
+                return this.observaciones;
+            }
+            set
+            {
+                this.observaciones = value;
+                this.OnPropertyChanged("Observaciones");
             }
         }
 

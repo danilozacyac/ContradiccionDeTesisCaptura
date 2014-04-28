@@ -21,15 +21,11 @@ namespace ContradiccionDeTesisCaptura
         private Criterios criterios;
         private readonly bool isUpdatingCriterio;
 
-
-        public CriteriosWin(Contradicciones contradiccion,Criterios criterios,bool isUpdatingCriterio)
+        public CriteriosWin(Contradicciones contradiccion, Criterios criterios, bool isUpdatingCriterio)
         {
-
             InitializeComponent();
             this.contradiccion = contradiccion;
             this.isUpdatingCriterio = isUpdatingCriterio;
-
-         
 
             if (criterios != null)
                 this.criterios = criterios;
@@ -53,8 +49,6 @@ namespace ContradiccionDeTesisCaptura
         {
             e.Handled = StringFunctions.IsADigit(e.Text);
         }
-
-
 
         private void TxtTesis_KeyDown(object sender, KeyEventArgs e)
         {
@@ -83,21 +77,19 @@ namespace ContradiccionDeTesisCaptura
 
         private void BtnAceptar_Click(object sender, RoutedEventArgs e)
         {
-            CriteriosModel model = new CriteriosModel();  
-                criterios.IdOrgano = (Int32)CbxOrganismos.SelectedValue;
-                criterios.Organo = CbxOrganismos.Text;
+            CriteriosModel model = new CriteriosModel();
+            criterios.IdOrgano = ((Organismos)CbxOrganismos.SelectedItem).IdOrganismo;
+            criterios.Organo = CbxOrganismos.Text;
 
-                if (isUpdatingCriterio)
-                {
-                    model.UpdateCriterios(criterios, contradiccion.IdContradiccion);
-                }
-                else if (contradiccion.IsUpdating)
-                {
-                    
-                    model.SetNewCriterios(criterios, contradiccion.IdContradiccion);
-                }
-
-            contradiccion.Criterios.Add(criterios);
+            if (isUpdatingCriterio)
+            {
+                model.UpdateCriterios(criterios, contradiccion.IdContradiccion);
+            }
+            else if (contradiccion.IsUpdating)
+            {
+                model.SetNewCriterios(criterios, contradiccion.IdContradiccion);
+                contradiccion.Criterios.Add(criterios);
+            }
 
             this.Close();
         }

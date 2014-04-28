@@ -43,17 +43,19 @@ namespace ContradiccionesDirectorioApi.Model
                     dr["Orden"] = currentOrder;
                     dr["Criterio"] = criterio.Criterio;
                     dr["IdOrgano"] = criterio.IdOrgano;
+                    dr["Observaciones"] = criterio.Observaciones;
 
                     dataSet.Tables["Criterios"].Rows.Add(dr);
 
                     dataAdapter.InsertCommand = connectionBitacoraSql.CreateCommand();
-                    dataAdapter.InsertCommand.CommandText = "INSERT INTO Criterios(IdContradiccion,Orden,Criterio,IdOrgano)" +
-                                                            " VALUES(@IdContradiccion,@Orden,@Criterio,@IdOrgano)";
+                    dataAdapter.InsertCommand.CommandText = "INSERT INTO Criterios(IdContradiccion,Orden,Criterio,IdOrgano,Observaciones)" +
+                                                            " VALUES(@IdContradiccion,@Orden,@Criterio,@IdOrgano,@Observaciones)";
 
                     dataAdapter.InsertCommand.Parameters.Add("@IdContradiccion", OleDbType.Numeric, 0, "IdContradiccion");
                     dataAdapter.InsertCommand.Parameters.Add("@Orden", OleDbType.Numeric, 0, "Orden");
                     dataAdapter.InsertCommand.Parameters.Add("@Criterio", OleDbType.VarChar, 0, "Criterio");
                     dataAdapter.InsertCommand.Parameters.Add("@IdOrgano", OleDbType.Numeric, 0, "IdOrgano");
+                    dataAdapter.InsertCommand.Parameters.Add("@Observaciones", OleDbType.VarChar, 0, "Observaciones");
 
                     dataAdapter.Update(dataSet, "Criterios");
 
@@ -108,17 +110,19 @@ namespace ContradiccionesDirectorioApi.Model
                 dr["Orden"] = criterio.Orden;
                 dr["Criterio"] = criterio.Criterio;
                 dr["IdOrgano"] = criterio.IdOrgano;
+                dr["Observaciones"] = criterio.Observaciones;
 
                 dataSet.Tables["Criterios"].Rows.Add(dr);
 
                 dataAdapter.InsertCommand = connectionBitacoraSql.CreateCommand();
-                dataAdapter.InsertCommand.CommandText = "INSERT INTO Criterios(IdContradiccion,Orden,Criterio,IdOrgano)" +
-                                                        " VALUES(@IdContradiccion,@Orden,@Criterio,@IdOrgano)";
+                dataAdapter.InsertCommand.CommandText = "INSERT INTO Criterios(IdContradiccion,Orden,Criterio,IdOrgano,Observaciones)" +
+                                                        " VALUES(@IdContradiccion,@Orden,@Criterio,@IdOrgano,@Observaciones)";
 
                 dataAdapter.InsertCommand.Parameters.Add("@IdContradiccion", OleDbType.Numeric, 0, "IdContradiccion");
                 dataAdapter.InsertCommand.Parameters.Add("@Orden", OleDbType.Numeric, 0, "Orden");
                 dataAdapter.InsertCommand.Parameters.Add("@Criterio", OleDbType.VarChar, 0, "Criterio");
                 dataAdapter.InsertCommand.Parameters.Add("@IdOrgano", OleDbType.Numeric, 0, "IdOrgano");
+                dataAdapter.InsertCommand.Parameters.Add("@Observaciones", OleDbType.VarChar, 0, "Observaciones");
 
                 dataAdapter.Update(dataSet, "Criterios");
 
@@ -164,17 +168,18 @@ namespace ContradiccionesDirectorioApi.Model
                 dr = dataSet.Tables[0].Rows[0];
                 dr.BeginEdit();
                 dr["Criterio"] = criterio.Criterio;
-                dr["IdOrgano"] = criterio.IdCriterio;
+                dr["IdOrgano"] = criterio.IdOrgano;
+                dr["Observaciones"] = criterio.Observaciones;
                 dr.EndEdit();
 
                 dataAdapter.UpdateCommand = connectionBitacoraSql.CreateCommand();
 
-                string sSql = "UPDATE Criterios SET Criterio = @Criterio, IdOrgano = @IdOrgano " +
+                string sSql = "UPDATE Criterios SET Criterio = @Criterio, IdOrgano = @IdOrgano, Observaciones = @Observaciones " +
                               " WHERE IdCriterio = @IdCriterio";
 
                 dataAdapter.UpdateCommand.CommandText = sSql;
 
-                AddParms(dataAdapter.UpdateCommand, "Criterio", "IdOrgano", "IdCriterio");
+                AddParms(dataAdapter.UpdateCommand, "Criterio", "IdOrgano", "Observaciones", "IdCriterio");
 
                 dataAdapter.Update(dataSet, "Criterios");
                 dataSet.Dispose();
@@ -441,6 +446,7 @@ namespace ContradiccionesDirectorioApi.Model
                     criterio.Orden = Convert.ToInt32(reader["Orden"]);
                     criterio.Criterio = reader["Criterio"].ToString();
                     criterio.IdOrgano = Convert.ToInt32(reader["IdOrgano"]);
+                    criterio.Observaciones = reader["Observaciones"].ToString();
                     criterio.Organo = (from n in Singletons.OrganismosSingleton.Colegiados
                                        where n.IdOrganismo == criterio.IdOrgano
                                        select n.Organismo).ToList()[0];
