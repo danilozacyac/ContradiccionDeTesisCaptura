@@ -6,6 +6,7 @@ namespace ContradiccionesDirectorioApi.Dao
 {
     public class Tesis : INotifyPropertyChanged
     {
+        private int idTesis;
         private int idContradiccion;
         private String claveControl;
         private String claveIdentificacion;
@@ -22,6 +23,18 @@ namespace ContradiccionesDirectorioApi.Dao
         private String responsable;
         private String oficioRespuesta;
         private String oficioRespuestaFilePath;
+
+        public int IdTesis
+        {
+            get
+            {
+                return this.idTesis;
+            }
+            set
+            {
+                this.idTesis = value;
+            }
+        }
 
         public int IdContradiccion
         {

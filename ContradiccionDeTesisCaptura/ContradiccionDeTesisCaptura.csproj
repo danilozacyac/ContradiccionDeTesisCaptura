@@ -72,6 +72,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="CapturaTesis.xaml.cs">
+      <DependentUpon>CapturaTesis.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ContraInfoGral.xaml.cs">
       <DependentUpon>ContraInfoGral.xaml</DependentUpon>
     </Compile>
@@ -85,6 +88,10 @@
     <Compile Include="Returnos.xaml.cs">
       <DependentUpon>Returnos.xaml</DependentUpon>
     </Compile>
+    <Page Include="CapturaTesis.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ContradiccionesWin.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

@@ -23,7 +23,7 @@ namespace ContradiccionesDirectorioApi.Dao
         private int idPlenoCircuito;
         private int idPresidentePleno;
         private int idPonentePleno;
-        private Tesis miTesis;
+        private ObservableCollection<Tesis> miTesis;
         private Ejecutoria miEjecutoria;
         private Resolutivos resolutivo;
 
@@ -226,7 +226,7 @@ namespace ContradiccionesDirectorioApi.Dao
         }
 
 
-        public Tesis MiTesis
+        public ObservableCollection<Tesis> MiTesis
         {
             get
             {

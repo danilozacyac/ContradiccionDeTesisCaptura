@@ -32,7 +32,6 @@ namespace ContradiccionDeTesisCaptura
             this.contradiccion = contradiccion;
             this.isUpdating = isUpdating;
 
-            contradiccion.MiTesis = (contradiccion.MiTesis == null) ? new Tesis() : contradiccion.MiTesis;
             contradiccion.MiEjecutoria = (contradiccion.MiEjecutoria == null) ? new Ejecutoria() : contradiccion.MiEjecutoria;
             contradiccion.Returnos = (contradiccion.Returnos == null) ? new ObservableCollection<ReturnosClass>() : contradiccion.Returnos;
             contradiccion.Resolutivo = (contradiccion.Resolutivo == null) ? new Resolutivos() : contradiccion.Resolutivo;
@@ -69,18 +68,12 @@ namespace ContradiccionDeTesisCaptura
                 return;
             }
 
-            
-
-
             ///Valores ComboBox y RadioButtons
             contradiccion.IdPresidentePleno = (CbxPresidente.SelectedValue != null) ? (Int32)CbxPresidente.SelectedValue : 0;
             contradiccion.IdPonentePleno = (CbxPonente.SelectedValue != null) ? (Int32)CbxPonente.SelectedValue : 0;
             contradiccion.Status = (RadResuelto.IsChecked == true) ? 1 : 0;
             contradiccion.IdTipoAsunto = (Int32)CbxTiposAsuntos.SelectedValue;
-            contradiccion.MiTesis.Tatj = (RadJuris.IsChecked == true) ? 1 : 0;
-            contradiccion.MiTesis.VersionPublica = (RadSiPublica.IsChecked == true) ? 1 : 0;
-            contradiccion.MiTesis.CopiaCertificada = (RadSiCopia.IsChecked == true) ? 1 : 0;
-            contradiccion.MiTesis.CambioCriterio = (RadSiCambio.IsChecked == true) ? 1 : 0;
+            
 
             ///Actualiza Info General de Contradiccion
             ContradiccionesModel contra = new ContradiccionesModel();
@@ -98,19 +91,7 @@ namespace ContradiccionDeTesisCaptura
                 resol.SetNewResolucion(contradiccion);
             }
 
-            //Actualiza Info Tesis
-            TesisModel tes = new TesisModel();
-            Tesis tesis = tes.GetTesisPorContradiccion(contradiccion.IdContradiccion);
-
-            if (tesis.IdContradiccion == 0)
-            {
-                tes.SetNewTesisPorContradiccion(contradiccion);
-            }
-            else
-            {
-                tes.UpdateTesis(contradiccion);
-            }
-            tesis = null;
+            
 
             //Actualiza Info ejecutoria
             EjecutoriasModel eje = new EjecutoriasModel();
@@ -151,64 +132,22 @@ namespace ContradiccionDeTesisCaptura
             }
         }
 
-        private void BtnArchivoOficioPub_Click(object sender, RoutedEventArgs e)
-        {
-            TxtOPPath.Text = this.OpenDialogForPath();
-        }
+        
 
-        private void BtnArchivoVP_Click(object sender, RoutedEventArgs e)
-        {
-            TxtFileVpPath.Text = this.OpenDialogForPath();
-        }
+        
 
-        private void BtnArchivoCC_Click(object sender, RoutedEventArgs e)
-        {
-            TxtFileCopiaPath.Text = this.OpenDialogForPath();
-        }
+        
 
         private void BtnFileEjecPath_Click(object sender, RoutedEventArgs e)
         {
             TxtFileEjecPath.Text = this.OpenDialogForPath();
         }
 
-        private void RadSiPublica_Checked(object sender, RoutedEventArgs e)
-        {
-            LblVersionPublica.Visibility = Visibility.Visible;
-            TxtFileVpPath.Visibility = Visibility.Visible;
-            BtnArchivoVP.Visibility = Visibility.Visible;
-        }
+        
 
-        private void RadNoPublica_Checked(object sender, RoutedEventArgs e)
-        {
-            LblVersionPublica.Visibility = Visibility.Hidden;
-            TxtFileVpPath.Visibility = Visibility.Hidden;
-            BtnArchivoVP.Visibility = Visibility.Hidden;
+        
 
-            TxtFileVpPath.Text = String.Empty;
-        }
-
-        private void RadSiCopia_Checked(object sender, RoutedEventArgs e)
-        {
-            LblCopiaCertif.Visibility = Visibility.Visible;
-            TxtFileCopiaPath.Visibility = Visibility.Visible;
-            BtnArchivoCC.Visibility = Visibility.Visible;
-        }
-
-        private void RadNoCopia_Checked(object sender, RoutedEventArgs e)
-        {
-            LblCopiaCertif.Visibility = Visibility.Hidden;
-            TxtFileCopiaPath.Visibility = Visibility.Hidden;
-            BtnArchivoCC.Visibility = Visibility.Hidden;
-
-            TxtFileCopiaPath.Text = String.Empty;
-        }
-
-        private void SetInitialSettingsAfterLoad()
-        {
-            RadNoPublica.IsChecked = true;
-            RadNoCopia.IsChecked = true;
-            RadNoCambio.IsChecked = true;
-        }
+        
 
         private void TxtExpNumero_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
@@ -279,25 +218,9 @@ namespace ContradiccionDeTesisCaptura
 
             CbxTiposAsuntos.SelectedValue = contradiccion.IdTipoAsunto;
 
-            if (contradiccion.MiTesis.Tatj == 1)
-                RadJuris.IsChecked = true;
-            else
-                RadAislada.IsChecked = true;
+            
 
-            if (contradiccion.MiTesis.VersionPublica == 1)
-                RadSiPublica.IsChecked = true;
-            else
-                RadNoPublica.IsChecked = true;
-
-            if (contradiccion.MiTesis.CopiaCertificada == 1)
-                RadSiCopia.IsChecked = true;
-            else
-                RadNoCopia.IsChecked = true;
-
-            if (contradiccion.MiTesis.CambioCriterio == 1)
-                RadSiCambio.IsChecked = true;
-            else
-                RadNoCambio.IsChecked = true;
+            
         }
 
         private void BtnEditCriterios_Click(object sender, RoutedEventArgs e)
@@ -368,5 +291,41 @@ namespace ContradiccionDeTesisCaptura
             Observaciones observ = new Observaciones(contradiccion);
             observ.ShowDialog();
         }
+
+        private void BtnAddTesis_Click(object sender, RoutedEventArgs e)
+        {
+            CapturaTesis captura = new CapturaTesis(contradiccion.MiTesis,contradiccion.IdContradiccion);
+            captura.Show();
+        }
+
+        private Tesis selectedTesis;
+        private void GTesisContra_SelectionChanged(object sender, Telerik.Windows.Controls.SelectionChangeEventArgs e)
+        {
+            selectedTesis = GTesisContra.SelectedItem as Tesis;
+
+            TxtCControl.Text = selectedTesis.ClaveControl;
+            TxtClaveIdent.Text = selectedTesis.ClaveIdentificacion;
+            TxtRubro.Text = selectedTesis.Rubro;
+
+            if (selectedTesis.Tatj == 1)
+                RadJuris.IsChecked = true;
+            else
+                RadAislada.IsChecked = true;
+        }
+
+        private void BtnEditar_Click(object sender, RoutedEventArgs e)
+        {
+            if (selectedTesis != null)
+            {
+                CapturaTesis captura = new CapturaTesis(selectedTesis);
+                captura.ShowDialog();
+            }
+            else
+            {
+                MessageBox.Show("Debes de seleccionar la tesis que quieres seleccionar");
+            }
+        }
+
+        
     }
 }

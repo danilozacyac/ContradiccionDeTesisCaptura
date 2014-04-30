@@ -5,13 +5,14 @@ using System.Linq;
 using ContradiccionesDirectorioApi.Dao;
 using ContradiccionesDirectorioApi.DataAccess;
 using System.Windows.Forms;
+using System.Collections.ObjectModel;
 
 namespace ContradiccionesDirectorioApi.Model
 {
     public class TesisModel
     {
 
-        public void SetNewTesisPorContradiccion(Contradicciones contradiccion)
+        public int SetNewTesisPorContradiccion(Tesis tesis)
         {
             OleDbConnection connectionBitacoraSql = DbConnDac.GetConnection();
             OleDbDataAdapter dataAdapter;
@@ -21,7 +22,7 @@ namespace ContradiccionesDirectorioApi.Model
 
             try
             {
-                string sqlCadena = "SELECT * FROM Tesis WHERE IdContradiccion = 0";
+                string sqlCadena = "SELECT * FROM Tesis WHERE IdTesis = 0";
 
                 dataAdapter = new OleDbDataAdapter();
                 dataAdapter.SelectCommand = new OleDbCommand(sqlCadena, connectionBitacoraSql);
@@ -29,22 +30,22 @@ namespace ContradiccionesDirectorioApi.Model
                 dataAdapter.Fill(dataSet, "Tesis");
 
                 dr = dataSet.Tables["Tesis"].NewRow();
-                dr["IdContradiccion"] = contradiccion.IdContradiccion;
-                dr["ClaveControl"] = contradiccion.MiTesis.ClaveControl;
-                dr["ClaveIdentificacion"] = contradiccion.MiTesis.ClaveIdentificacion;
-                dr["Rubro"] = contradiccion.MiTesis.Rubro;
-                dr["tatj"] = contradiccion.MiTesis.Tatj;
-                dr["OficioPublicacion"] = contradiccion.MiTesis.OficioPublicacion;
-                dr["OficioPPath"] = contradiccion.MiTesis.OficioPublicacionFilePath;
-                dr["VersionPublica"] = contradiccion.MiTesis.VersionPublica;
-                dr["VersionPPath"] = contradiccion.MiTesis.VersionPublicaFilePath;
-                dr["CopiaCertificada"] = contradiccion.MiTesis.CopiaCertificada;
-                dr["CopiaCPath"] = contradiccion.MiTesis.CopiaCertificadaFilePath;
-                dr["Destinatario"] = contradiccion.MiTesis.Destinatario;
-                dr["CambioCriterio"] = contradiccion.MiTesis.CambioCriterio;
-                dr["Responsable"] = contradiccion.MiTesis.Responsable;
-                dr["OficioRespuesta"] = contradiccion.MiTesis.OficioRespuesta;
-                dr["OficioRPath"] = contradiccion.MiTesis.OficioRespuestaFilePath;
+                dr["IdContradiccion"] = tesis.IdContradiccion;
+                dr["ClaveControl"] = tesis.ClaveControl;
+                dr["ClaveIdentificacion"] = tesis.ClaveIdentificacion;
+                dr["Rubro"] = tesis.Rubro;
+                dr["tatj"] = tesis.Tatj;
+                dr["OficioPublicacion"] = tesis.OficioPublicacion;
+                dr["OficioPPath"] = tesis.OficioPublicacionFilePath;
+                dr["VersionPublica"] = tesis.VersionPublica;
+                dr["VersionPPath"] = tesis.VersionPublicaFilePath;
+                dr["CopiaCertificada"] = tesis.CopiaCertificada;
+                dr["CopiaCPath"] = tesis.CopiaCertificadaFilePath;
+                dr["Destinatario"] = tesis.Destinatario;
+                dr["CambioCriterio"] = tesis.CambioCriterio;
+                dr["Responsable"] = tesis.Responsable;
+                dr["OficioRespuesta"] = tesis.OficioRespuesta;
+                dr["OficioRPath"] = tesis.OficioRespuestaFilePath;
 
                 dataSet.Tables["Tesis"].Rows.Add(dr);
 
@@ -78,6 +79,8 @@ namespace ContradiccionesDirectorioApi.Model
 
                 dataSet.Dispose();
                 dataAdapter.Dispose();
+
+                tesis.IdTesis = this.GetInsertedTesisId(tesis);
             }
             catch (OleDbException ex)
             {
@@ -88,12 +91,20 @@ namespace ContradiccionesDirectorioApi.Model
                 connectionBitacoraSql.Close();
             }
 
-            
+            return tesis.IdTesis;
         }
 
-        public Tesis GetTesisPorContradiccion(int idContradiccion)
+
+
+
+        /// <summary>
+        /// Devuelve la lista de tesis relacionadas a la Contradiccion 
+        /// </summary>
+        /// <param name="idContradiccion"></param>
+        /// <returns></returns>
+        public ObservableCollection<Tesis> GetTesisPorContradiccion(int idContradiccion)
         {
-            Tesis tesis = new Tesis();
+            ObservableCollection<Tesis> listaTesis = new ObservableCollection<Tesis>();
 
             OleDbConnection oleConnection = DbConnDac.GetConnection();
             OleDbCommand cmd;
@@ -110,6 +121,8 @@ namespace ContradiccionesDirectorioApi.Model
 
                 while (reader.Read())
                 {
+                    Tesis tesis = new Tesis();
+                    tesis.IdTesis = Convert.ToInt32(reader["IdTesis"]);
                     tesis.IdContradiccion = Convert.ToInt32(reader["IdContradiccion"]);
                     tesis.ClaveControl = reader["Clavecontrol"].ToString();
                     tesis.ClaveIdentificacion = reader["ClaveIdentificacion"].ToString();
@@ -127,6 +140,7 @@ namespace ContradiccionesDirectorioApi.Model
                     tesis.OficioRespuesta = reader["OficioRespuesta"].ToString();
                     tesis.OficioRespuestaFilePath = reader["OficioRPath"].ToString();
 
+                    listaTesis.Add(tesis);
                 }
 
                 reader.Close();
@@ -145,10 +159,15 @@ namespace ContradiccionesDirectorioApi.Model
                 oleConnection.Close();
             }
 
-            return tesis;
+            return listaTesis;
         }
 
-        public void UpdateTesis(Contradicciones contradiccion)
+
+        /// <summary>
+        /// Actualiza la información de la tesis seleccionada
+        /// </summary>
+        /// <param name="tesis"></param>
+        public void UpdateTesis(Tesis tesis)
         {
             OleDbConnection connectionBitacoraSql = DbConnDac.GetConnection();
             OleDbDataAdapter dataAdapter;
@@ -158,7 +177,7 @@ namespace ContradiccionesDirectorioApi.Model
 
             try
             {
-                string sqlCadena = "SELECT * FROM Tesis WHERE IdContradiccion =" + contradiccion.IdContradiccion;
+                string sqlCadena = "SELECT * FROM Tesis WHERE IdTesis =" + tesis.IdTesis;
 
                 dataAdapter = new OleDbDataAdapter();
                 dataAdapter.SelectCommand = new OleDbCommand(sqlCadena, connectionBitacoraSql);
@@ -167,21 +186,21 @@ namespace ContradiccionesDirectorioApi.Model
 
                 dr = dataSet.Tables[0].Rows[0];
                 dr.BeginEdit();
-                dr["ClaveControl"] = contradiccion.MiTesis.ClaveControl;
-                dr["ClaveIdentificacion"] = contradiccion.MiTesis.ClaveIdentificacion;
-                dr["Rubro"] = contradiccion.MiTesis.Rubro;
-                dr["tatj"] = contradiccion.MiTesis.Tatj;
-                dr["OficioPublicacion"] = contradiccion.MiTesis.OficioPublicacion;
-                dr["OficioPPath"] = contradiccion.MiTesis.OficioPublicacionFilePath;
-                dr["VersionPublica"] = contradiccion.MiTesis.VersionPublica;
-                dr["VersionPPath"] = contradiccion.MiTesis.VersionPublicaFilePath;
-                dr["CopiaCertificada"] = contradiccion.MiTesis.CopiaCertificada;
-                dr["CopiaCPath"] = contradiccion.MiTesis.CopiaCertificadaFilePath;
-                dr["Destinatario"] = contradiccion.MiTesis.Destinatario;
-                dr["CambioCriterio"] = contradiccion.MiTesis.CambioCriterio;
-                dr["Responsable"] = contradiccion.MiTesis.Responsable;
-                dr["OficioRespuesta"] = contradiccion.MiTesis.OficioRespuesta;
-                dr["OficioRPath"] = contradiccion.MiTesis.OficioRespuestaFilePath;
+                dr["ClaveControl"] = tesis.ClaveControl;
+                dr["ClaveIdentificacion"] = tesis.ClaveIdentificacion;
+                dr["Rubro"] = tesis.Rubro;
+                dr["tatj"] = tesis.Tatj;
+                dr["OficioPublicacion"] = tesis.OficioPublicacion;
+                dr["OficioPPath"] = tesis.OficioPublicacionFilePath;
+                dr["VersionPublica"] = tesis.VersionPublica;
+                dr["VersionPPath"] = tesis.VersionPublicaFilePath;
+                dr["CopiaCertificada"] = tesis.CopiaCertificada;
+                dr["CopiaCPath"] = tesis.CopiaCertificadaFilePath;
+                dr["Destinatario"] = tesis.Destinatario;
+                dr["CambioCriterio"] = tesis.CambioCriterio;
+                dr["Responsable"] = tesis.Responsable;
+                dr["OficioRespuesta"] = tesis.OficioRespuesta;
+                dr["OficioRPath"] = tesis.OficioRespuestaFilePath;
                 dr.EndEdit();
 
                 dataAdapter.UpdateCommand = connectionBitacoraSql.CreateCommand();
@@ -191,7 +210,7 @@ namespace ContradiccionesDirectorioApi.Model
                                                        "VersionPublica = @VersionPublica,VersionPPath = @VersionPPath,CopiaCertificada = @CopiaCertificada," +
                                                        "CopiaCPath = @CopiaCPath,Destinatario = @Destinatario,CambioCriterio = @CambioCriterio, " +
                                                        "Responsable = @Responsable,OficioRespuesta = @OficioRespuesta,OficioRPath = @OficioRPath " +
-                                                       " WHERE IdContradiccion = @IdContradiccion";
+                                                       " WHERE IdTesis = @IdTesis";
 
                 dataAdapter.UpdateCommand.Parameters.Add("@ClaveControl", OleDbType.VarChar, 0, "ClaveControl");
                 dataAdapter.UpdateCommand.Parameters.Add("@ClaveIdentificacion", OleDbType.VarChar, 0, "ClaveIdentificacion");
@@ -208,7 +227,7 @@ namespace ContradiccionesDirectorioApi.Model
                 dataAdapter.UpdateCommand.Parameters.Add("@Responsable", OleDbType.VarChar, 0, "Responsable");
                 dataAdapter.UpdateCommand.Parameters.Add("@OficioRespuesta", OleDbType.VarChar, 0, "OficioRespuesta");
                 dataAdapter.UpdateCommand.Parameters.Add("@OficioRPath", OleDbType.VarChar, 0, "OficioRPath");
-                dataAdapter.UpdateCommand.Parameters.Add("@IdContradiccion", OleDbType.Numeric, 0, "IdContradiccion");
+                dataAdapter.UpdateCommand.Parameters.Add("@IdTesis", OleDbType.Numeric, 0, "IdTesis");
 
                 dataAdapter.Update(dataSet, "Tesis");
                 dataSet.Dispose();
@@ -233,7 +252,7 @@ namespace ContradiccionesDirectorioApi.Model
         /// </summary>
         /// <param name="contradiccion"></param>
         /// <returns></returns>
-        public bool DeleteTesis(Contradicciones contradiccion)
+        public bool DeleteTesis(Tesis tesis)
         {
             bool isDeleteComplete = true;
             OleDbConnection connectionBitacoraSql = DbConnDac.GetConnection();
@@ -246,8 +265,8 @@ namespace ContradiccionesDirectorioApi.Model
             {
                 connectionBitacoraSql.Open();
 
-                cmd.CommandText = "DELETE FROM Tesis WHERE IdContradiccion = @IdContradiccion";
-                cmd.Parameters.AddWithValue("@IdContradiccion", contradiccion.IdContradiccion);
+                cmd.CommandText = "DELETE FROM Tesis WHERE IdTesis = @IdTesis";
+                cmd.Parameters.AddWithValue("@IdTesis", tesis.IdTesis);
                 cmd.ExecuteNonQuery();
 
             }
@@ -269,5 +288,68 @@ namespace ContradiccionesDirectorioApi.Model
             return isDeleteComplete;
         }
 
+        /// <summary>
+        /// Elimina una lista completa de tesis
+        /// </summary>
+        /// <param name="listaTesis"></param>
+        /// <returns></returns>
+        public bool DeleteTesis(ObservableCollection<Tesis> listaTesis)
+        {
+            bool deleted = false;
+            foreach (Tesis tesis in listaTesis)
+            {
+                deleted = this.DeleteTesis(tesis);
+
+                if (deleted == false)
+                    return deleted;
+            }
+            return deleted;
+        }
+
+        /// <summary>
+        /// Devuelve el identificador de la tesis que se inserto
+        /// </summary>
+        /// <param name="tesis"></param>
+        /// <returns></returns>
+        public int GetInsertedTesisId(Tesis tesis)
+        {
+            int idTesis = 0;
+
+            OleDbConnection oleConnection = DbConnDac.GetConnection();
+            OleDbCommand cmd;
+            OleDbDataReader reader;
+
+            string oleCadena = "SELECT IdTesis FROM Tesis WHERE IdContradiccion = " + tesis.IdContradiccion + " AND ClaveControl = '" + tesis.ClaveControl + "'";
+
+            try
+            {
+                oleConnection.Open();
+
+                cmd = new OleDbCommand(oleCadena, oleConnection);
+                reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    idTesis = Convert.ToInt32(reader["IdTesis"]);
+                }
+
+                reader.Close();
+                cmd.Dispose();
+            }
+            catch (OleDbException ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                oleConnection.Close();
+            }
+
+            return idTesis;
+        }
     }
 }

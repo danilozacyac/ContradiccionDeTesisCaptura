@@ -74,7 +74,7 @@ namespace ContradiccionDeTesisCaptura
             {
                 try
                 {
-                    this.CheckCorrectdelete(new TesisModel().DeleteTesis(selectedContradiction));
+                    this.CheckCorrectdelete(new TesisModel().DeleteTesis(selectedContradiction.MiTesis));
                     this.CheckCorrectdelete(new ReturnosModel().DeleteReturno(selectedContradiction));
                     this.CheckCorrectdelete(new ResolucionModel().DeleteResolutivo(selectedContradiction));
                     this.CheckCorrectdelete(new ResolucionModel().DeleteResolucion(selectedContradiction));
