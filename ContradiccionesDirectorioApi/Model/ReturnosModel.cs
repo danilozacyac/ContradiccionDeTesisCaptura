@@ -12,7 +12,11 @@ namespace ContradiccionesDirectorioApi.Model
 {
     public class ReturnosModel
     {
-
+        /// <summary>
+        /// Enlista los returnos que ha tenido el asunto desde su primer registro en el sistema
+        /// </summary>
+        /// <param name="idContradiccion"></param>
+        /// <returns></returns>
         public ObservableCollection<ReturnosClass> GetReturnos(int idContradiccion)
         {
             ObservableCollection<ReturnosClass> returnos = new ObservableCollection<ReturnosClass>();
@@ -131,6 +135,11 @@ namespace ContradiccionesDirectorioApi.Model
             }
         }
 
+
+        /// <summary>
+        /// Actualiza la información existente de un returno
+        /// </summary>
+        /// <param name="returno"></param>
         public void UpdateReturno(ReturnosClass returno)
         {
             OleDbConnection connectionBitacoraSql = DbConnDac.GetConnection();

@@ -110,5 +110,6 @@
                 VerticalAlignment="Top"
                 Click="BtnDelete_Click"
                 Content="Eliminar" />
+        <Button Content="Generar Listado en PDF" Grid.Row="2" Height="23" HorizontalAlignment="Left" Margin="25,0,0,0" Name="BtnPdf" VerticalAlignment="Top" Width="159" Click="BtnPdf_Click" />
     </Grid>
 </Window>

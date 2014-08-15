@@ -13,6 +13,11 @@ namespace ContradiccionesDirectorioApi.Model
     {
         #region Resoluciones
 
+        /// <summary>
+        /// Devuelve la resolución de una contradicción
+        /// </summary>
+        /// <param name="idContradiccion"></param>
+        /// <returns></returns>
         public Resolutivos GetResolucion(int idContradiccion)
         {
             Resolutivos resolutivos = new Resolutivos();
@@ -66,6 +71,11 @@ namespace ContradiccionesDirectorioApi.Model
             return resolutivos;
         }
 
+        /// <summary>
+        /// Verifica si existe una resolución para la contradicción señalada
+        /// </summary>
+        /// <param name="idContradiccion"></param>
+        /// <returns></returns>
         public bool CheckIfExist(int idContradiccion)
         {
             bool doExist = false;
@@ -116,6 +126,10 @@ namespace ContradiccionesDirectorioApi.Model
             return doExist;
         }
 
+        /// <summary>
+        /// Agrega una resolución para la contradicción señalada
+        /// </summary>
+        /// <param name="contradiccion"></param>
         public void SetNewResolucion(Contradicciones contradiccion)
         {
             OleDbConnection connectionBitacoraSql = DbConnDac.GetConnection();
@@ -171,6 +185,11 @@ namespace ContradiccionesDirectorioApi.Model
 
         }
 
+        /// <summary>
+        /// Actualiza la información de la resolución
+        /// </summary>
+        /// <param name="resolutivo"></param>
+        /// <param name="idContradiccion"></param>
         public void UpdateResolucion(Resolutivos resolutivo, int idContradiccion)
         {
             OleDbConnection connectionBitacoraSql = DbConnDac.GetConnection();

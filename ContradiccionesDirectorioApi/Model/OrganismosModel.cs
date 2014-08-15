@@ -12,9 +12,11 @@ namespace ContradiccionesDirectorioApi.Model
     {
 
 
-
-
-
+        /// <summary>
+        /// Enlista los Tribunales Colegiados, Tribunales Unitarios o Juzgados de Distrito según sea el caso
+        /// </summary>
+        /// <param name="tipoOrganismo"></param>
+        /// <returns></returns>
         public List<Organismos> GetOrganismos(int tipoOrganismo)
         {
             List<Organismos> organismos = new List<Organismos>();

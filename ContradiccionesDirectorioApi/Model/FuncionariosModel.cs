@@ -10,6 +10,12 @@ namespace ContradiccionesDirectorioApi.Model
 {
     public class FuncionariosModel
     {
+
+        /// <summary>
+        /// Enlista los funcionarios de acuerdo al tipo de Organismo
+        /// </summary>
+        /// <param name="tipoOrganismo"></param>
+        /// <returns></returns>
         public ObservableCollection<Funcionarios> GetFuncionarios(int tipoOrganismo)
         {
             ObservableCollection<Funcionarios> funcionarios = new ObservableCollection<Funcionarios>();

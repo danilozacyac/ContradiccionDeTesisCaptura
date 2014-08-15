@@ -205,7 +205,11 @@ namespace ContradiccionesDirectorioApi.Model
             }
         }
 
-
+        /// <summary>
+        /// Obtiene la información de la ejecutoria relacionada a una contradicción o asunto en particular
+        /// </summary>
+        /// <param name="idContradiccion"></param>
+        /// <returns></returns>
         public Ejecutoria GetEjecutoriasPorContradiccion(int idContradiccion)
         {
             Ejecutoria ejecutoria = new Ejecutoria();
@@ -264,7 +268,11 @@ namespace ContradiccionesDirectorioApi.Model
             return ejecutoria;
         }
 
-
+        /// <summary>
+        /// Verifica si la contradicción señalada ya tiene asociada una ejecutoria
+        /// </summary>
+        /// <param name="idContradiccion"></param>
+        /// <returns></returns>
         public bool CheckIsExist(int idContradiccion)
         {
             bool doExist = false;

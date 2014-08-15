@@ -84,6 +84,12 @@ namespace ContradiccionesDirectorioApi.Model
             return this.GetLastinsertId(contradiccion);
         }
 
+        /// <summary>
+        /// Obtiene el último número utilizado como identificador para asignar el posterior a la 
+        /// contradicción que esta por ser registrada
+        /// </summary>
+        /// <param name="contradiccion"></param>
+        /// <returns></returns>
         private int GetLastinsertId(Contradicciones contradiccion)
         {
             int lastId = 0;
@@ -142,6 +148,10 @@ namespace ContradiccionesDirectorioApi.Model
             return lastId;
         }
 
+        /// <summary>
+        /// Enlista las Contradicciones que han sido registradas hasta el momento
+        /// </summary>
+        /// <returns></returns>
         public ObservableCollection<Contradicciones> GetContradicciones()
         {
             ObservableCollection<Contradicciones> contradicciones = new ObservableCollection<Contradicciones>();
@@ -209,6 +219,11 @@ namespace ContradiccionesDirectorioApi.Model
             return contradicciones;
         }
 
+
+        /// <summary>
+        /// Actualiza la información de una de las contradicciones registradas
+        /// </summary>
+        /// <param name="contradiccion"></param>
         public void UpdateContradiccion(Contradicciones contradiccion)
         {
             OleDbConnection connectionBitacoraSql = DbConnDac.GetConnection();
@@ -282,6 +297,11 @@ namespace ContradiccionesDirectorioApi.Model
             }
         }
 
+        /// <summary>
+        /// Elimina el registro de la contradiccion seleccionada
+        /// </summary>
+        /// <param name="contradiccion"></param>
+        /// <returns></returns>
         public bool DeleteContradiccion(Contradicciones contradiccion)
         {
             bool isDeleteComplete = true;

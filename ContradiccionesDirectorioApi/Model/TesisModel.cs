@@ -12,6 +12,11 @@ namespace ContradiccionesDirectorioApi.Model
     public class TesisModel
     {
 
+        /// <summary>
+        /// Establece una relación asunto-tesis
+        /// </summary>
+        /// <param name="tesis"></param>
+        /// <returns></returns>
         public int SetNewTesisPorContradiccion(Tesis tesis)
         {
             OleDbConnection connectionBitacoraSql = DbConnDac.GetConnection();

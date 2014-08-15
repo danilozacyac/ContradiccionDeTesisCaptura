@@ -11,7 +11,10 @@ namespace ContradiccionesDirectorioApi.Model
     public class TiposModel
     {
 
-
+        /// <summary>
+        /// Enlista los diferentes tipo de Asunto por lo cuales se genera un registro
+        /// </summary>
+        /// <returns></returns>
         public List<Tipos> GetTiposAsunto()
         {
             OleDbConnection connectionBitacoraSql = DbConnDac.GetConnection();

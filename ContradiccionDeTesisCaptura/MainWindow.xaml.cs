@@ -6,6 +6,7 @@ using System.Windows;
 using ContradiccionesDirectorioApi.Dao;
 using ContradiccionesDirectorioApi.Model;
 using ContradiccionesDirectorioApi.Utils;
+using ContradiccionDeTesisCaptura.Report;
 
 namespace ContradiccionDeTesisCaptura
 {
@@ -107,6 +108,12 @@ namespace ContradiccionDeTesisCaptura
         private void RGridContradicciones_SelectionChanged(object sender, Telerik.Windows.Controls.SelectionChangeEventArgs e)
         {
             selectedContradiction = RGridContradicciones.SelectedItem as Contradicciones;
+        }
+
+        private void BtnPdf_Click(object sender, RoutedEventArgs e)
+        {
+            ToPdfReport report = new ToPdfReport();
+            report.CtToPdfReport(contradicciones);
         }
 
 
