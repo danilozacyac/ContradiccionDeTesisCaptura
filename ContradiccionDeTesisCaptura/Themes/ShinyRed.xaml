@@ -356,7 +356,7 @@
         </Setter>
     </Style>
 
-    <Style TargetType="{x:Type CheckBox}">
+    <!--<Style TargetType="{x:Type CheckBox}">
         <Setter Property="SnapsToDevicePixels" Value="true" />
         <Setter Property="FocusVisualStyle" Value="{DynamicResource CheckBoxFocusVisual}" />
         <Setter Property="Background" Value="{DynamicResource NormalBrush}" />
@@ -547,7 +547,7 @@
                 <Setter Property="Foreground" Value="{DynamicResource DisabledForegroundBrush}" />
             </Trigger>
         </Style.Triggers>
-    </Style>
+    </Style>-->
 
     <Style TargetType="{x:Type RadioButton}">
         <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />

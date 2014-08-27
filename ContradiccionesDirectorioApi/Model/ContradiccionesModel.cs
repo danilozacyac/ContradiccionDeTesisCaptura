@@ -166,7 +166,7 @@ namespace ContradiccionesDirectorioApi.Model
             ReturnosModel returnoModel = new ReturnosModel();
             ResolucionModel resolucion = new ResolucionModel();
 
-            string oleCadena = "SELECT * FROM Contradicciones";
+            string oleCadena = "SELECT * FROM Contradicciones ORDER By ExpedienteAnio,ExpedienteNumero";
 
             try
             {

@@ -13,6 +13,7 @@
     <Window.Resources>
         <converter:StatusConverter x:Key="statusConverter" />
         <converter:TipoAsuntoConverter x:Key="tiposConverter" />
+        <converter:FinalStatusConverter x:Key="finalStatus" />
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -47,15 +48,20 @@
                              AutoGenerateColumns="False"
                              CanUserDeleteRows="False"
                              CanUserInsertRows="False"
-                             IsReadOnly="True"
+                             IsReadOnly="False"
                              ItemsSource="{Binding}"
                              SelectionChanged="RGridContradicciones_SelectionChanged"
                              ShowGroupPanel="False">
             <telerik:RadGridView.Columns>
+                <telerik:GridViewCheckBoxColumn Width="40"
+                                                DataMemberBinding="{Binding IsComplete}"
+                                                Header="¿Cerrada?"
+                                                IsFilterable="True" />
                 <telerik:GridViewDataColumn Width="40"
                                             DataMemberBinding="{Binding IdContradiccion}"
                                             Header="Id"
-                                            IsVisible="True" />
+                                            IsFilterable="False"
+                                            IsVisible="False" />
                 <telerik:GridViewDataColumn Width="80"
                                             DataMemberBinding="{Binding ExpedienteNumero}"
                                             Header="Num. Exp."
@@ -68,10 +74,11 @@
                                             DataMemberBinding="{Binding IdTipoAsunto,
                                                                         Converter={StaticResource tiposConverter}}"
                                             Header="Tipo de Asunto"
-                                            IsFilterable="True" />
+                                            IsFilterable="False" />
                 <telerik:GridViewDataColumn Width="*"
                                             DataMemberBinding="{Binding Tema}"
-                                            Header="Tema" />
+                                            Header="Tema"
+                                            IsFilterable="False" />
                 <telerik:GridViewDataColumn Width="100"
                                             DataMemberBinding="{Binding Status,
                                                                         Converter={StaticResource statusConverter}}"
@@ -84,13 +91,19 @@
                                             DataFormatString=" {0: dd/MM/yyyy} "
                                             DataMemberBinding="{Binding FechaTurno}"
                                             Header="Fecha de turno"
-                                            IsFilterable="True" />
+                                            IsFilterable="False" />
                 <telerik:GridViewDataColumn Width="150"
                                             DataMemberBinding="{Binding Denunciantes}"
-                                            Header="Denunciante" />
+                                            Header="Denunciante"
+                                            IsFilterable="False" />
 
 
             </telerik:RadGridView.Columns>
+            <telerik:RadGridView.RowStyle>
+                <Style TargetType="telerik:GridViewRow">
+                    <Setter Property="Background" Value="{Binding IsComplete, Converter={StaticResource finalStatus}}" />
+                </Style>
+            </telerik:RadGridView.RowStyle>
         </telerik:RadGridView>
         <Button Name="BtnVisualizar"
                 Grid.Row="2"
@@ -110,6 +123,14 @@
                 VerticalAlignment="Top"
                 Click="BtnDelete_Click"
                 Content="Eliminar" />
-        <Button Content="Generar Listado en PDF" Grid.Row="2" Height="23" HorizontalAlignment="Left" Margin="25,0,0,0" Name="BtnPdf" VerticalAlignment="Top" Width="159" Click="BtnPdf_Click" />
+        <Button Name="BtnPdf"
+                Grid.Row="2"
+                Width="159"
+                Height="23"
+                Margin="25,0,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Click="BtnPdf_Click"
+                Content="Generar Listado en PDF" />
     </Grid>
 </Window>
