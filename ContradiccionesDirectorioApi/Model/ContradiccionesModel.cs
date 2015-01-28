@@ -85,6 +85,57 @@ namespace ContradiccionesDirectorioApi.Model
         }
 
         /// <summary>
+        /// Verifica si la contradicción en cuestión ya se encuentra en la base de datos
+        /// </summary>
+        /// <param name="numero">Número de expediente</param>
+        /// <param name="year">Año del expediente</param>
+        /// <returns></returns>
+        public bool CheckIfExist(int numero, int year)
+        {
+            bool doExist = false;
+
+            string sqlCmd = @"SELECT * FROM Contradicciones " +
+                            " WHERE ExpedienteNumero = @ExpedienteNumero AND ExpedienteAnio = @ExpedienteAnio";
+
+            OleDbConnection connectionBitacoraSql = DbConnDac.GetConnection();
+            OleDbCommand cmd = new OleDbCommand();
+
+            cmd.Connection = connectionBitacoraSql;
+            cmd.CommandText = sqlCmd;
+
+            try
+            {
+                cmd.Parameters.AddWithValue("@ExpedienteNumero",numero);
+                cmd.Parameters.AddWithValue("@ExpedienteAnio", year);
+
+                connectionBitacoraSql.Open();
+
+                OleDbDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    doExist = true;
+                }
+
+            }
+            catch (OleDbException ex)
+            {
+                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            finally
+            {
+                connectionBitacoraSql.Close();
+            }
+
+            return doExist;
+        }
+
+
+        /// <summary>
         /// Obtiene el último número utilizado como identificador para asignar el posterior a la 
         /// contradicción que esta por ser registrada
         /// </summary>
@@ -196,6 +247,7 @@ namespace ContradiccionesDirectorioApi.Model
                     contra.MiEjecutoria = ejecModel.GetEjecutoriasPorContradiccion(contra.IdContradiccion);
                     contra.Returnos = returnoModel.GetReturnos(contra.IdContradiccion);
                     contra.Resolutivo = resolucion.GetResolucion(contra.IdContradiccion);
+                    contra.IsComplete = Convert.ToBoolean(reader["Completa"] as Int16? ?? 0);
 
                     contradicciones.Add(contra);
                 }
@@ -277,6 +329,58 @@ namespace ContradiccionesDirectorioApi.Model
                 dataAdapter.UpdateCommand.Parameters.Add("@IdPlenoCircuito", OleDbType.Numeric, 0, "IdPlenoCircuito");
                 dataAdapter.UpdateCommand.Parameters.Add("@IdPresidentePleno", OleDbType.Numeric, 0, "IdPresidentePleno");
                 dataAdapter.UpdateCommand.Parameters.Add("@IdPonentePleno", OleDbType.Numeric, 0, "IdPonentePleno");
+                dataAdapter.UpdateCommand.Parameters.Add("@IdContradiccion", OleDbType.Numeric, 0, "IdContradiccion");
+
+                dataAdapter.Update(dataSet, "Contradicciones");
+                dataSet.Dispose();
+                dataAdapter.Dispose();
+            }
+            catch (OleDbException ex)
+            {
+                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            finally
+            {
+                connectionBitacoraSql.Close();
+            }
+        }
+
+        /// <summary>
+        /// Actualiza el estado del registro
+        /// </summary>
+        /// <param name="contradiccion"></param>
+        public void UpdateContradiccionStatus(Contradicciones contradiccion)
+        {
+            OleDbConnection connectionBitacoraSql = DbConnDac.GetConnection();
+            OleDbDataAdapter dataAdapter;
+
+            DataSet dataSet = new DataSet();
+            DataRow dr;
+
+            try
+            {
+                string sqlCadena = "SELECT * FROM Contradicciones WHERE IdContradiccion = @IdContradiccion";
+
+                dataAdapter = new OleDbDataAdapter();
+                dataAdapter.SelectCommand = new OleDbCommand(sqlCadena, connectionBitacoraSql);
+                dataAdapter.SelectCommand.Parameters.AddWithValue("@IdContradiccion", contradiccion.IdContradiccion);
+                dataAdapter.Fill(dataSet, "Contradicciones");
+
+                dr = dataSet.Tables[0].Rows[0];
+                dr.BeginEdit();
+                dr["Completa"] = (contradiccion.IsComplete) ? 1 : 0;
+                dr.EndEdit();
+
+                dataAdapter.UpdateCommand = connectionBitacoraSql.CreateCommand();
+                dataAdapter.UpdateCommand.CommandText =
+                                                       "UPDATE Contradicciones SET Completa = @Completa " +
+                                                       " WHERE IdContradiccion = @Idcontradiccion";
+
+                dataAdapter.UpdateCommand.Parameters.Add("@Completa", OleDbType.Numeric, 0, "Completa");
                 dataAdapter.UpdateCommand.Parameters.Add("@IdContradiccion", OleDbType.Numeric, 0, "IdContradiccion");
 
                 dataAdapter.Update(dataSet, "Contradicciones");

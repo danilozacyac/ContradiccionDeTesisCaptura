@@ -11,6 +11,7 @@ namespace ContradiccionesDirectorioApi.Singletons
         private static List<Organismos> colegiados;
         private static List<Organismos> unitarios;
         private static List<Organismos> juzgados;
+        private static List<Organismos> plenos;
 
         private OrganismosSingleton()
         {
@@ -46,6 +47,17 @@ namespace ContradiccionesDirectorioApi.Singletons
                     juzgados = new OrganismosModel().GetOrganismos(3);
 
                 return juzgados;
+            }
+        }
+
+        public static List<Organismos> Plenos
+        {
+            get
+            {
+                if (plenos == null)
+                    plenos = new OrganismosModel().GetPlenos();
+
+                return plenos;
             }
         }
     }

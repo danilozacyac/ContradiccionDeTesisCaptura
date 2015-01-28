@@ -1,9 +1,11 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContradiccionDeTesisCaptura", "ContradiccionDeTesisCaptura\ContradiccionDeTesisCaptura.csproj", "{3FD1002B-8094-4160-BB7C-19F16300D073}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContradiccionesDirectorioApi", "ContradiccionesDirectorioApi\ContradiccionesDirectorioApi.csproj", "{24334615-9B0E-455B-9710-C0E42533F6AD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TableWordToDb", "TableWordToDb\TableWordToDb.csproj", "{B21128D1-DFEF-45C9-8BCC-EC71B56DA229}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,6 +37,16 @@ Global
 		{24334615-9B0E-455B-9710-C0E42533F6AD}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{24334615-9B0E-455B-9710-C0E42533F6AD}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{24334615-9B0E-455B-9710-C0E42533F6AD}.Release|x86.ActiveCfg = Release|Any CPU
+		{B21128D1-DFEF-45C9-8BCC-EC71B56DA229}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B21128D1-DFEF-45C9-8BCC-EC71B56DA229}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B21128D1-DFEF-45C9-8BCC-EC71B56DA229}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{B21128D1-DFEF-45C9-8BCC-EC71B56DA229}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{B21128D1-DFEF-45C9-8BCC-EC71B56DA229}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{B21128D1-DFEF-45C9-8BCC-EC71B56DA229}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B21128D1-DFEF-45C9-8BCC-EC71B56DA229}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B21128D1-DFEF-45C9-8BCC-EC71B56DA229}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{B21128D1-DFEF-45C9-8BCC-EC71B56DA229}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{B21128D1-DFEF-45C9-8BCC-EC71B56DA229}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

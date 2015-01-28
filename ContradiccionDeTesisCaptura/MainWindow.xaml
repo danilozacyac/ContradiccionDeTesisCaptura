@@ -132,5 +132,6 @@
                 VerticalAlignment="Top"
                 Click="BtnPdf_Click"
                 Content="Generar Listado en PDF" />
+        <Button x:Name="BtnImportar" Content="Importar " HorizontalAlignment="Left" Margin="228,0,0,0" Grid.Row="2" VerticalAlignment="Top" Width="75" Height="23" Click="BtnImportar_Click"/>
     </Grid>
 </Window>

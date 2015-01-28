@@ -7,6 +7,7 @@ using ContradiccionesDirectorioApi.DataAccess;
 using ContradiccionesDirectorioApi.Utils;
 using System.Windows.Forms;
 using System.Collections.ObjectModel;
+using ScjnUtilities;
 
 namespace ContradiccionesDirectorioApi.Model
 {
@@ -33,9 +34,9 @@ namespace ContradiccionesDirectorioApi.Model
                 dr = dataSet.Tables["Ejecutorias"].NewRow();
                 dr["IdContradiccion"] = contradiccion.IdContradiccion;
                 dr["FechaResolucion"] = contradiccion.MiEjecutoria.FechaResolucion;
-                dr["FechaResolucionInt"] = DateTimeFunctions.ConvertDateToInt(contradiccion.MiEjecutoria.FechaResolucion);
+                dr["FechaResolucionInt"] = DateTimeUtilities.DateToInt(contradiccion.MiEjecutoria.FechaResolucion);
                 dr["FechaEngrose"] = contradiccion.MiEjecutoria.FechaEngrose;
-                dr["FechaEngroseInt"] = DateTimeFunctions.ConvertDateToInt(contradiccion.MiEjecutoria.FechaEngrose); 
+                dr["FechaEngroseInt"] = DateTimeUtilities.DateToInt(contradiccion.MiEjecutoria.FechaEngrose); 
                 dr["SISE"] = contradiccion.MiEjecutoria.Sise;
                 dr["Responsable"] = contradiccion.MiEjecutoria.Responsable;
                 dr["Signatario"] = contradiccion.MiEjecutoria.Signatario;
@@ -158,9 +159,9 @@ namespace ContradiccionesDirectorioApi.Model
                 dr = dataSet.Tables[0].Rows[0];
                 dr.BeginEdit();
                 dr["FechaResolucion"] = contradiccion.MiEjecutoria.FechaResolucion;
-                dr["FechaResolucionInt"] = DateTimeFunctions.ConvertDateToInt(contradiccion.MiEjecutoria.FechaResolucion);
+                dr["FechaResolucionInt"] = DateTimeUtilities.DateToInt(contradiccion.MiEjecutoria.FechaResolucion);
                 dr["FechaEngrose"] = contradiccion.MiEjecutoria.FechaEngrose;
-                dr["FechaEngroseInt"] = DateTimeFunctions.ConvertDateToInt(contradiccion.MiEjecutoria.FechaEngrose);
+                dr["FechaEngroseInt"] = DateTimeUtilities.DateToInt(contradiccion.MiEjecutoria.FechaEngrose);
                 dr["SISE"] = contradiccion.MiEjecutoria.Sise;
                 dr["Responsable"] = contradiccion.MiEjecutoria.Responsable;
                 dr["Signatario"] = contradiccion.MiEjecutoria.Signatario;
@@ -212,7 +213,7 @@ namespace ContradiccionesDirectorioApi.Model
         /// <returns></returns>
         public Ejecutoria GetEjecutoriasPorContradiccion(int idContradiccion)
         {
-            Ejecutoria ejecutoria = new Ejecutoria();
+            Ejecutoria ejecutoria = null;
 
             OleDbConnection oleConnection = DbConnDac.GetConnection();
             OleDbCommand cmd;
@@ -229,17 +230,9 @@ namespace ContradiccionesDirectorioApi.Model
 
                 while (reader.Read())
                 {
-
-                    if (reader["FechaResolucion"] == DBNull.Value)
-                        ejecutoria.FechaResolucion = null;
-                    else
-                        ejecutoria.FechaResolucion = Convert.ToDateTime(reader["FechaResolucion"]);
-
-                    if (reader["FechaEngrose"] == DBNull.Value)
-                        ejecutoria.FechaEngrose = null;
-                    else
-                        ejecutoria.FechaEngrose = Convert.ToDateTime(reader["FechaEngrose"]);
-
+                    ejecutoria = new Ejecutoria();
+                    ejecutoria.FechaResolucion = DateTimeUtilities.GetDateFromReader(reader, "FechaResolucion");
+                    ejecutoria.FechaEngrose = DateTimeUtilities.GetDateFromReader(reader, "FechaEngrose");
                     ejecutoria.Sise = reader["SISE"].ToString();
                     ejecutoria.Responsable = reader["Responsable"].ToString();
                     ejecutoria.Signatario = reader["Signatario"].ToString();

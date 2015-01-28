@@ -82,5 +82,54 @@ namespace ContradiccionesDirectorioApi.Model
         }
 
 
+        public List<Organismos> GetPlenos()
+        {
+            List<Organismos> organismos = new List<Organismos>();
+
+            OleDbConnection oleConne = DbConnDac.GetConnection();
+            OleDbCommand cmd = null;
+            OleDbDataReader reader = null;
+
+            String sqlCadena = "SELECT * FROM PlenoC Order By IdPleno";
+
+            try
+            {
+                oleConne.Open();
+
+                cmd = new OleDbCommand(sqlCadena, oleConne);
+                reader = cmd.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        //int age = reader["Age"] as int? ?? -1;
+                        Organismos organismoAdd = new Organismos();
+                        organismoAdd.IdOrganismo = reader["IdPleno"] as int? ?? -1;
+                        organismoAdd.Organismo = reader["Descripcion"].ToString() + "(" + reader["Especializacion"].ToString() + ")";
+
+                        organismos.Add(organismoAdd);
+                    }
+                }
+            }
+            catch (OleDbException sql)
+            {
+                MessageBox.Show("Error ({0}) : {1}" + sql.Source + sql.Message, "Error Interno");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, "Error Interno");
+            }
+            finally
+            {
+                cmd.Dispose();
+                reader.Close();
+                oleConne.Close();
+            }
+
+            return organismos;
+        }
+
+
     }
 }

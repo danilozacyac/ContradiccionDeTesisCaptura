@@ -93,7 +93,14 @@ namespace ContradiccionDeTesisCaptura
             tesis.VersionPublica = (RadSiPublica.IsChecked == true) ? 1 : 0;
             tesis.CopiaCertificada = (RadSiCopia.IsChecked == true) ? 1 : 0;
             tesis.CambioCriterio = (RadSiCambio.IsChecked == true) ? 1 : 0;
-            tesis.Tatj = (RadJuris.IsChecked == true) ? 1 : 0;
+
+            if (RadJuris.IsChecked == true)
+                tesis.Tatj = 1;
+            else if (RadAislada.IsChecked == true)
+                tesis.Tatj = 0;
+            else
+                tesis.Tatj = -1;
+
 
             if (isUpdating)
             {
@@ -149,12 +156,14 @@ namespace ContradiccionDeTesisCaptura
 
         private void LoadNoBindings()
         {
-            
+
 
             if (tesis.Tatj == 1)
                 RadJuris.IsChecked = true;
-            else
+            else if (tesis.Tatj == 0)
                 RadAislada.IsChecked = true;
+            else
+                RadImprocedente.IsChecked = true;
 
             if (tesis.VersionPublica == 1)
                 RadSiPublica.IsChecked = true;

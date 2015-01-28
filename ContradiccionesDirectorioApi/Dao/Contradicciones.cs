@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using ContradiccionesDirectorioApi.Model;
 
 namespace ContradiccionesDirectorioApi.Dao
 {
@@ -27,8 +28,11 @@ namespace ContradiccionesDirectorioApi.Dao
         private ObservableCollection<Tesis> miTesis;
         private Ejecutoria miEjecutoria;
         private Resolutivos resolutivo;
+        private Admisorio acAdmisorio;
 
         
+        
+
         public bool IsComplete
         {
             get
@@ -288,6 +292,18 @@ namespace ContradiccionesDirectorioApi.Dao
             }
         }
 
+        public Admisorio AcAdmisorio
+        {
+            get
+            {
+                return this.acAdmisorio;
+            }
+            set
+            {
+                this.acAdmisorio = value;
+            }
+        }
+
         #region INotifyPropertyChanged Members
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -296,6 +312,11 @@ namespace ContradiccionesDirectorioApi.Dao
         {
             if (this.PropertyChanged != null)
                 this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+
+            if (propertyName.Equals("IsComplete"))
+            {
+                new ContradiccionesModel().UpdateContradiccionStatus(this);
+            }
         }
 
         #endregion // INotifyPropertyChanged Members

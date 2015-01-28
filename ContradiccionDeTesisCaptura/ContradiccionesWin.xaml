@@ -125,6 +125,9 @@
                                Content="Pleno de Circuito:" />
                         <ComboBox Name="CbxPlenos"
                                   Grid.Column="1"
+                                  ItemsSource="{Binding}"
+                                  DisplayMemberPath="Organismo"
+                                  SelectedValuePath="IdOrganismo"
                                   Width="281"
                                   Height="23"
                                   Margin="5,59,0,0"
@@ -301,6 +304,31 @@
                 </Grid>
             </TabItem>
 
+            <TabItem Name="TabAcuerdo" Header="   Acuerdo admisorio   ">
+                <Grid>
+                    <telerik:RadDatePicker x:Name="DtpAcuerdo"
+                                           Width="171"
+                                           Margin="193,26,0,0"
+                                           HorizontalAlignment="Left"
+                                           VerticalAlignment="Top" />
+                    <Label Margin="40,32,0,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Top"
+                           Content="Fecha del Acuerdo:" />
+                    <Label Margin="40,84,0,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Top"
+                           Content="Acuerdo" />
+                    <TextBox Name="TxtAcuerdo"
+                             Margin="40,119,40,20"
+                             HorizontalAlignment="Stretch"
+                             VerticalAlignment="Stretch"
+                             Text="{Binding AcAdmisorio.Acuerdo,
+                                            Mode=TwoWay}"
+                             TextWrapping="Wrap" />
+
+                </Grid>
+            </TabItem>
             <TabItem Name="TabReturno" Header="   Returnos/Resolución   ">
                 <Grid>
                     <Grid.RowDefinitions>
@@ -496,58 +524,71 @@
                     <telerik:RadGridView Name="GTesisContra"
                                          Grid.Row="0"
                                          Margin="40,30,30,45"
-                                         ItemsSource="{Binding MiTesis}"
-                                         ShowGroupPanel="False"
                                          HorizontalAlignment="Stretch"
-                                         VerticalAlignment="Stretch" SelectionChanged="GTesisContra_SelectionChanged" />
-                    
+                                         VerticalAlignment="Stretch"
+                                         ItemsSource="{Binding MiTesis}"
+                                         SelectionChanged="GTesisContra_SelectionChanged"
+                                         ShowGroupPanel="False" />
+
                     <Grid Grid.Row="1">
                         <Label Name="label9"
-                           Height="28"
-                           Margin="40,14,0,0"
-                           HorizontalAlignment="Left"
-                           VerticalAlignment="Top"
-                           Content="Clave de control:" />
+                               Height="28"
+                               Margin="40,14,0,0"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Top"
+                               Content="Clave de control:" />
                         <TextBox Name="TxtCControl"
-                             Width="190" Margin="178,11,0,66"
-                             HorizontalAlignment="Left"  IsReadOnly="True" />
+                                 Width="190"
+                                 Margin="178,11,0,66"
+                                 HorizontalAlignment="Left"
+                                 IsReadOnly="True" />
                         <Label Name="label10"
-                           Grid.RowSpan="2"
-                           Height="28"
-                           Margin="485,37,0,0"
-                           HorizontalAlignment="Left"
-                           VerticalAlignment="Top"
-                           Content="Tipo de tesis:" />
+                               Height="28"
+                               Margin="390,29,0,0"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Top"
+                               Content="Tipo de tesis:" />
                         <RadioButton Name="RadJuris"
-                                 Height="16"
-                                 Margin="583,34,0,0"
-                                 HorizontalAlignment="Left"
-                                 VerticalAlignment="Top"
-                                 Content="  Jurisprudencia"
-                                 Foreground="Black"
-                                 GroupName="TipoTesis" IsEnabled="False" />
+                                     Height="16"
+                                     Margin="488,26,0,0"
+                                     HorizontalAlignment="Left"
+                                     VerticalAlignment="Top"
+                                     Content="  Jurisprudencia"
+                                     Foreground="Black"
+                                     GroupName="TipoTesis"
+                                     IsEnabled="False" />
                         <RadioButton Name="RadAislada"
-                                 Height="16"
-                                 Margin="722,34,0,0"
+                                     Height="16"
+                                     Margin="627,26,0,0"
+                                     HorizontalAlignment="Left"
+                                     VerticalAlignment="Top"
+                                     Content="  Tesis Aislada"
+                                     Foreground="Black"
+                                     GroupName="TipoTesis"
+                                     IsEnabled="False" />
+                        <Label Name="label35"
+                               Height="28"
+                               Margin="40,42,0,0"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Top"
+                               Content="Clave de identificación:" />
+                        <TextBox Name="TxtClaveIdent"
+                                 Width="190"
+                                 Height="23"
+                                 Margin="178,39,0,0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
-                                 Content="  Tesis Aislada"
-                                 Foreground="Black"
-                                 GroupName="TipoTesis" IsEnabled="False" />
-                        <Label Name="label35"
-                           Height="28"
-                           Margin="40,42,0,0"
-                           HorizontalAlignment="Left"
-                           VerticalAlignment="Top"
-                           Content="Clave de identificación:" />
-                        <TextBox Name="TxtClaveIdent"
-                             Width="190"
-                             Height="23"
-                             Margin="178,39,0,0"
-                             HorizontalAlignment="Left"
-                             VerticalAlignment="Top" IsReadOnly="True" />
+                                 IsReadOnly="True" />
+                        <RadioButton Name="RadImprocedente"
+                                     Height="16"
+                                     Margin="750,26,0,0"
+                                     HorizontalAlignment="Left"
+                                     VerticalAlignment="Top"
+                                     Content=" Improcedente"
+                                     Foreground="Black"
+                                     GroupName="TipoTesis" />
                     </Grid>
-                    
+
                     <Grid Grid.Row="2">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
@@ -563,11 +604,32 @@
                                  HorizontalAlignment="Stretch"
                                  VerticalAlignment="Stretch"
                                  AcceptsReturn="True"
-                                 TextWrapping="WrapWithOverflow" IsReadOnly="True" />
+                                 IsReadOnly="True"
+                                 TextWrapping="WrapWithOverflow" />
                     </Grid>
-                    <Button Content="Actualizar Tesis" Height="23" HorizontalAlignment="Right" Margin="0,274,143,0" Name="BtnEditar" VerticalAlignment="Top" Width="107" Click="BtnEditar_Click" />
-                    <Button Content="Eliminar Tesis" Height="23" HorizontalAlignment="Right" Margin="0,274,256,0" Name="BtnEliminar" VerticalAlignment="Top" Width="107" />
-                    <Button Content="Agregar Tesis" Height="23" HorizontalAlignment="Right" Margin="0,274,30,0" Name="BtnAddTesis" VerticalAlignment="Top" Width="107" Click="BtnAddTesis_Click" />
+                    <Button Name="BtnEditar"
+                            Width="107"
+                            Height="23"
+                            Margin="0,0,143,12"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Bottom"
+                            Click="BtnEditar_Click"
+                            Content="Actualizar Tesis" />
+                    <Button Name="BtnEliminar"
+                            Width="107"
+                            Height="23"
+                            Margin="0,0,256,12"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Bottom"
+                            Content="Eliminar Tesis" />
+                    <Button Name="BtnAddTesis"
+                            Width="107"
+                            Height="23"
+                            Margin="0,0,30,12"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Bottom"
+                            Click="BtnAddTesis_Click"
+                            Content="Agregar Tesis" />
                 </Grid>
             </TabItem>
 

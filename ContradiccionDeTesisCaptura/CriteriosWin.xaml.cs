@@ -9,6 +9,7 @@ using ContradiccionesDirectorioApi.Singletons;
 using ContradiccionesDirectorioApi.Utils;
 using MantesisVerIusCommonObjects.Dto;
 using MantesisVerIusCommonObjects.Model;
+using ScjnUtilities;
 
 namespace ContradiccionDeTesisCaptura
 {
@@ -47,7 +48,7 @@ namespace ContradiccionDeTesisCaptura
 
         private void TxtTesis_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            e.Handled = StringFunctions.IsADigit(e.Text);
+            e.Handled = StringUtilities.IsTextAllowed(e.Text);
         }
 
         private void TxtTesis_KeyDown(object sender, KeyEventArgs e)

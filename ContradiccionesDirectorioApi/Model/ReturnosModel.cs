@@ -7,6 +7,7 @@ using ContradiccionesDirectorioApi.DataAccess;
 using ContradiccionesDirectorioApi.Utils;
 using System.Windows.Forms;
 using System.Collections.ObjectModel;
+using ScjnUtilities;
 
 namespace ContradiccionesDirectorioApi.Model
 {
@@ -92,7 +93,7 @@ namespace ContradiccionesDirectorioApi.Model
                 dr = dataSet.Tables["Returnos"].NewRow();
                 dr["IdContradiccion"] = contradiccion.IdContradiccion;
                 dr["Fecha"] = returno.Fecha;
-                dr["FechaInt"] = DateTimeFunctions.ConvertDateToInt(returno.Fecha);
+                dr["FechaInt"] = DateTimeUtilities.DateToInt(returno.Fecha);
                 dr["IdOrgOrigen"] = returno.IdOrganoOrigen;
                 dr["IdOrgDestino"] = returno.IdOrganoDestino;
                 dr["ExpOrigen"] = returno.ExpOrigen;
@@ -160,7 +161,7 @@ namespace ContradiccionesDirectorioApi.Model
                 dr = dataSet.Tables[0].Rows[0];
                 dr.BeginEdit();
                 dr["Fecha"] = returno.Fecha;
-                dr["FechaInt"] = DateTimeFunctions.ConvertDateToInt(returno.Fecha);
+                dr["FechaInt"] = DateTimeUtilities.DateToInt(returno.Fecha);
                 dr["IdOrgOrigen"] = returno.IdOrganoOrigen;
                 dr["IdOrgDestino"] = returno.IdOrganoDestino;
                 dr["ExpOrigen"] = returno.ExpOrigen;

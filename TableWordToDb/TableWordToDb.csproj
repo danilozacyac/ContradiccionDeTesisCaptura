@@ -1,18 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{24334615-9B0E-455B-9710-C0E42533F6AD}</ProjectGuid>
+    <ProjectGuid>{B21128D1-DFEF-45C9-8BCC-EC71B56DA229}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ContradiccionesDirectorioApi</RootNamespace>
-    <AssemblyName>ContradiccionesDirectorioApi</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <RootNamespace>TableWordToDb</RootNamespace>
+    <AssemblyName>TableWordToDb</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -32,49 +30,33 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MantesisVerIusCommonObjects">
-      <HintPath>..\..\MantesisWpf\MantesisWpf\bin\Debug\MantesisVerIusCommonObjects.dll</HintPath>
+    <Reference Include="Microsoft.Office.Interop.Word, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="ScjnUtilities, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\Visual Studio 2012\Projects\ScjnUtilities\ScjnUtilities\bin\Debug\ScjnUtilities.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Dao\Admisorio.cs" />
-    <Compile Include="Dao\Contradicciones.cs" />
-    <Compile Include="Dao\Criterios.cs" />
-    <Compile Include="Dao\Ejecutoria.cs" />
-    <Compile Include="Dao\Funcionarios.cs" />
-    <Compile Include="Dao\Organismos.cs" />
-    <Compile Include="Dao\Resolutivos.cs" />
-    <Compile Include="Dao\ReturnosClass.cs" />
-    <Compile Include="Dao\Tesis.cs" />
-    <Compile Include="Dao\Tipos.cs" />
-    <Compile Include="DataAccess\DbConnDac.cs" />
-    <Compile Include="Model\AdmisorioModel.cs" />
-    <Compile Include="Model\ContradiccionesModel.cs" />
-    <Compile Include="Model\CriteriosModel.cs" />
-    <Compile Include="Model\EjecutoriasModel.cs" />
-    <Compile Include="Model\FuncionariosModel.cs" />
-    <Compile Include="Model\OrganismosModel.cs" />
-    <Compile Include="Model\ResolucionModel.cs" />
-    <Compile Include="Model\ReturnosModel.cs" />
-    <Compile Include="Model\TesisModel.cs" />
-    <Compile Include="Model\TiposModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Singletons\FuncionariosSingleton.cs" />
-    <Compile Include="Singletons\OrganismosSingleton.cs" />
-    <Compile Include="Singletons\TipoAsuntoSingleton.cs" />
-    <Compile Include="Utils\ConstantMessages.cs" />
+    <Compile Include="ReadTable.cs" />
+    <Compile Include="TableInfo.cs" />
+    <Compile Include="WordInfoProcess.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ContradiccionesDirectorioApi\ContradiccionesDirectorioApi.csproj">
+      <Project>{24334615-9b0e-455b-9710-c0e42533f6ad}</Project>
+      <Name>ContradiccionesDirectorioApi</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -7,6 +7,7 @@ using ContradiccionesDirectorioApi.Dao;
 using ContradiccionesDirectorioApi.Model;
 using ContradiccionesDirectorioApi.Utils;
 using ContradiccionDeTesisCaptura.Report;
+using TableWordToDb;
 
 namespace ContradiccionDeTesisCaptura
 {
@@ -114,6 +115,12 @@ namespace ContradiccionDeTesisCaptura
         {
             ToPdfReport report = new ToPdfReport();
             report.CtToPdfReport(contradicciones);
+        }
+
+        private void BtnImportar_Click(object sender, RoutedEventArgs e)
+        {
+            WordInfoProcess merge = new WordInfoProcess();
+            merge.CopyWordToDb();
         }
 
 

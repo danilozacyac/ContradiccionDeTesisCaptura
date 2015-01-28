@@ -29,16 +29,14 @@
                  VerticalAlignment="Top"
                  Text="{Binding ClaveControl,
                                 Mode=TwoWay}" />
-        <Label Name="label10"
-               Grid.RowSpan="2"
-               Height="28"
-               Margin="485,37,0,0"
+        <Label Name="label10" Height="28"
+               Margin="396,29,0,0"
                HorizontalAlignment="Left"
                VerticalAlignment="Top"
                Content="Tipo de tesis:" />
         <RadioButton Name="RadJuris"
                      Height="16"
-                     Margin="583,34,0,0"
+                     Margin="494,26,0,0"
                      HorizontalAlignment="Left"
                      VerticalAlignment="Top"
                      Content="  Jurisprudencia"
@@ -46,7 +44,7 @@
                      GroupName="TipoTesis" />
         <RadioButton Name="RadAislada"
                      Height="16"
-                     Margin="722,34,0,0"
+                     Margin="633,26,0,0"
                      HorizontalAlignment="Left"
                      VerticalAlignment="Top"
                      Content="  Tesis Aislada"
@@ -308,5 +306,6 @@
                 VerticalAlignment="Top"
                 Click="BtnGuardar_Click"
                 Content="Guardar" />
+        <RadioButton Content=" Improcedente" Height="16" HorizontalAlignment="Right" Margin="0,26,31,0" Name="RadImprocedente" VerticalAlignment="Top" Foreground="Black" GroupName="TipoTesis" />
     </Grid>
 </Window>

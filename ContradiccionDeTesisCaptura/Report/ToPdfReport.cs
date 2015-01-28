@@ -7,6 +7,7 @@ using ContradiccionesDirectorioApi.Dao;
 using ContradiccionesDirectorioApi.Singletons;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
+using ScjnUtilities;
 
 namespace ContradiccionDeTesisCaptura.Report
 {
@@ -21,8 +22,8 @@ namespace ContradiccionDeTesisCaptura.Report
 
             string filePath = Path.GetTempFileName() + ".pdf";
 
-            try
-            {
+            //try
+            //{
                 PdfWriter writer = PdfWriter.GetInstance(myDocument, new FileStream(filePath, FileMode.Create));
                 HeaderFooter pdfPage = new HeaderFooter();
                 writer.PageEvent = pdfPage;
@@ -88,10 +89,10 @@ namespace ContradiccionDeTesisCaptura.Report
                     cell = this.InitializeCell(contra.Denunciantes + ".   ", Fuentes.ContenidoCelda, 0);
                     table.AddCell(cell);
 
-                    cell = this.InitializeCell(contra.Oficio, Fuentes.ContenidoCelda, 1);
+                    cell = this.InitializeCell(contra.Oficio + ", DE " + DateTimeUtilities.ToLongDateFormat( contra.FechaTurno).ToUpper(), Fuentes.ContenidoCelda, 1);
                     table.AddCell(cell);
 
-                    cell = this.InitializeCell("  ", Fuentes.ContenidoCelda, 0);
+                    cell = this.InitializeCell(" ", Fuentes.ContenidoCelda, 0);
                     table.AddCell(cell);
 
                     cell = this.InitializeCell(contra.Criterios, Fuentes.ContenidoCelda, 3);
@@ -111,9 +112,19 @@ namespace ContradiccionDeTesisCaptura.Report
                     cell = this.InitializeCell(contra.Tema, Fuentes.ContenidoCelda, 3);
                     table.AddCell(cell);
 
-                    cell = this.InitializeCell("  ", Fuentes.ContenidoCelda, 1);
-                    //cell = new PdfPCell(new Phrase(contra.MiEjecutoria.FechaResolucion.Value.ToString(format), Fuentes.ContenidoCelda));
-                    table.AddCell(cell);
+                    if (contra.MiEjecutoria != null && contra.MiEjecutoria.FechaResolucion != null)
+                    {
+
+                        cell = this.InitializeCell(contra.MiEjecutoria.FechaResolucion.Value.ToShortDateString(), Fuentes.ContenidoCelda, 1);
+                        //cell = new PdfPCell(new Phrase(contra.MiEjecutoria.FechaResolucion.Value.ToString(format), Fuentes.ContenidoCelda));
+                        table.AddCell(cell);
+                    }
+                    else
+                    {
+                        cell = this.InitializeCell("  ", Fuentes.ContenidoCelda, 1);
+                        //cell = new PdfPCell(new Phrase(contra.MiEjecutoria.FechaResolucion.Value.ToString(format), Fuentes.ContenidoCelda));
+                        table.AddCell(cell);
+                    }
 
                     cell = this.InitializeCell(contra.Resolutivo.PuntosResolutivos, Fuentes.ContenidoCelda, 3);
                     table.AddCell(cell);
@@ -126,16 +137,16 @@ namespace ContradiccionDeTesisCaptura.Report
 
                 myDocument.Add(table);
                 consec++;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, "Error Interno");
-            }
-            finally
-            {
+            //}
+            //catch (Exception ex)
+            //{
+            //    MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, "Error Interno");
+            //}
+            //finally
+            //{
                 myDocument.Close();
                 System.Diagnostics.Process.Start(filePath);
-            }
+            //}
         }
 
         private PdfPCell InitializeCell(string cellContent, Font cellFont, int textAlign)

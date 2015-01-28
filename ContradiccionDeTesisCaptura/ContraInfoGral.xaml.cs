@@ -15,6 +15,7 @@ using ContradiccionesDirectorioApi.Dao;
 using System.Collections.ObjectModel;
 using ContradiccionesDirectorioApi.Singletons;
 using ContradiccionesDirectorioApi.Model;
+using ScjnUtilities;
 
 namespace ContradiccionDeTesisCaptura
 {
@@ -58,7 +59,7 @@ namespace ContradiccionDeTesisCaptura
 
         private void TxtExpNumero_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            e.Handled = StringFunctions.IsADigit(e.Text);
+            e.Handled = StringUtilities.IsTextAllowed(e.Text);
         }
 
         private void BtnSalvar_Click(object sender, RoutedEventArgs e)

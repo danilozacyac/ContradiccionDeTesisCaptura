@@ -9,6 +9,7 @@ using ContradiccionesDirectorioApi.Singletons;
 using ContradiccionesDirectorioApi.Utils;
 using MantesisVerIusCommonObjects.Dto;
 using MantesisVerIusCommonObjects.Model;
+using ScjnUtilities;
 
 namespace ContradiccionDeTesisCaptura
 {
@@ -46,6 +47,7 @@ namespace ContradiccionDeTesisCaptura
 
             CbxPresidente.DataContext = FuncionariosSingleton.FuncionariosCollection;
             CbxPonente.DataContext = FuncionariosSingleton.FuncionariosCollection;
+            CbxPlenos.DataContext = OrganismosSingleton.Plenos;
 
             CbxPresidente.SelectedValue = contradiccion.IdPresidentePleno;
             CbxPonente.SelectedValue = contradiccion.IdPonentePleno;
@@ -62,7 +64,7 @@ namespace ContradiccionDeTesisCaptura
         private void BtnSalvar_Click(object sender, RoutedEventArgs e)
         {
             ///Validaciones
-            if (RadJuris.IsChecked == false && RadAislada.IsChecked == false)
+            if (RadJuris.IsChecked == false && RadAislada.IsChecked == false && RadImprocedente.IsChecked == false)
             {
                 MessageBox.Show(ConstantMessages.SeleccionaTipoDeTesis);
                 return;
@@ -104,7 +106,17 @@ namespace ContradiccionDeTesisCaptura
             {
                 eje.SetNewEjecutoriaPorContradiccion(contradiccion);
             }
-            
+
+            AdmisorioModel admisorio = new AdmisorioModel();
+            if (admisorio.CheckIfExist(contradiccion.AcAdmisorio.IdAcuerdo))
+            {
+                admisorio.UpdateAdmisorio(contradiccion.AcAdmisorio);
+            }
+            else
+            {
+                admisorio.SetNewAdmisorio(contradiccion.AcAdmisorio);
+            }
+
             this.Close();
         }
 
@@ -151,12 +163,12 @@ namespace ContradiccionDeTesisCaptura
 
         private void TxtExpNumero_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            e.Handled = StringFunctions.IsADigit(e.Text);
+            e.Handled = StringUtilities.IsTextAllowed(e.Text);
         }
 
         private void TxtRelTesis_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            e.Handled = StringFunctions.IsADigit(e.Text);
+            e.Handled = StringUtilities.IsTextAllowed(e.Text);
         }
 
         private void BtnAgregarTesis_Click(object sender, RoutedEventArgs e)
@@ -309,8 +321,10 @@ namespace ContradiccionDeTesisCaptura
 
             if (selectedTesis.Tatj == 1)
                 RadJuris.IsChecked = true;
-            else
+            else if (selectedTesis.Tatj == 0)
                 RadAislada.IsChecked = true;
+            else
+                RadImprocedente.IsChecked = true;
         }
 
         private void BtnEditar_Click(object sender, RoutedEventArgs e)
