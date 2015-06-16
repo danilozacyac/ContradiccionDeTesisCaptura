@@ -99,7 +99,7 @@
                 Margin="410,490,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
-                Content="Cancelar" />
+                Content="Cancelar" Click="BtnCancelar_Click" />
         <Label Name="label5"
                Height="28"
                Margin="28,239,0,0"

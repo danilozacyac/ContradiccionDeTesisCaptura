@@ -13,10 +13,11 @@ namespace ContradiccionesDirectorioApi.Dao
         private int idContradiccion;
         private int expedienteNumero;
         private int expedienteAnio;
+        private string expProvisional;
         private int idTipoAsunto;
         private String tema;
         private int status;
-        private String oficio;
+        //private String oficio;
         private DateTime? fechaTurno;
         private ObservableCollection<Criterios> criterios;
         private ObservableCollection<ReturnosClass> returnos;
@@ -29,9 +30,24 @@ namespace ContradiccionesDirectorioApi.Dao
         private Ejecutoria miEjecutoria;
         private Resolutivos resolutivo;
         private Admisorio acAdmisorio;
+        private ObservableCollection<Oficios> oficios;
 
         
         
+
+        
+
+        public string ExpProvisional
+        {
+            get
+            {
+                return this.expProvisional;
+            }
+            set
+            {
+                this.expProvisional = value;
+            }
+        }
 
         public bool IsComplete
         {
@@ -135,18 +151,18 @@ namespace ContradiccionesDirectorioApi.Dao
             }
         }
 
-        public string Oficio
-        {
-            get
-            {
-                return this.oficio;
-            }
-            set
-            {
-                this.oficio = value;
-                this.OnPropertyChanged("Oficio");
-            }
-        }
+        //public string Oficio
+        //{
+        //    get
+        //    {
+        //        return this.oficio;
+        //    }
+        //    set
+        //    {
+        //        this.oficio = value;
+        //        this.OnPropertyChanged("Oficio");
+        //    }
+        //}
 
         public DateTime? FechaTurno
         {
@@ -301,6 +317,18 @@ namespace ContradiccionesDirectorioApi.Dao
             set
             {
                 this.acAdmisorio = value;
+            }
+        }
+
+        public ObservableCollection<Oficios> Oficios
+        {
+            get
+            {
+                return this.oficios;
+            }
+            set
+            {
+                this.oficios = value;
             }
         }
 

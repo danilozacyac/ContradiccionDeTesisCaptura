@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Office.Interop.Word;
 
 namespace TableWordToDb
@@ -21,8 +19,6 @@ namespace TableWordToDb
             document.ActiveWindow.View.ShowRevisionsAndComments = false;
 
             Tables ttt = document.Tables;
-
-            string aCellText;
 
             foreach (Table tab in ttt)
                 foreach (Row aRow in tab.Rows)

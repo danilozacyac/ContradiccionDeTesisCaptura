@@ -120,7 +120,7 @@ namespace ContradiccionDeTesisCaptura
         private void BtnImportar_Click(object sender, RoutedEventArgs e)
         {
             WordInfoProcess merge = new WordInfoProcess();
-            merge.CopyWordToDb();
+            merge.GetListaContradiccionesFaltantes();
         }
 
 

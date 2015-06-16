@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Configuration;
 using System.Data.OleDb;
 using System.Linq;
 using System.Windows.Forms;
 using ContradiccionesDirectorioApi.Dao;
-using ContradiccionesDirectorioApi.DataAccess;
 
 namespace ContradiccionesDirectorioApi.Model
 {
@@ -20,7 +20,7 @@ namespace ContradiccionesDirectorioApi.Model
         {
             ObservableCollection<Funcionarios> funcionarios = new ObservableCollection<Funcionarios>();
 
-            OleDbConnection oleConne = DbConnDac.GetConnectionDirectorio();
+            OleDbConnection oleConne = new OleDbConnection(ConfigurationManager.ConnectionStrings["Directorio"].ToString());
             OleDbCommand cmd = null;
             OleDbDataReader reader = null;
 

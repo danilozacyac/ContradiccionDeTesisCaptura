@@ -1,20 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using ContradiccionesDirectorioApi.Utils;
-using ContradiccionesDirectorioApi.Dao;
 using System.Collections.ObjectModel;
-using ContradiccionesDirectorioApi.Singletons;
+using System.Linq;
+using System.Windows;
+using System.Windows.Input;
+using ContradiccionesDirectorioApi.Dao;
 using ContradiccionesDirectorioApi.Model;
+using ContradiccionesDirectorioApi.Singletons;
+using ContradiccionesDirectorioApi.Utils;
 using ScjnUtilities;
 
 namespace ContradiccionDeTesisCaptura
@@ -40,6 +32,7 @@ namespace ContradiccionDeTesisCaptura
             this.DataContext = contradiccion;
             CbxTiposAsuntos.DataContext = TipoAsuntoSingleton.TipoAsunto;
 
+            CbxPlenos.DataContext = OrganismosSingleton.Plenos;
             CbxPresidente.DataContext = FuncionariosSingleton.FuncionariosCollection;
             CbxPonente.DataContext = FuncionariosSingleton.FuncionariosCollection;
         }
@@ -92,9 +85,18 @@ namespace ContradiccionDeTesisCaptura
 
             ContradiccionesModel contra = new ContradiccionesModel();
             CriteriosModel crit = new CriteriosModel();
+            OficiosModel ofi = new OficiosModel();
+
+            Oficios oficio = new Oficios();
+            oficio.Oficio = TxtOficio.Text;
+            oficio.FechaOficio = DateFOficio.SelectedDate;
 
             contradiccion.IdContradiccion = contra.SetNewContradiccion(contradiccion);
             crit.SetNewCriterios(contradiccion);
+            ofi.SetNewOficio(oficio, contradiccion.IdContradiccion);
+
+            contradiccion.Oficios = new ObservableCollection<Oficios>();
+            contradiccion.Oficios.Add(oficio);
 
             listado.Listado.Add(contradiccion);
             this.Close();
@@ -105,5 +107,12 @@ namespace ContradiccionDeTesisCaptura
             Observaciones obsr = new Observaciones(contradiccion);
             obsr.ShowDialog();
         }
+
+        private void BtnPrueba_Click(object sender, RoutedEventArgs e)
+        {
+            //DateTimeUtilities.IdentifyCompleteDate(TxtPrueba.Text);
+        }
+
+        
     }
 }

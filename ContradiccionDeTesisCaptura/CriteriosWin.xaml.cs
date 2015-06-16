@@ -6,7 +6,6 @@ using System.Windows.Input;
 using ContradiccionesDirectorioApi.Dao;
 using ContradiccionesDirectorioApi.Model;
 using ContradiccionesDirectorioApi.Singletons;
-using ContradiccionesDirectorioApi.Utils;
 using MantesisVerIusCommonObjects.Dto;
 using MantesisVerIusCommonObjects.Model;
 using ScjnUtilities;
@@ -98,6 +97,11 @@ namespace ContradiccionDeTesisCaptura
         private void BtnQuitar_Click(object sender, RoutedEventArgs e)
         {
             criterios.TesisContendientes.Remove((Int32)LstTesisContendientes.SelectedItem);
+        }
+
+        private void BtnCancelar_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
         }
     }
 }

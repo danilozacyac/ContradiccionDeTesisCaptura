@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data.OleDb;
 using System.Linq;
 using System.Windows.Forms;
@@ -21,7 +22,7 @@ namespace ContradiccionesDirectorioApi.Model
         {
             List<Organismos> organismos = new List<Organismos>();
 
-            OleDbConnection oleConne = DbConnDac.GetConnection();
+            OleDbConnection oleConne = new OleDbConnection(ConfigurationManager.ConnectionStrings["Directorio"].ToString());
             OleDbCommand cmd = null;
             OleDbDataReader reader = null;
 
@@ -90,7 +91,7 @@ namespace ContradiccionesDirectorioApi.Model
             OleDbCommand cmd = null;
             OleDbDataReader reader = null;
 
-            String sqlCadena = "SELECT * FROM PlenoC Order By IdPleno";
+            String sqlCadena = "SELECT * FROM PlenoC Order By OrdenImpr";
 
             try
             {
@@ -107,6 +108,7 @@ namespace ContradiccionesDirectorioApi.Model
                         Organismos organismoAdd = new Organismos();
                         organismoAdd.IdOrganismo = reader["IdPleno"] as int? ?? -1;
                         organismoAdd.Organismo = reader["Descripcion"].ToString() + "(" + reader["Especializacion"].ToString() + ")";
+                        organismoAdd.OrdenImpresion = reader["OrdenImpr"] as int? ?? -1;
 
                         organismos.Add(organismoAdd);
                     }

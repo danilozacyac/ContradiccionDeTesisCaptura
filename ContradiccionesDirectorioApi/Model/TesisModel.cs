@@ -6,6 +6,7 @@ using ContradiccionesDirectorioApi.Dao;
 using ContradiccionesDirectorioApi.DataAccess;
 using System.Windows.Forms;
 using System.Collections.ObjectModel;
+using ScjnUtilities;
 
 namespace ContradiccionesDirectorioApi.Model
 {
@@ -19,7 +20,7 @@ namespace ContradiccionesDirectorioApi.Model
         /// <returns></returns>
         public int SetNewTesisPorContradiccion(Tesis tesis)
         {
-            OleDbConnection connectionBitacoraSql = DbConnDac.GetConnection();
+            OleDbConnection connection = DbConnDac.GetConnection();
             OleDbDataAdapter dataAdapter;
 
             DataSet dataSet = new DataSet();
@@ -29,12 +30,15 @@ namespace ContradiccionesDirectorioApi.Model
             {
                 string sqlCadena = "SELECT * FROM Tesis WHERE IdTesis = 0";
 
+                tesis.IdTesis = DataBaseUtilities.GetNextIdForUse("Tesis", "IdTesis",connection);
+
                 dataAdapter = new OleDbDataAdapter();
-                dataAdapter.SelectCommand = new OleDbCommand(sqlCadena, connectionBitacoraSql);
+                dataAdapter.SelectCommand = new OleDbCommand(sqlCadena, connection);
 
                 dataAdapter.Fill(dataSet, "Tesis");
 
                 dr = dataSet.Tables["Tesis"].NewRow();
+                dr["IdTesis"] = tesis.IdTesis;
                 dr["IdContradiccion"] = tesis.IdContradiccion;
                 dr["ClaveControl"] = tesis.ClaveControl;
                 dr["ClaveIdentificacion"] = tesis.ClaveIdentificacion;
@@ -54,14 +58,15 @@ namespace ContradiccionesDirectorioApi.Model
 
                 dataSet.Tables["Tesis"].Rows.Add(dr);
 
-                dataAdapter.InsertCommand = connectionBitacoraSql.CreateCommand();
-                dataAdapter.InsertCommand.CommandText = "INSERT INTO Tesis(IdContradiccion,Clavecontrol,ClaveIdentificacion,Rubro,tatj,OficioPublicacion," +
+                dataAdapter.InsertCommand = connection.CreateCommand();
+                dataAdapter.InsertCommand.CommandText = "INSERT INTO Tesis(IdTesis,IdContradiccion,Clavecontrol,ClaveIdentificacion,Rubro,tatj,OficioPublicacion," +
                                                         "OficioPPath,VersionPublica,VersionPPath,CopiaCertificada,CopiaCPath,Destinatario,CambioCriterio," +
                                                         "Responsable,OficioRespuesta,OficioRPath)" +
-                                                        " VALUES(@IdContradiccion,@Clavecontrol,@ClaveIdentificacion,@Rubro,@tatj,@OficioPublicacion," +
+                                                        " VALUES(@IdTesis,@IdContradiccion,@Clavecontrol,@ClaveIdentificacion,@Rubro,@tatj,@OficioPublicacion," +
                                                         "@OficioPPath,@VersionPublica,@VersionPPath,@CopiaCertificada,@CopiaCPath,@Destinatario,@CambioCriterio," +
                                                         "@Responsable,@OficioRespuesta,@OficioRPath)";
 
+                dataAdapter.InsertCommand.Parameters.Add("@IdTesis", OleDbType.Numeric, 0, "IdTesis");
                 dataAdapter.InsertCommand.Parameters.Add("@IdContradiccion", OleDbType.Numeric, 0, "IdContradiccion");
                 dataAdapter.InsertCommand.Parameters.Add("@ClaveControl", OleDbType.VarChar, 0, "ClaveControl");
                 dataAdapter.InsertCommand.Parameters.Add("@ClaveIdentificacion", OleDbType.VarChar, 0, "ClaveIdentificacion");
@@ -93,7 +98,7 @@ namespace ContradiccionesDirectorioApi.Model
             }
             finally
             {
-                connectionBitacoraSql.Close();
+                connection.Close();
             }
 
             return tesis.IdTesis;

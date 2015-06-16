@@ -6,6 +6,7 @@ using ContradiccionesDirectorioApi.Dao;
 using ContradiccionesDirectorioApi.DataAccess;
 using System.Windows.Forms;
 using System.Collections.ObjectModel;
+using ScjnUtilities;
 
 namespace ContradiccionesDirectorioApi.Model
 {
@@ -152,6 +153,7 @@ namespace ContradiccionesDirectorioApi.Model
                 dr["RegEjecutoria"] = contradiccion.Resolutivo.RegEjecutoria;
                 dr["RegTesis"] = contradiccion.Resolutivo.RegTesis;
                 dr["RubroTesis"] = contradiccion.Resolutivo.RubroTesis;
+                
 
                 dataSet.Tables["Resolucion"].Rows.Add(dr);
 
@@ -291,7 +293,7 @@ namespace ContradiccionesDirectorioApi.Model
 
         #region Resolutivos
 
-        public void SetNewResolutivo(PResolutivos resolutivos,int idContradiccion)
+        public void SetNewResolutivo(PResolutivos resolutivos, int idContradiccion)
         {
             OleDbConnection connectionBitacoraSql = DbConnDac.GetConnection();
             OleDbDataAdapter dataAdapter;
@@ -301,30 +303,34 @@ namespace ContradiccionesDirectorioApi.Model
 
             try
             {
-                    string sqlCadena = "SELECT * FROM Resolutivos WHERE IdContradiccion = 0";
+                resolutivos.IdResolutivo = DataBaseUtilities.GetNextIdForUse("Resolutivos", "IdResolutivo", connectionBitacoraSql);
 
-                    dataAdapter = new OleDbDataAdapter();
-                    dataAdapter.SelectCommand = new OleDbCommand(sqlCadena, connectionBitacoraSql);
+                string sqlCadena = "SELECT * FROM Resolutivos WHERE IdContradiccion = 0";
 
-                    dataAdapter.Fill(dataSet, "Resolutivos");
+                dataAdapter = new OleDbDataAdapter();
+                dataAdapter.SelectCommand = new OleDbCommand(sqlCadena, connectionBitacoraSql);
 
-                    dr = dataSet.Tables["Resolutivos"].NewRow();
-                    dr["IdContradiccion"] = idContradiccion;
-                    dr["Resolutivo"] = resolutivos.Resolutivo;
+                dataAdapter.Fill(dataSet, "Resolutivos");
 
-                    dataSet.Tables["Resolutivos"].Rows.Add(dr);
+                dr = dataSet.Tables["Resolutivos"].NewRow();
+                dr["IdContradiccion"] = idContradiccion;
+                dr["Resolutivo"] = resolutivos.Resolutivo;
+                dr["IdResolutivo"] = resolutivos.IdResolutivo;
 
-                    dataAdapter.InsertCommand = connectionBitacoraSql.CreateCommand();
-                    dataAdapter.InsertCommand.CommandText = "INSERT INTO Resolutivos(IdContradiccion,Resolutivo)" +
-                                                            " VALUES(@IdContradiccion,@Resolutivo)";
+                dataSet.Tables["Resolutivos"].Rows.Add(dr);
 
-                    dataAdapter.InsertCommand.Parameters.Add("@IdContradiccion", OleDbType.Numeric, 0, "IdContradiccion");
-                    dataAdapter.InsertCommand.Parameters.Add("@Resolutivo", OleDbType.VarChar, 0, "Resolutivo");
+                dataAdapter.InsertCommand = connectionBitacoraSql.CreateCommand();
+                dataAdapter.InsertCommand.CommandText = "INSERT INTO Resolutivos(IdContradiccion,Resolutivo,IdResolutivo)" +
+                                                        " VALUES(@IdContradiccion,@Resolutivo,@IdResolutivo)";
 
-                    dataAdapter.Update(dataSet, "Resolutivos");
+                dataAdapter.InsertCommand.Parameters.Add("@IdContradiccion", OleDbType.Numeric, 0, "IdContradiccion");
+                dataAdapter.InsertCommand.Parameters.Add("@Resolutivo", OleDbType.VarChar, 0, "Resolutivo");
+                dataAdapter.InsertCommand.Parameters.Add("@IdResolutivo", OleDbType.Numeric, 0, "IdResolutivo");
 
-                    dataSet.Dispose();
-                    dataAdapter.Dispose();
+                dataAdapter.Update(dataSet, "Resolutivos");
+
+                dataSet.Dispose();
+                dataAdapter.Dispose();
             }
             catch (OleDbException ex)
             {
@@ -338,9 +344,6 @@ namespace ContradiccionesDirectorioApi.Model
             {
                 connectionBitacoraSql.Close();
             }
-
-
-
         }
         
         private ObservableCollection<PResolutivos> GetResolutivos(int idContradiccion)

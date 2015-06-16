@@ -2,7 +2,6 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:converter="clr-namespace:ContradiccionDeTesisCaptura.Converters"
-        xmlns:igDP="http://infragistics.com/DataPresenter"
         xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
         Title="MainWindow"
         Width="1005"
@@ -62,14 +61,19 @@
                                             Header="Id"
                                             IsFilterable="False"
                                             IsVisible="False" />
-                <telerik:GridViewDataColumn Width="80"
+                <telerik:GridViewDataColumn Width="Auto"
                                             DataMemberBinding="{Binding ExpedienteNumero}"
-                                            Header="Num. Exp."
+                                            Header="Exp."
+                                            IsFilterable="False"
                                             IsVisible="True" />
                 <telerik:GridViewDataColumn Width="Auto"
                                             DataMemberBinding="{Binding ExpedienteAnio}"
                                             Header="Año"
                                             IsFilterable="True" />
+                <telerik:GridViewDataColumn Width="Auto"
+                                            DataMemberBinding="{Binding ExpProvisional}"
+                                            Header="Provisional"
+                                            IsFilterable="False" />
                 <telerik:GridViewDataColumn Width="Auto"
                                             DataMemberBinding="{Binding IdTipoAsunto,
                                                                         Converter={StaticResource tiposConverter}}"
@@ -79,14 +83,11 @@
                                             DataMemberBinding="{Binding Tema}"
                                             Header="Tema"
                                             IsFilterable="False" />
-                <telerik:GridViewDataColumn Width="100"
+                <telerik:GridViewDataColumn Width="Auto"
                                             DataMemberBinding="{Binding Status,
                                                                         Converter={StaticResource statusConverter}}"
                                             Header="Estado" />
-                <telerik:GridViewDataColumn Width="150"
-                                            DataMemberBinding="{Binding Oficio}"
-                                            Header="Oficio"
-                                            IsFilterable="False" />
+
                 <telerik:GridViewDataColumn Width="150"
                                             DataFormatString=" {0: dd/MM/yyyy} "
                                             DataMemberBinding="{Binding FechaTurno}"
@@ -132,6 +133,14 @@
                 VerticalAlignment="Top"
                 Click="BtnPdf_Click"
                 Content="Generar Listado en PDF" />
-        <Button x:Name="BtnImportar" Content="Importar " HorizontalAlignment="Left" Margin="228,0,0,0" Grid.Row="2" VerticalAlignment="Top" Width="75" Height="23" Click="BtnImportar_Click"/>
+        <Button x:Name="BtnImportar"
+                Grid.Row="2"
+                Width="75"
+                Height="23"
+                Margin="228,0,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Click="BtnImportar_Click"
+                Content="Importar " />
     </Grid>
 </Window>

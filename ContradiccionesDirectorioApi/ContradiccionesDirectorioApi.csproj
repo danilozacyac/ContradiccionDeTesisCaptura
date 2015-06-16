@@ -54,6 +54,7 @@
     <Compile Include="Dao\Criterios.cs" />
     <Compile Include="Dao\Ejecutoria.cs" />
     <Compile Include="Dao\Funcionarios.cs" />
+    <Compile Include="Dao\Oficios.cs" />
     <Compile Include="Dao\Organismos.cs" />
     <Compile Include="Dao\Resolutivos.cs" />
     <Compile Include="Dao\ReturnosClass.cs" />
@@ -65,6 +66,7 @@
     <Compile Include="Model\CriteriosModel.cs" />
     <Compile Include="Model\EjecutoriasModel.cs" />
     <Compile Include="Model\FuncionariosModel.cs" />
+    <Compile Include="Model\OficiosModel.cs" />
     <Compile Include="Model\OrganismosModel.cs" />
     <Compile Include="Model\ResolucionModel.cs" />
     <Compile Include="Model\ReturnosModel.cs" />

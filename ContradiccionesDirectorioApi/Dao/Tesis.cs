@@ -10,6 +10,7 @@ namespace ContradiccionesDirectorioApi.Dao
         private int idContradiccion;
         private String claveControl;
         private String claveIdentificacion;
+        private int ius;
         private String rubro;
         private int tatj;
         private String oficioPublicacion;
@@ -23,6 +24,18 @@ namespace ContradiccionesDirectorioApi.Dao
         private String responsable;
         private String oficioRespuesta;
         private String oficioRespuestaFilePath;
+
+        public int Ius
+        {
+            get
+            {
+                return this.ius;
+            }
+            set
+            {
+                this.ius = value;
+            }
+        }
 
         public int IdTesis
         {

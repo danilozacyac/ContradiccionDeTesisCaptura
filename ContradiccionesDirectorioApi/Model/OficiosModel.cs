@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.Data;
 using System.Data.OleDb;
 using System.Linq;
@@ -9,18 +10,19 @@ using ScjnUtilities;
 
 namespace ContradiccionesDirectorioApi.Model
 {
-    public class AdmisorioModel
+    public class OficiosModel
     {
+
         /// <summary>
-        /// Devuelve el acuerdo admisorio de la contradicción señalada
+        /// Devuelve los oficios recibidos en relación a la contradicción señalada
         /// </summary>
         /// <param name="idContradiccion"></param>
         /// <returns></returns>
-        public Admisorio GetAcuerdo(int idContradiccion)
+        public ObservableCollection<Oficios> GetOficios(int idContradiccion)
         {
-            Admisorio admisorio = new Admisorio();
+            ObservableCollection<Oficios> listaOficios = new ObservableCollection<Oficios>();
 
-            string sqlCmd = @"SELECT * FROM AcAdmisorio " +
+            string sqlCmd = @"SELECT * FROM Oficios " +
                             " WHERE IdContradiccion = @IdContradiccion";
 
             OleDbConnection connectionBitacoraSql = DbConnDac.GetConnection();
@@ -31,8 +33,8 @@ namespace ContradiccionesDirectorioApi.Model
 
             try
             {
-                
-                cmd.Parameters.AddWithValue("@IdContradiccion",idContradiccion);
+
+                cmd.Parameters.AddWithValue("@IdContradiccion", idContradiccion);
 
                 connectionBitacoraSql.Open();
 
@@ -40,10 +42,13 @@ namespace ContradiccionesDirectorioApi.Model
 
                 while (reader.Read())
                 {
-                    admisorio.IdAcuerdo = reader["IdAcuerdo"] as int? ?? 0;
-                    admisorio.IdContradiccion = reader["IdContradiccion"] as int? ?? 0;
-                    admisorio.FechaAcuerdo = DateTimeUtilities.GetDateFromReader(reader, "FechaAcuerdo");
-                    admisorio.Acuerdo = reader["Acuerdo"].ToString();
+                    Oficios oficio = new Oficios();
+                    oficio.IdOficio = reader["IdOficio"] as int? ?? 0;
+                    oficio.IdContradiccion = reader["IdContradiccion"] as int? ?? 0;
+                    oficio.Oficio = reader["Oficio"].ToString();
+                    oficio.FechaOficio = DateTimeUtilities.GetDateFromReader(reader, "Fecha");
+
+                    listaOficios.Add(oficio);
                 }
 
             }
@@ -60,63 +65,14 @@ namespace ContradiccionesDirectorioApi.Model
                 connectionBitacoraSql.Close();
             }
 
-            return admisorio;
+            return listaOficios;
         }
 
         /// <summary>
-        /// Verifica si existe un acuerdo admisorio para la contradicción señalada
-        /// </summary>
-        /// <param name="idAcuerdo"></param>
-        /// <returns></returns>
-        public bool CheckIfExist(int idAcuerdo)
-        {
-            bool doExist = false;
-
-            string sqlCmd = @"SELECT * FROM AcAdmisorio " +
-                            " WHERE IdAcuerdo = @IdAcuerdo";
-
-            OleDbConnection connectionBitacoraSql = DbConnDac.GetConnection();
-            OleDbCommand cmd = new OleDbCommand();
-
-            cmd.Connection = connectionBitacoraSql;
-            cmd.CommandText = sqlCmd;
-
-            try
-            {
-
-                cmd.Parameters.AddWithValue("@IdAcuerdo", idAcuerdo);
-
-                connectionBitacoraSql.Open();
-
-                OleDbDataReader reader = cmd.ExecuteReader();
-
-                while (reader.Read())
-                {
-                    doExist = true;
-                }
-
-            }
-            catch (OleDbException ex)
-            {
-                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
-            finally
-            {
-                connectionBitacoraSql.Close();
-            }
-
-            return doExist;
-        }
-
-        /// <summary>
-        /// Agrega una resolución para la contradicción señalada
+        /// Agrega un oficio relacionado a la contradicción
         /// </summary>
         /// <param name="admisorio"></param>
-        public void SetNewAdmisorio(Admisorio admisorio,int idContradiccion)
+        public void SetNewOficio(Oficios oficio,int idContradiccion)
         {
             OleDbConnection connection = DbConnDac.GetConnection();
             OleDbDataAdapter dataAdapter;
@@ -126,38 +82,43 @@ namespace ContradiccionesDirectorioApi.Model
 
             try
             {
-                admisorio.IdAcuerdo = DataBaseUtilities.GetNextIdForUse("AcAdmisorio", "IdAcuerdo",connection);
+                oficio.IdOficio = DataBaseUtilities.GetNextIdForUse("Oficios", "IdOficio",connection);
 
-                string sqlCadena = "SELECT * FROM AcAdmisorio WHERE IdContradiccion = 0";
+                string sqlCadena = "SELECT * FROM Oficios WHERE IdOficio = 0";
 
                 dataAdapter = new OleDbDataAdapter();
                 dataAdapter.SelectCommand = new OleDbCommand(sqlCadena, connection);
 
-                dataAdapter.Fill(dataSet, "AcAdmisorio");
+                dataAdapter.Fill(dataSet, "Oficios");
 
-                dr = dataSet.Tables["AcAdmisorio"].NewRow();
-                dr["IdAcuerdo"] = admisorio.IdAcuerdo;
+                dr = dataSet.Tables["Oficios"].NewRow();
+                dr["IdOficio"] = oficio.IdOficio;
                 dr["IdContradiccion"] = idContradiccion;
+                dr["Oficio"] = oficio.Oficio;
 
-                if (admisorio.FechaAcuerdo != null)
-                    dr["FechaAcuerdo"] = admisorio.FechaAcuerdo;
+                if (oficio.FechaOficio == null)
+                {
+                    dr["Fecha"] = System.DBNull.Value;
+                    dr["FechaInt"] = 0;
+                }
                 else
-                    dr["FechaAcuerdo"] = System.DBNull.Value;
-
-                dr["Acuerdo"] = admisorio.Acuerdo;
-
-                dataSet.Tables["AcAdmisorio"].Rows.Add(dr);
+                {
+                    dr["Fecha"] = oficio.FechaOficio;
+                    dr["FechaInt"] = DateTimeUtilities.DateToInt(oficio.FechaOficio);
+                }
+                dataSet.Tables["Oficios"].Rows.Add(dr);
 
                 dataAdapter.InsertCommand = connection.CreateCommand();
-                dataAdapter.InsertCommand.CommandText = "INSERT INTO AcAdmisorio(IdAcuerdo,IdContradiccion,FechaAcuerdo,Acuerdo)" +
-                                                        " VALUES(@IdAcuerdo,@IdContradiccion,@FechaAcuerdo,@Acuerdo)";
+                dataAdapter.InsertCommand.CommandText = "INSERT INTO Oficios(IdOficio,IdContradiccion,Oficio,Fecha,FechaInt)" +
+                                                        " VALUES(@IdOficio,@IdContradiccion,@Oficio,@Fecha,@FechaInt)";
 
-                dataAdapter.InsertCommand.Parameters.Add("@IdAcuerdo", OleDbType.Numeric, 0, "IdAcuerdo");
+                dataAdapter.InsertCommand.Parameters.Add("@IdOficio", OleDbType.Numeric, 0, "IdOficio");
                 dataAdapter.InsertCommand.Parameters.Add("@IdContradiccion", OleDbType.Numeric, 0, "IdContradiccion");
-                dataAdapter.InsertCommand.Parameters.Add("@FechaAcuerdo", OleDbType.Date, 0, "FechaAcuerdo");
-                dataAdapter.InsertCommand.Parameters.Add("@Acuerdo", OleDbType.VarChar, 0, "Acuerdo");
+                dataAdapter.InsertCommand.Parameters.Add("@Oficio", OleDbType.VarChar, 0, "Oficio");
+                dataAdapter.InsertCommand.Parameters.Add("@Fecha", OleDbType.Date, 0, "Fecha");
+                dataAdapter.InsertCommand.Parameters.Add("@FechaInt", OleDbType.Numeric, 0, "FechaInt");
 
-                dataAdapter.Update(dataSet, "AcAdmisorio");
+                dataAdapter.Update(dataSet, "Oficios");
 
                 dataSet.Dispose();
                 dataAdapter.Dispose();
@@ -181,8 +142,8 @@ namespace ContradiccionesDirectorioApi.Model
         /// <summary>
         /// Actualiza la información de la resolución
         /// </summary>
-        /// <param name="admisorio"></param>
-        public void UpdateAdmisorio(Admisorio admisorio)
+        /// <param name="oficio"></param>
+        public void UpdateOficio(Oficios oficio)
         {
             OleDbConnection connectionBitacoraSql = DbConnDac.GetConnection();
             OleDbDataAdapter dataAdapter;
@@ -192,33 +153,39 @@ namespace ContradiccionesDirectorioApi.Model
 
             try
             {
-                string sqlCadena = "SELECT * FROM AcAdmisorio WHERE IdAcuerdo = " + admisorio.IdAcuerdo;
+                string sqlCadena = "SELECT * FROM Oficios WHERE IdOficio = " + oficio.IdOficio;
 
                 dataAdapter = new OleDbDataAdapter();
                 dataAdapter.SelectCommand = new OleDbCommand(sqlCadena, connectionBitacoraSql);
 
-                dataAdapter.Fill(dataSet, "AcAdmisorio");
+                dataAdapter.Fill(dataSet, "Oficios");
 
                 dr = dataSet.Tables[0].Rows[0];
                 dr.BeginEdit();
-                if (admisorio.FechaAcuerdo != null)
-                    dr["FechaAcuerdo"] = admisorio.FechaAcuerdo;
+                dr["Oficio"] = oficio.Oficio;
+                if (oficio.FechaOficio == null)
+                {
+                    dr["Fecha"] = System.DBNull.Value;
+                    dr["FechaInt"] = 0;
+                }
                 else
-                    dr["FechaAcuerdo"] = System.DBNull.Value;
-
-                dr["Acuerdo"] = admisorio.Acuerdo;
+                {
+                    dr["Fecha"] = oficio.FechaOficio;
+                    dr["FechaInt"] = DateTimeUtilities.DateToInt(oficio.FechaOficio);
+                }
                 dr.EndEdit();
 
                 dataAdapter.UpdateCommand = connectionBitacoraSql.CreateCommand();
                 dataAdapter.UpdateCommand.CommandText =
-                                                       "UPDATE AcAdmisorio SET FechaAcuerdo = @FechaAcuerdo,Acuerdo = @Acuerdo " +
-                                                       " WHERE IdAcuerdo = @IdAcuerdo";
+                                                       "UPDATE Oficios SET Oficio = @Oficio,Fecha = @Fecha,FechaInt = @FechaInt " +
+                                                       " WHERE IdOficio = @IdOficio";
 
-                dataAdapter.UpdateCommand.Parameters.Add("@FechaAcuerdo", OleDbType.Date, 0, "FechaAcuerdo");
-                dataAdapter.UpdateCommand.Parameters.Add("@Acuerdo", OleDbType.VarChar, 0, "Acuerdo");
-                dataAdapter.UpdateCommand.Parameters.Add("@IdAcuerdo", OleDbType.Numeric, 0, "IdAcuerdo");
+                dataAdapter.UpdateCommand.Parameters.Add("@Oficio", OleDbType.VarChar, 0, "Oficio");
+                dataAdapter.UpdateCommand.Parameters.Add("@Fecha", OleDbType.Date, 0, "Fecha");
+                dataAdapter.UpdateCommand.Parameters.Add("@FechaInt", OleDbType.Numeric, 0, "FechaInt");
+                dataAdapter.UpdateCommand.Parameters.Add("@IdOficio", OleDbType.Numeric, 0, "IdOficio");
 
-                dataAdapter.Update(dataSet, "AcAdmisorio");
+                dataAdapter.Update(dataSet, "Oficios");
                 dataSet.Dispose();
                 dataAdapter.Dispose();
             }
@@ -237,11 +204,11 @@ namespace ContradiccionesDirectorioApi.Model
         }
 
         /// <summary>
-        /// Elimina la resolucion asociada a una Contradicción de Tesis
+        /// Elimina un oficio relacionado a un contradicción de tesis
         /// </summary>
-        /// <param name="contradiccion"></param>
+        /// <param name="oficio">Oficio que será eliminado</param>
         /// <returns></returns>
-        public bool DeleteAdmisorio(Admisorio admisorio)
+        public bool DeleteOficio(Oficios oficio)
         {
             bool isDeleteComplete = true;
 
@@ -255,8 +222,8 @@ namespace ContradiccionesDirectorioApi.Model
             {
                 connectionBitacoraSql.Open();
 
-                cmd.CommandText = "DELETE FROM AcAdmisorio WHERE IdAcuerdo = @IdAcuerdo";
-                cmd.Parameters.AddWithValue("@IdAcuerdo", admisorio.IdAcuerdo);
+                cmd.CommandText = "DELETE FROM Oficios WHERE IdOficio = @IdOficio";
+                cmd.Parameters.AddWithValue("@IdOficio", oficio.IdOficio);
                 cmd.ExecuteNonQuery();
 
             }

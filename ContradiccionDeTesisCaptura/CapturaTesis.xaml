@@ -29,7 +29,8 @@
                  VerticalAlignment="Top"
                  Text="{Binding ClaveControl,
                                 Mode=TwoWay}" />
-        <Label Name="label10" Height="28"
+        <Label Name="label10"
+               Height="28"
                Margin="396,29,0,0"
                HorizontalAlignment="Left"
                VerticalAlignment="Top"
@@ -306,6 +307,13 @@
                 VerticalAlignment="Top"
                 Click="BtnGuardar_Click"
                 Content="Guardar" />
-        <RadioButton Content=" Improcedente" Height="16" HorizontalAlignment="Right" Margin="0,26,31,0" Name="RadImprocedente" VerticalAlignment="Top" Foreground="Black" GroupName="TipoTesis" />
+        <RadioButton Name="RadImprocedente"
+                     Height="16"
+                     Margin="0,26,31,0"
+                     HorizontalAlignment="Right"
+                     VerticalAlignment="Top"
+                     Content=" Improcedente"
+                     Foreground="Black"
+                     GroupName="TipoTesis" />
     </Grid>
 </Window>

@@ -2,7 +2,6 @@
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-using System.Windows;
 using ContradiccionesDirectorioApi.Dao;
 using ContradiccionesDirectorioApi.Singletons;
 using iTextSharp.text;
@@ -44,6 +43,7 @@ namespace ContradiccionDeTesisCaptura.Report
                 table.HeaderRows = 1;
                 table.SpacingBefore = 20f;
                 table.SpacingAfter = 30f;
+            
 
                 table.SplitLate = false;
                 table.SplitRows = true;
@@ -89,10 +89,13 @@ namespace ContradiccionDeTesisCaptura.Report
                     cell = this.InitializeCell(contra.Denunciantes + ".   ", Fuentes.ContenidoCelda, 0);
                     table.AddCell(cell);
 
-                    cell = this.InitializeCell(contra.Oficio + ", DE " + DateTimeUtilities.ToLongDateFormat( contra.FechaTurno).ToUpper(), Fuentes.ContenidoCelda, 1);
+                    cell = this.InitializeCell(contra.Oficios, Fuentes.ContenidoCelda, 1);
                     table.AddCell(cell);
 
-                    cell = this.InitializeCell(" ", Fuentes.ContenidoCelda, 0);
+                    if (contra.AcAdmisorio != null)
+                        cell = this.InitializeCell(contra.AcAdmisorio.Acuerdo, Fuentes.ContenidoCelda, 0);
+                    else
+                        cell = this.InitializeCell("", Fuentes.ContenidoCelda, 1);
                     table.AddCell(cell);
 
                     cell = this.InitializeCell(contra.Criterios, Fuentes.ContenidoCelda, 3);
@@ -209,6 +212,21 @@ namespace ContradiccionDeTesisCaptura.Report
                     parargr = new Paragraph("REG. IUS  ", Fuentes.ContenidoCelda);
                     parargr.Alignment = textAlign;
                     cell.AddElement(parargr);
+                    cell.AddElement(new Paragraph(" ", Fuentes.ContenidoCelda));
+                }
+            }
+            else if (enumer is ObservableCollection<Oficios>)
+            {
+                Paragraph parat;
+                foreach (Oficios oficio in enumer as ObservableCollection<Oficios>)
+                {
+                    if (oficio.Oficio.Contains("CORREO") || oficio.FechaOficio == null)
+                        parat = new Paragraph(oficio.Oficio, Fuentes.ContenidoCelda);
+                    else
+                        parat = new Paragraph(oficio.Oficio + ", DE " + DateTimeUtilities.ToLongDateFormat(oficio.FechaOficio).ToUpper(), Fuentes.ContenidoCelda);
+                    
+                    parat.Alignment = textAlign;
+                    cell.AddElement(parat);
                     cell.AddElement(new Paragraph(" ", Fuentes.ContenidoCelda));
                 }
             }

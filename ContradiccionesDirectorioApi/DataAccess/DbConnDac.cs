@@ -18,13 +18,6 @@ namespace ContradiccionesDirectorioApi.DataAccess
         }
 
 
-        public static OleDbConnection GetConnectionDirectorio()
-        {
-            String bdStringSql = ConfigurationManager.ConnectionStrings["Directorio"].ConnectionString;
-
-            OleDbConnection oleConne = new OleDbConnection(bdStringSql);
-
-            return oleConne;
-        }
+        
     }
 }

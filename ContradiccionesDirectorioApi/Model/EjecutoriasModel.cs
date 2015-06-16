@@ -1,12 +1,11 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.Data;
 using System.Data.OleDb;
 using System.Linq;
+using System.Windows.Forms;
 using ContradiccionesDirectorioApi.Dao;
 using ContradiccionesDirectorioApi.DataAccess;
-using ContradiccionesDirectorioApi.Utils;
-using System.Windows.Forms;
-using System.Collections.ObjectModel;
 using ScjnUtilities;
 
 namespace ContradiccionesDirectorioApi.Model
@@ -33,10 +32,28 @@ namespace ContradiccionesDirectorioApi.Model
 
                 dr = dataSet.Tables["Ejecutorias"].NewRow();
                 dr["IdContradiccion"] = contradiccion.IdContradiccion;
-                dr["FechaResolucion"] = contradiccion.MiEjecutoria.FechaResolucion;
-                dr["FechaResolucionInt"] = DateTimeUtilities.DateToInt(contradiccion.MiEjecutoria.FechaResolucion);
-                dr["FechaEngrose"] = contradiccion.MiEjecutoria.FechaEngrose;
-                dr["FechaEngroseInt"] = DateTimeUtilities.DateToInt(contradiccion.MiEjecutoria.FechaEngrose); 
+
+                if (contradiccion.MiEjecutoria.FechaResolucion != null)
+                {
+                    dr["FechaResolucion"] = contradiccion.MiEjecutoria.FechaResolucion;
+                    dr["FechaResolucionInt"] = DateTimeUtilities.DateToInt(contradiccion.MiEjecutoria.FechaResolucion);
+                }
+                else
+                {
+                    dr["FechaResolucion"] = System.DBNull.Value;
+                    dr["FechaResolucionInt"] = 0;
+                }
+
+                if (contradiccion.MiEjecutoria.FechaEngrose != null)
+                {
+                    dr["FechaEngrose"] = contradiccion.MiEjecutoria.FechaEngrose;
+                    dr["FechaEngroseInt"] = DateTimeUtilities.DateToInt(contradiccion.MiEjecutoria.FechaEngrose);
+                }
+                else
+                {
+                    dr["FechaEngrose"] = System.DBNull.Value;
+                    dr["FechaEngroseInt"] = 0;
+                }
                 dr["SISE"] = contradiccion.MiEjecutoria.Sise;
                 dr["Responsable"] = contradiccion.MiEjecutoria.Responsable;
                 dr["Signatario"] = contradiccion.MiEjecutoria.Signatario;
@@ -70,13 +87,13 @@ namespace ContradiccionesDirectorioApi.Model
 
                
             }
-            catch (OleDbException sql)
+            catch (OleDbException ex)
             {
-                MessageBox.Show("Error ({0}) : {1}" + sql.Source + sql.Message, "Error Interno --- SalvarRegistroMantesisSql");
+                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, "Error Interno --- SalvarRegistroMantesisSql");
+                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             finally
             {
@@ -123,13 +140,13 @@ namespace ContradiccionesDirectorioApi.Model
                     dataSet.Dispose();
                     dataAdapter.Dispose();
             }
-            catch (OleDbException sql)
+            catch (OleDbException ex)
             {
-                MessageBox.Show("Error ({0}) : {1}" + sql.Source + sql.Message, "Error Interno --- SalvarRegistroMantesisSql");
+                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, "Error Interno --- SalvarRegistroMantesisSql");
+                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             finally
             {
@@ -158,10 +175,28 @@ namespace ContradiccionesDirectorioApi.Model
 
                 dr = dataSet.Tables[0].Rows[0];
                 dr.BeginEdit();
-                dr["FechaResolucion"] = contradiccion.MiEjecutoria.FechaResolucion;
-                dr["FechaResolucionInt"] = DateTimeUtilities.DateToInt(contradiccion.MiEjecutoria.FechaResolucion);
-                dr["FechaEngrose"] = contradiccion.MiEjecutoria.FechaEngrose;
-                dr["FechaEngroseInt"] = DateTimeUtilities.DateToInt(contradiccion.MiEjecutoria.FechaEngrose);
+
+                if (contradiccion.MiEjecutoria.FechaResolucion != null)
+                {
+                    dr["FechaResolucion"] = contradiccion.MiEjecutoria.FechaResolucion;
+                    dr["FechaResolucionInt"] = DateTimeUtilities.DateToInt(contradiccion.MiEjecutoria.FechaResolucion);
+                }
+                else
+                {
+                    dr["FechaResolucion"] = System.DBNull.Value;
+                    dr["FechaResolucionInt"] = System.DBNull.Value;
+                }
+
+                if (contradiccion.MiEjecutoria.FechaEngrose != null)
+                {
+                    dr["FechaEngrose"] = contradiccion.MiEjecutoria.FechaEngrose;
+                    dr["FechaEngroseInt"] = DateTimeUtilities.DateToInt(contradiccion.MiEjecutoria.FechaEngrose);
+                }
+                else
+                {
+                    dr["FechaEngrose"] = System.DBNull.Value;
+                    dr["FechaEngroseInt"] = System.DBNull.Value;
+                }
                 dr["SISE"] = contradiccion.MiEjecutoria.Sise;
                 dr["Responsable"] = contradiccion.MiEjecutoria.Responsable;
                 dr["Signatario"] = contradiccion.MiEjecutoria.Signatario;
@@ -192,13 +227,13 @@ namespace ContradiccionesDirectorioApi.Model
                 dataSet.Dispose();
                 dataAdapter.Dispose();
             }
-            catch (OleDbException sql)
+            catch (OleDbException ex)
             {
-                MessageBox.Show("Error ({0}) : {1}" + sql.Source + sql.Message);
+                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message);
+                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             finally
             {
@@ -245,13 +280,13 @@ namespace ContradiccionesDirectorioApi.Model
                 reader.Close();
                 cmd.Dispose();
             }
-            catch (OleDbException sql)
+            catch (OleDbException ex)
             {
-                MessageBox.Show("Error ({0}) : {1}" + sql.Source + sql.Message, "Error Interno --- SalvarRegistroMantesisSql");
+                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, "Error Interno --- SalvarRegistroMantesisSql");
+                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             finally
             {
@@ -291,13 +326,13 @@ namespace ContradiccionesDirectorioApi.Model
                 reader.Close();
                 cmd.Dispose();
             }
-            catch (OleDbException sql)
+            catch (OleDbException ex)
             {
-                MessageBox.Show("Error ({0}) : {1}" + sql.Source + sql.Message, "Error Interno --- SalvarRegistroMantesisSql");
+                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, "Error Interno --- SalvarRegistroMantesisSql");
+                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             finally
             {
@@ -338,13 +373,13 @@ namespace ContradiccionesDirectorioApi.Model
                 reader.Close();
                 cmd.Dispose();
             }
-            catch (OleDbException sql)
+            catch (OleDbException ex)
             {
-                MessageBox.Show("Error ({0}) : {1}" + sql.Source + sql.Message, "Error Interno --- SalvarRegistroMantesisSql");
+                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, "Error Interno --- SalvarRegistroMantesisSql");
+                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             finally
             {

@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TableWordToDb
 {
@@ -19,6 +16,9 @@ namespace TableWordToDb
         private string fechaResolucion;
         private string resolutivos;
         private string tesis;
+        private string observaciones;
+
+        
 
         public string Plenos
         {
@@ -149,6 +149,18 @@ namespace TableWordToDb
             set
             {
                 this.tesis = value;
+            }
+        }
+
+        public string Observaciones
+        {
+            get
+            {
+                return this.observaciones;
+            }
+            set
+            {
+                this.observaciones = value;
             }
         }
     }

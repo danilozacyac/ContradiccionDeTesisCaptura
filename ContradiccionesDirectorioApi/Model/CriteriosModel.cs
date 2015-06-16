@@ -273,32 +273,35 @@ namespace ContradiccionesDirectorioApi.Model
 
             try
             {
-                foreach (int tesis in criterio.TesisContendientes)
+                if (criterio.TesisContendientes != null)
                 {
-                    string sqlCadena = "SELECT * FROM CriteriosTesis WHERE IdCriterio = 0";
+                    foreach (int tesis in criterio.TesisContendientes)
+                    {
+                        string sqlCadena = "SELECT * FROM CriteriosTesis WHERE IdCriterio = 0";
 
-                    dataAdapter = new OleDbDataAdapter();
-                    dataAdapter.SelectCommand = new OleDbCommand(sqlCadena, connectionBitacoraSql);
+                        dataAdapter = new OleDbDataAdapter();
+                        dataAdapter.SelectCommand = new OleDbCommand(sqlCadena, connectionBitacoraSql);
 
-                    dataAdapter.Fill(dataSet, "Criterios");
+                        dataAdapter.Fill(dataSet, "Criterios");
 
-                    dr = dataSet.Tables["Criterios"].NewRow();
-                    dr["IdCriterio"] = criterio.IdCriterio;
-                    dr["IUS"] = tesis;
+                        dr = dataSet.Tables["Criterios"].NewRow();
+                        dr["IdCriterio"] = criterio.IdCriterio;
+                        dr["IUS"] = tesis;
 
-                    dataSet.Tables["Criterios"].Rows.Add(dr);
+                        dataSet.Tables["Criterios"].Rows.Add(dr);
 
-                    dataAdapter.InsertCommand = connectionBitacoraSql.CreateCommand();
-                    dataAdapter.InsertCommand.CommandText = "INSERT INTO CriteriosTesis(IdCriterio,IUS)" +
-                                                            " VALUES(@IdCriterio,@IUS)";
+                        dataAdapter.InsertCommand = connectionBitacoraSql.CreateCommand();
+                        dataAdapter.InsertCommand.CommandText = "INSERT INTO CriteriosTesis(IdCriterio,IUS)" +
+                                                                " VALUES(@IdCriterio,@IUS)";
 
-                    dataAdapter.InsertCommand.Parameters.Add("@IdCriterio", OleDbType.Numeric, 0, "IdCriterio");
-                    dataAdapter.InsertCommand.Parameters.Add("@IUS", OleDbType.Numeric, 0, "IUS");
+                        dataAdapter.InsertCommand.Parameters.Add("@IdCriterio", OleDbType.Numeric, 0, "IdCriterio");
+                        dataAdapter.InsertCommand.Parameters.Add("@IUS", OleDbType.Numeric, 0, "IUS");
 
-                    dataAdapter.Update(dataSet, "Criterios");
+                        dataAdapter.Update(dataSet, "Criterios");
 
-                    dataSet.Dispose();
-                    dataAdapter.Dispose();
+                        dataSet.Dispose();
+                        dataAdapter.Dispose();
+                    }
                 }
             }
             catch (OleDbException ex)
@@ -324,6 +327,7 @@ namespace ContradiccionesDirectorioApi.Model
 
             OleDbConnection connectionBitacoraSql = DbConnDac.GetConnection();
             OleDbCommand cmd = new OleDbCommand();
+            OleDbDataReader reader;
 
             cmd.Connection = connectionBitacoraSql;
             cmd.CommandText = sqlCmd;
@@ -341,11 +345,15 @@ namespace ContradiccionesDirectorioApi.Model
                 
                 connectionBitacoraSql.Open();
 
-                OleDbDataReader reader = cmd.ExecuteReader();
+                reader = cmd.ExecuteReader();
 
                 while (reader.Read())
                 {
-                    maxOrden = Convert.ToInt32(reader["Orden"]);
+
+                    if (reader["Orden"] != System.DBNull.Value)
+                        maxOrden = Convert.ToInt32(reader["Orden"]);
+                    else
+                        maxOrden = 0;
                 }
             }
             catch (OleDbException ex)
@@ -447,6 +455,8 @@ namespace ContradiccionesDirectorioApi.Model
                     criterio.Criterio = reader["Criterio"].ToString();
                     criterio.IdOrgano = Convert.ToInt32(reader["IdOrgano"]);
                     criterio.Observaciones = reader["Observaciones"].ToString();
+
+                    if(criterio.IdOrgano != -1000)
                     criterio.Organo = (from n in Singletons.OrganismosSingleton.Colegiados
                                        where n.IdOrganismo == criterio.IdOrgano
                                        select n.Organismo).ToList()[0];

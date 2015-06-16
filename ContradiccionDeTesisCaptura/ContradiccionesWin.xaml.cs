@@ -6,10 +6,10 @@ using System.Windows.Input;
 using ContradiccionesDirectorioApi.Dao;
 using ContradiccionesDirectorioApi.Model;
 using ContradiccionesDirectorioApi.Singletons;
-using ContradiccionesDirectorioApi.Utils;
 using MantesisVerIusCommonObjects.Dto;
 using MantesisVerIusCommonObjects.Model;
 using ScjnUtilities;
+using Telerik.Windows.Controls.GridView;
 
 namespace ContradiccionDeTesisCaptura
 {
@@ -43,7 +43,6 @@ namespace ContradiccionDeTesisCaptura
             CbxTiposAsuntos.DataContext = TipoAsuntoSingleton.TipoAsunto;
 
             this.DataContext = contradiccion;
-            //this.RGridResolutivos.DataContext = contradiccion.Resolutivo.PuntosResolutivos;
 
             CbxPresidente.DataContext = FuncionariosSingleton.FuncionariosCollection;
             CbxPonente.DataContext = FuncionariosSingleton.FuncionariosCollection;
@@ -64,17 +63,18 @@ namespace ContradiccionDeTesisCaptura
         private void BtnSalvar_Click(object sender, RoutedEventArgs e)
         {
             ///Validaciones
-            if (RadJuris.IsChecked == false && RadAislada.IsChecked == false && RadImprocedente.IsChecked == false)
-            {
-                MessageBox.Show(ConstantMessages.SeleccionaTipoDeTesis);
-                return;
-            }
+            //if (RadJuris.IsChecked == false && RadAislada.IsChecked == false && RadImprocedente.IsChecked == false)
+            //{
+            //    MessageBox.Show(ConstantMessages.SeleccionaTipoDeTesis);
+            //    return;
+            //}
 
             ///Valores ComboBox y RadioButtons
             contradiccion.IdPresidentePleno = (CbxPresidente.SelectedValue != null) ? (Int32)CbxPresidente.SelectedValue : 0;
             contradiccion.IdPonentePleno = (CbxPonente.SelectedValue != null) ? (Int32)CbxPonente.SelectedValue : 0;
             contradiccion.Status = (RadResuelto.IsChecked == true) ? 1 : 0;
             contradiccion.IdTipoAsunto = (Int32)CbxTiposAsuntos.SelectedValue;
+            contradiccion.IdPlenoCircuito = (CbxPlenos.SelectedValue != null) ? (Int32)CbxPlenos.SelectedValue : 0;
             
 
             ///Actualiza Info General de Contradiccion
@@ -92,8 +92,6 @@ namespace ContradiccionDeTesisCaptura
             {
                 resol.SetNewResolucion(contradiccion);
             }
-
-            
 
             //Actualiza Info ejecutoria
             EjecutoriasModel eje = new EjecutoriasModel();
@@ -114,7 +112,7 @@ namespace ContradiccionDeTesisCaptura
             }
             else
             {
-                admisorio.SetNewAdmisorio(contradiccion.AcAdmisorio);
+                admisorio.SetNewAdmisorio(contradiccion.AcAdmisorio, contradiccion.IdContradiccion);
             }
 
             this.Close();
@@ -144,22 +142,10 @@ namespace ContradiccionDeTesisCaptura
             }
         }
 
-        
-
-        
-
-        
-
         private void BtnFileEjecPath_Click(object sender, RoutedEventArgs e)
         {
             TxtFileEjecPath.Text = this.OpenDialogForPath();
         }
-
-        
-
-        
-
-        
 
         private void TxtExpNumero_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
@@ -229,18 +215,20 @@ namespace ContradiccionDeTesisCaptura
                 RadTramite.IsChecked = true;
 
             CbxTiposAsuntos.SelectedValue = contradiccion.IdTipoAsunto;
+            CbxPlenos.SelectedValue = contradiccion.IdPlenoCircuito;
 
-            
-
-            
         }
 
         private void BtnEditCriterios_Click(object sender, RoutedEventArgs e)
         {
             Criterios editCriterio = (Criterios)RGridCriterios.SelectedItem;
 
-            CriteriosWin criterios = new CriteriosWin(contradiccion, editCriterio, true);
-            criterios.ShowDialog();
+            if (editCriterio != null)
+            {
+
+                CriteriosWin criterios = new CriteriosWin(contradiccion, editCriterio, true);
+                criterios.ShowDialog();
+            }
         }
 
         private void BtnDelCriterio_Click(object sender, RoutedEventArgs e)
@@ -338,6 +326,50 @@ namespace ContradiccionDeTesisCaptura
             {
                 MessageBox.Show("Debes de seleccionar la tesis que quieres seleccionar");
             }
+        }
+
+        private void GOficios_AddingNewDataItem(object sender, Telerik.Windows.Controls.GridView.GridViewAddingNewEventArgs e)
+        {
+            e.NewObject = new Oficios();
+        }
+
+        private void GOficios_RowEditEnded(object sender, Telerik.Windows.Controls.GridViewRowEditEndedEventArgs e)
+        {
+            if (e.EditAction == GridViewEditAction.Cancel)
+            {
+                return;
+            }
+            
+            if(e.EditOperationType == GridViewEditOperationType.Insert)
+            {
+                OficiosModel model = new OficiosModel();
+                model.SetNewOficio(e.NewData as Oficios,contradiccion.IdContradiccion);
+            }
+
+            if (e.EditOperationType == GridViewEditOperationType.Edit)
+            {
+                OficiosModel model = new OficiosModel();
+                model.UpdateOficio(e.NewData as Oficios);
+            }
+        }
+
+        private void GOficios_Deleting(object sender, Telerik.Windows.Controls.GridViewDeletingEventArgs e)
+        {
+            MessageBoxResult result = MessageBox.Show("Estas seguro de eliminar este oficio", "ATENCIÓN:", MessageBoxButton.OKCancel, MessageBoxImage.Question);
+
+            if (result == MessageBoxResult.OK)
+            {
+                Oficios oficioDel = GOficios.SelectedItem as Oficios;
+                OficiosModel model = new OficiosModel();
+                model.DeleteOficio(oficioDel);
+
+                ((ObservableCollection<Oficios>)this.GOficios.ItemsSource).Remove(oficioDel);
+            }
+        }
+
+        private void GOficios_BeginningEdit(object sender, Telerik.Windows.Controls.GridViewBeginningEditRoutedEventArgs e)
+        {
+
         }
 
         
