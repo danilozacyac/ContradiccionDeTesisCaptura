@@ -10,7 +10,7 @@ namespace ContradiccionDeTesisCaptura
     /// <summary>
     /// Interaction logic for CapturaTesis.xaml
     /// </summary>
-    public partial class CapturaTesis : Window
+    public partial class CapturaTesis 
     {
         private Tesis tesis = null;
         private ObservableCollection<Tesis> listaTesis = null;

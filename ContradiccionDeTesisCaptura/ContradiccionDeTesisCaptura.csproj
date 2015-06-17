@@ -27,8 +27,8 @@
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
     <UpdateUrl>\\ctpdc-26537-mrl\Users\mrodriguez\Desktop\Contradiccion de Tesis\Updates\</UpdateUrl>
-    <ApplicationRevision>4</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <ApplicationRevision>20150617</ApplicationRevision>
+    <ApplicationVersion>1.2.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -56,7 +56,7 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>1393376608_86548.ico</ApplicationIcon>
+    <ApplicationIcon>updownbar.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestCertificateThumbprint>894F11E18DE640F66609AFFAECEB0EB46AABD52E</ManifestCertificateThumbprint>
@@ -65,10 +65,16 @@
     <ManifestKeyFile>ContradiccionDeTesisCaptura_ClaveTemporal.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <GenerateManifests>true</GenerateManifests>
+    <GenerateManifests>false</GenerateManifests>
   </PropertyGroup>
   <PropertyGroup>
     <SignManifests>true</SignManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <TargetZone>LocalIntranet</TargetZone>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="itextsharp, Version=5.0.6.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
@@ -97,22 +103,22 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Telerik.Windows.Controls, Version=2014.2.729.40, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL">
-      <HintPath>..\lib\RCWPF\2014.2.729.40\Telerik.Windows.Controls.dll</HintPath>
+    <Reference Include="Telerik.Windows.Controls, Version=2014.2.729.45, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL" />
+    <Reference Include="Telerik.Windows.Controls.Docking, Version=2014.2.729.45, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\..\..\..\Program Files\Telerik\UI for WPF Q2 2014\Binaries\WPF45\Telerik.Windows.Controls.Docking.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Telerik.Windows.Controls.GridView, Version=2014.2.729.40, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL">
-      <HintPath>..\lib\RCWPF\2014.2.729.40\Telerik.Windows.Controls.GridView.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Telerik.Windows.Controls.GridView, Version=2014.2.729.45, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\Program Files\Telerik\UI for WPF Q2 2014\Binaries\WPF45\Telerik.Windows.Controls.GridView.dll</HintPath>
     </Reference>
-    <Reference Include="Telerik.Windows.Controls.Input, Version=2014.2.729.40, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL">
-      <HintPath>..\lib\RCWPF\2014.2.729.40\Telerik.Windows.Controls.Input.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Telerik.Windows.Controls.Input, Version=2014.2.729.45, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL" />
+    <Reference Include="Telerik.Windows.Controls.Navigation, Version=2014.2.729.45, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL" />
+    <Reference Include="Telerik.Windows.Controls.RibbonView, Version=2014.2.729.45, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\Program Files\Telerik\UI for WPF Q2 2014\Binaries\WPF45\Telerik.Windows.Controls.RibbonView.dll</HintPath>
     </Reference>
-    <Reference Include="Telerik.Windows.Data, Version=2014.2.729.40, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL">
-      <HintPath>..\lib\RCWPF\2014.2.729.40\Telerik.Windows.Data.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
+    <Reference Include="Telerik.Windows.Data, Version=2014.2.729.45, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL" />
     <Reference Include="UIAutomationProvider" />
     <Reference Include="UIAutomationTypes" />
     <Reference Include="WindowsBase" />
@@ -132,6 +138,9 @@
     </Compile>
     <Compile Include="Converters\FinalStatusConverter.cs" />
     <Compile Include="Converters\TipoAsuntoConverter.cs" />
+    <Compile Include="Launcher.xaml.cs">
+      <DependentUpon>Launcher.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Observaciones.xaml.cs">
       <DependentUpon>Observaciones.xaml</DependentUpon>
     </Compile>
@@ -144,6 +153,12 @@
     <Compile Include="Report\ToWordReport.cs" />
     <Compile Include="Returnos.xaml.cs">
       <DependentUpon>Returnos.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="TelerikScenario1.xaml.cs">
+      <DependentUpon>TelerikScenario1.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="TelerikScenario2.xaml.cs">
+      <DependentUpon>TelerikScenario2.xaml</DependentUpon>
     </Compile>
     <Page Include="CapturaTesis.xaml">
       <SubType>Designer</SubType>
@@ -158,6 +173,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="CriteriosWin.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Launcher.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -194,6 +213,14 @@
     <Page Include="Returnos.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="TelerikScenario1.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="TelerikScenario2.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Themes\Botones.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -232,6 +259,7 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="ContradiccionDeTesisCaptura_ClaveTemporal.pfx" />
+    <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -302,6 +330,36 @@
       <IncludeHash>True</IncludeHash>
       <FileType>Assembly</FileType>
     </PublishFile>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="updownbar.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\updownbar_128.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\updownbar_512.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\1425495925_delete-notes.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\1425495821_edit-notes.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\1425495838_add-notes.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\1425495863_notes.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\db_128.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\pdf_128.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\word_128.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -8,7 +8,7 @@ namespace ContradiccionDeTesisCaptura
     /// <summary>
     /// Interaction logic for Observaciones.xaml
     /// </summary>
-    public partial class Observaciones : Window
+    public partial class Observaciones 
     {
         private Contradicciones contradiccion;
 

@@ -10,7 +10,7 @@ namespace ContradiccionDeTesisCaptura
     /// <summary>
     /// Interaction logic for Returnos.xaml
     /// </summary>
-    public partial class Returnos : Window
+    public partial class Returnos 
     {
         private Contradicciones contradiccion;
         private ReturnosClass returno;

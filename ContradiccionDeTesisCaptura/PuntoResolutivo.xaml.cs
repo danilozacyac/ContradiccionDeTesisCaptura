@@ -9,7 +9,7 @@ namespace ContradiccionDeTesisCaptura
     /// <summary>
     /// Interaction logic for PuntoResolutivo.xaml
     /// </summary>
-    public partial class PuntoResolutivo : Window
+    public partial class PuntoResolutivo 
     {
         private PResolutivos resolutivo;
         private Contradicciones contradiccion;

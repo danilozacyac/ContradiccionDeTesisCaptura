@@ -14,7 +14,7 @@ namespace ContradiccionDeTesisCaptura
     /// <summary>
     /// Interaction logic for ContraInfoGral.xaml
     /// </summary>
-    public partial class ContraInfoGral : Window
+    public partial class ContraInfoGral 
     {
         private Contradicciones contradiccion;
         private ListadoDeContradicciones listado;
@@ -108,10 +108,7 @@ namespace ContradiccionDeTesisCaptura
             obsr.ShowDialog();
         }
 
-        private void BtnPrueba_Click(object sender, RoutedEventArgs e)
-        {
-            //DateTimeUtilities.IdentifyCompleteDate(TxtPrueba.Text);
-        }
+        
 
         
     }

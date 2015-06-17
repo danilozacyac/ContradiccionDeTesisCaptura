@@ -14,32 +14,44 @@ namespace ContradiccionDeTesisCaptura
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow 
     {
         private ListadoDeContradicciones contradicciones;
         private Contradicciones selectedContradiction;
 
-        public MainWindow()
+        public MainWindow(ListadoDeContradicciones contradicciones)
         {
             InitializeComponent();
+            this.contradicciones = contradicciones;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            contradicciones = new ListadoDeContradicciones();
-            ContradiccionesModel conModel = new ContradiccionesModel();
-            contradicciones.Listado = conModel.GetContradicciones();
+            //contradicciones = new ListadoDeContradicciones();
+            //ContradiccionesModel conModel = new ContradiccionesModel();
+            //contradicciones.Listado = conModel.GetContradicciones();
 
             RGridContradicciones.DataContext = contradicciones.Listado;
         }
 
-        private void BtnAgregar_Click(object sender, RoutedEventArgs e)
+        private void CheckCorrectdelete(bool isDeleteComplete)
+        {
+            if (!isDeleteComplete)
+                throw new Exception();
+        }
+
+        private void RGridContradicciones_SelectionChanged(object sender, Telerik.Windows.Controls.SelectionChangeEventArgs e)
+        {
+            selectedContradiction = RGridContradicciones.SelectedItem as Contradicciones;
+        }
+
+        private void RBtnAddContra_Click(object sender, RoutedEventArgs e)
         {
             ContraInfoGral contra = new ContraInfoGral(contradicciones);
             contra.ShowDialog();
         }
 
-        private void BtnModificar_Click(object sender, RoutedEventArgs e)
+        private void RBtnEditContra_Click(object sender, RoutedEventArgs e)
         {
             if (RGridContradicciones.SelectedItem != null)
             {
@@ -55,14 +67,15 @@ namespace ContradiccionDeTesisCaptura
             }
         }
 
-        private void BtnVisualizar_Click(object sender, RoutedEventArgs e)
+        private void RBtnViewContra_Click(object sender, RoutedEventArgs e)
         {
             Contradicciones contra = (Contradicciones)RGridContradicciones.SelectedItem;
-            ContradiccionesWin win = new ContradiccionesWin(contra,false);
+            ContradiccionesWin win = new ContradiccionesWin(contra, false);
             win.ShowDialog();
+
         }
 
-        private void BtnDelete_Click(object sender, RoutedEventArgs e)
+        private void RBtnDeleteViewContra_Click(object sender, RoutedEventArgs e)
         {
             if (selectedContradiction == null)
             {
@@ -93,31 +106,19 @@ namespace ContradiccionDeTesisCaptura
 
                     if (MessageBoxResult.Yes == result)
                     {
-                        BtnDelete_Click(null, null);
+                        RBtnDeleteViewContra_Click(null, null);
                     }
                 }
             }
-
         }
 
-        private void CheckCorrectdelete(bool isDeleteComplete)
-        {
-            if (!isDeleteComplete)
-                throw new Exception();
-        }
-
-        private void RGridContradicciones_SelectionChanged(object sender, Telerik.Windows.Controls.SelectionChangeEventArgs e)
-        {
-            selectedContradiction = RGridContradicciones.SelectedItem as Contradicciones;
-        }
-
-        private void BtnPdf_Click(object sender, RoutedEventArgs e)
+        private void RBtnPdf_Click(object sender, RoutedEventArgs e)
         {
             ToPdfReport report = new ToPdfReport();
             report.CtToPdfReport(contradicciones);
         }
 
-        private void BtnImportar_Click(object sender, RoutedEventArgs e)
+        private void RBtnImportarDatos_Click(object sender, RoutedEventArgs e)
         {
             WordInfoProcess merge = new WordInfoProcess();
             merge.GetListaContradiccionesFaltantes();

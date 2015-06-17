@@ -1,47 +1,72 @@
-﻿<Window x:Class="ContradiccionDeTesisCaptura.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:converter="clr-namespace:ContradiccionDeTesisCaptura.Converters"
-        xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
-        Title="MainWindow"
-        Width="1005"
-        Height="404"
-        Icon="/ContradiccionDeTesisCaptura;component/1393376608_86548.ico"
-        Loaded="Window_Loaded"
-        WindowState="Maximized">
-    <Window.Resources>
+﻿<telerik:RadWindow x:Class="ContradiccionDeTesisCaptura.MainWindow"
+                   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                   xmlns:converter="clr-namespace:ContradiccionDeTesisCaptura.Converters"
+                   xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
+                   Width="1005"
+                   Height="404"
+                   Loaded="Window_Loaded"
+                   WindowState="Maximized">
+    <telerik:RadWindow.Resources>
         <converter:StatusConverter x:Key="statusConverter" />
         <converter:TipoAsuntoConverter x:Key="tiposConverter" />
         <converter:FinalStatusConverter x:Key="finalStatus" />
-    </Window.Resources>
+    </telerik:RadWindow.Resources>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="30" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="30" />
         </Grid.RowDefinitions>
-        <Button Name="BtnAgregar"
-                Grid.Row="2"
-                Width="75"
-                Height="23"
-                Margin="0,0,26,0"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Top"
-                Click="BtnAgregar_Click"
-                Content="Agregar" />
-        <Button Name="BtnModificar"
-                Grid.Row="2"
-                Width="75"
-                Height="23"
-                Margin="0,0,107,0"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Top"
-                Click="BtnModificar_Click"
-                Content="Modificar"
-                IsEnabled="True" />
+
+        <telerik:RadRibbonView ApplicationName="Contradicciones de Tesis">
+            <telerik:RadRibbonTab>
+                <telerik:RadRibbonGroup Header="Contradicciones">
+                    <telerik:RadRibbonButton x:Name="RBtnAddContra"
+                                             Click="RBtnAddContra_Click"
+                                             Content="Agregar"
+                                             LargeImage="Resources/1425495838_add-notes.png"
+                                             Size="Large" />
+                    <telerik:RadRibbonButton x:Name="RBtnEditContra"
+                                             Click="RBtnEditContra_Click"
+                                             Content="Modificar"
+                                             LargeImage="Resources/1425495821_edit-notes.png"
+                                             Size="Large" />
+                    <telerik:RadRibbonButton x:Name="RBtnViewContra"
+                                             Click="RBtnViewContra_Click"
+                                             Content="Visualizar"
+                                             LargeImage="Resources/1425495863_notes.png"
+                                             Size="Large" />
+                    <telerik:RadRibbonButton x:Name="RBtnDeleteViewContra"
+                                             Click="RBtnDeleteViewContra_Click"
+                                             Content="Eliminar"
+                                             LargeImage="Resources/1425495925_delete-notes.png"
+                                             Size="Large" />
+                </telerik:RadRibbonGroup>
+                <telerik:RadRibbonGroup Header="Reportes">
+                    <telerik:RadRibbonButton Name="RBtnPdf"
+                                             Click="RBtnPdf_Click"
+                                             Content="PDF"
+                                             LargeImage="Resources/pdf_128.png"
+                                             Size="Large" />
+                    <telerik:RadRibbonButton Name="RBtnWord"
+                                             Content="Word"
+                                             LargeImage="Resources/word_128.png"
+                                             Size="Large" />
+                </telerik:RadRibbonGroup>
+                <telerik:RadRibbonGroup Header="Datos Externos">
+                    <telerik:RadRibbonButton x:Name="RBtnImportarDatos"
+                                             Click="RBtnImportarDatos_Click"
+                                             Content="Importar"
+                                             IsEnabled="False"
+                                             LargeImage="Resources/db_128.png"
+                                             Size="Large" />
+
+                </telerik:RadRibbonGroup>
+            </telerik:RadRibbonTab>
+        </telerik:RadRibbonView>
         <telerik:RadGridView Name="RGridContradicciones"
                              Grid.Row="1"
-                             Margin="25,25,25,25"
+                             Margin="0"
                              HorizontalAlignment="Stretch"
                              VerticalAlignment="Stretch"
                              AutoGenerateColumns="False"
@@ -106,41 +131,5 @@
                 </Style>
             </telerik:RadGridView.RowStyle>
         </telerik:RadGridView>
-        <Button Name="BtnVisualizar"
-                Grid.Row="2"
-                Width="75"
-                Height="23"
-                Margin="0,0,188,0"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Top"
-                Click="BtnVisualizar_Click"
-                Content="Visualizar" />
-        <Button Name="BtnDelete"
-                Grid.Row="2"
-                Width="75"
-                Height="23"
-                Margin="0,0,269,0"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Top"
-                Click="BtnDelete_Click"
-                Content="Eliminar" />
-        <Button Name="BtnPdf"
-                Grid.Row="2"
-                Width="159"
-                Height="23"
-                Margin="25,0,0,0"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"
-                Click="BtnPdf_Click"
-                Content="Generar Listado en PDF" />
-        <Button x:Name="BtnImportar"
-                Grid.Row="2"
-                Width="75"
-                Height="23"
-                Margin="228,0,0,0"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"
-                Click="BtnImportar_Click"
-                Content="Importar " />
     </Grid>
-</Window>
+</telerik:RadWindow>

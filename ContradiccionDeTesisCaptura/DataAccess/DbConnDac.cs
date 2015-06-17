@@ -17,14 +17,14 @@ namespace ContradiccionDeTesisCaptura.DataAccess
         }
 
 
-        public static OleDbConnection GetConnectionDirectorio()
-        {
-            String bdStringSql = ConfigurationManager.ConnectionStrings["Directorio"].ConnectionString;
+        //public static OleDbConnection GetConnectionDirectorio()
+        //{
+        //    String bdStringSql = ConfigurationManager.ConnectionStrings["Directorio"].ConnectionString;
 
-            OleDbConnection oleConne = new OleDbConnection(bdStringSql);
+        //    OleDbConnection oleConne = new OleDbConnection(bdStringSql);
 
-            return oleConne;
-        }
+        //    return oleConne;
+        //}
 
     }
 }

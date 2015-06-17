@@ -15,7 +15,7 @@ namespace ContradiccionDeTesisCaptura
     /// <summary>
     /// Interaction logic for CriteriosWin.xaml
     /// </summary>
-    public partial class CriteriosWin : Window
+    public partial class CriteriosWin 
     {
         private Contradicciones contradiccion;
         private Criterios criterios;

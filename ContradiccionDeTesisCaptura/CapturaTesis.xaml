@@ -1,13 +1,14 @@
-﻿<Window x:Class="ContradiccionDeTesisCaptura.CapturaTesis"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:telerik="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.GridView"
-        Name="WinTesis"
-        Title="CapturaTesis"
-        Width="900"
-        Height="550"
-        Icon="/ContradiccionDeTesisCaptura;component/1393376608_86548.ico"
-        Loaded="WinTesis_Loaded">
+﻿<telerik:RadWindow x:Class="ContradiccionDeTesisCaptura.CapturaTesis"
+                   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                   xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
+                   Name="WinTesis"
+                   Width="900"
+                   Height="550"
+                   Header="CapturaTesis"
+                   Loaded="WinTesis_Loaded"
+                   ResizeMode="NoResize"
+                   WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="70" />
@@ -35,22 +36,22 @@
                HorizontalAlignment="Left"
                VerticalAlignment="Top"
                Content="Tipo de tesis:" />
-        <RadioButton Name="RadJuris"
-                     Height="16"
-                     Margin="494,26,0,0"
-                     HorizontalAlignment="Left"
-                     VerticalAlignment="Top"
-                     Content="  Jurisprudencia"
-                     Foreground="Black"
-                     GroupName="TipoTesis" />
-        <RadioButton Name="RadAislada"
-                     Height="16"
-                     Margin="633,26,0,0"
-                     HorizontalAlignment="Left"
-                     VerticalAlignment="Top"
-                     Content="  Tesis Aislada"
-                     Foreground="Black"
-                     GroupName="TipoTesis" />
+        <telerik:RadRadioButton Name="RadJuris"
+                                Height="25"
+                                Margin="494,32,0,0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Top"
+                                Content="  Jurisprudencia"
+                                Foreground="Black"
+                                GroupName="TipoTesis" />
+        <telerik:RadRadioButton Name="RadAislada"
+                                Height="25"
+                                Margin="588,32,0,0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Top"
+                                Content="  Tesis Aislada"
+                                Foreground="Black"
+                                GroupName="TipoTesis" />
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
@@ -102,16 +103,16 @@
                  VerticalAlignment="Top"
                  Text="{Binding OficioPublicacionFilePath,
                                 Mode=TwoWay}" />
-        <Button Name="BtnArchivoOficioPub"
-                Grid.Row="2"
-                Width="37"
-                Height="23"
-                Margin="765,10,0,0"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"
-                Click="BtnArchivoOficioPub_Click">
+        <telerik:RadButton Name="BtnArchivoOficioPub"
+                           Grid.Row="2"
+                           Width="37"
+                           Height="23"
+                           Margin="765,10,0,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Top"
+                           Click="BtnArchivoOficioPub_Click">
             <Image Source="/ContradiccionDeTesisCaptura;component/Resources/clip.png" />
-        </Button>
+        </telerik:RadButton>
         <Label Name="label16"
                Grid.Row="2"
                Height="28"
@@ -298,22 +299,22 @@
                  VerticalAlignment="Top"
                  Text="{Binding ClaveIdentificacion,
                                 Mode=TwoWay}" />
-        <Button Name="BtnGuardar"
-                Grid.Row="3"
-                Width="75"
-                Height="23"
-                Margin="0,10,20,0"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Top"
-                Click="BtnGuardar_Click"
-                Content="Guardar" />
-        <RadioButton Name="RadImprocedente"
-                     Height="16"
-                     Margin="0,26,31,0"
-                     HorizontalAlignment="Right"
-                     VerticalAlignment="Top"
-                     Content=" Improcedente"
-                     Foreground="Black"
-                     GroupName="TipoTesis" />
+        <telerik:RadButton Name="BtnGuardar"
+                           Grid.Row="3"
+                           Width="75"
+                           Height="23"
+                           Margin="0,10,20,0"
+                           HorizontalAlignment="Right"
+                           VerticalAlignment="Top"
+                           Click="BtnGuardar_Click"
+                           Content="Guardar" />
+        <telerik:RadRadioButton Name="RadImprocedente"
+                                Height="25"
+                                Margin="0,32,125,0"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Top"
+                                Content=" Improcedente"
+                                Foreground="Black"
+                                GroupName="TipoTesis" />
     </Grid>
-</Window>
+</telerik:RadWindow>

@@ -121,4 +121,31 @@
   <data name="clip" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\clip.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="updownbar_128" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\updownbar_128.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="updownbar_512" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\updownbar_512.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="_1425495821_edit_notes" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\1425495821_edit-notes.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="_1425495838_add_notes" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\1425495838_add-notes.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="_1425495863_notes" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\1425495863_notes.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="_1425495925_delete_notes" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\1425495925_delete-notes.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="db_128" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\db_128.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="pdf_128" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\pdf_128.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="word_128" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\word_128.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

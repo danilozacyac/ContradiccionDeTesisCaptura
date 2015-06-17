@@ -16,7 +16,7 @@ namespace ContradiccionDeTesisCaptura
     /// <summary>
     /// Interaction logic for ContradiccionesWin.xaml
     /// </summary>
-    public partial class ContradiccionesWin : Window
+    public partial class ContradiccionesWin 
     {
         private Contradicciones contradiccion;
         private ListadoDeContradicciones listado;
@@ -368,6 +368,11 @@ namespace ContradiccionDeTesisCaptura
         }
 
         private void GOficios_BeginningEdit(object sender, Telerik.Windows.Controls.GridViewBeginningEditRoutedEventArgs e)
+        {
+
+        }
+
+        private void RadJuris_Click(object sender, RoutedEventArgs e)
         {
 
         }
