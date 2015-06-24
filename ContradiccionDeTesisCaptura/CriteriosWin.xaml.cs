@@ -103,5 +103,12 @@ namespace ContradiccionDeTesisCaptura
         {
             this.Close();
         }
+
+        private void TxtCriterio_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        {
+            if (!String.IsNullOrEmpty(TxtCriterio.Text) && !String.IsNullOrWhiteSpace(TxtCriterio.Text))
+                BtnAgregar.IsEnabled = true;
+
+        }
     }
 }

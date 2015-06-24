@@ -4,6 +4,8 @@ using System.Linq;
 using System.Windows;
 using ContradiccionesDirectorioApi.Dao;
 using ContradiccionesDirectorioApi.Model;
+using MantesisVerIusCommonObjects.Dto;
+using MantesisVerIusCommonObjects.Model;
 
 namespace ContradiccionDeTesisCaptura
 {
@@ -32,6 +34,11 @@ namespace ContradiccionDeTesisCaptura
         public CapturaTesis(ObservableCollection<Tesis> listaTesis,int idContradiccion)
         {
             InitializeComponent();
+
+            if (listaTesis == null)
+                listaTesis = new ObservableCollection<Tesis>();
+
+
             this.listaTesis = listaTesis;
             isUpdating = false;
             this.idContradiccion = idContradiccion;
@@ -179,6 +186,31 @@ namespace ContradiccionDeTesisCaptura
                 RadSiCambio.IsChecked = true;
             else
                 RadNoCambio.IsChecked = true;
+        }
+
+        private void BtnSearchIus_Click(object sender, RoutedEventArgs e)
+        {
+            NumIusModel numIusModel = new NumIusModel();
+
+            TesisDto tesis = numIusModel.BuscaTesis(Convert.ToInt32(TxtNumIus.Text));
+
+            if (tesis != null)
+            {
+                TxtCControl.Text = tesis.Tesis;
+                TxtRubro.Text = tesis.Rubro;
+
+                if (tesis.TaTj == 1)
+                    RadJuris.IsChecked = true;
+                else if (tesis.TaTj == 0)
+                    RadAislada.IsChecked = true;
+
+            }
+            else
+            {
+                MessageBox.Show("Número de tesis no encontrado, favor de verificar");
+            }
+
+
         }
     }
 }

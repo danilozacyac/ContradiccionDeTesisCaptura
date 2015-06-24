@@ -55,16 +55,17 @@ namespace ContradiccionesDirectorioApi.Model
                 dr["Responsable"] = tesis.Responsable;
                 dr["OficioRespuesta"] = tesis.OficioRespuesta;
                 dr["OficioRPath"] = tesis.OficioRespuestaFilePath;
+                dr["IUS"] = tesis.Ius;
 
                 dataSet.Tables["Tesis"].Rows.Add(dr);
 
                 dataAdapter.InsertCommand = connection.CreateCommand();
                 dataAdapter.InsertCommand.CommandText = "INSERT INTO Tesis(IdTesis,IdContradiccion,Clavecontrol,ClaveIdentificacion,Rubro,tatj,OficioPublicacion," +
                                                         "OficioPPath,VersionPublica,VersionPPath,CopiaCertificada,CopiaCPath,Destinatario,CambioCriterio," +
-                                                        "Responsable,OficioRespuesta,OficioRPath)" +
+                                                        "Responsable,OficioRespuesta,OficioRPath,IUS)" +
                                                         " VALUES(@IdTesis,@IdContradiccion,@Clavecontrol,@ClaveIdentificacion,@Rubro,@tatj,@OficioPublicacion," +
                                                         "@OficioPPath,@VersionPublica,@VersionPPath,@CopiaCertificada,@CopiaCPath,@Destinatario,@CambioCriterio," +
-                                                        "@Responsable,@OficioRespuesta,@OficioRPath)";
+                                                        "@Responsable,@OficioRespuesta,@OficioRPath,@IUS)";
 
                 dataAdapter.InsertCommand.Parameters.Add("@IdTesis", OleDbType.Numeric, 0, "IdTesis");
                 dataAdapter.InsertCommand.Parameters.Add("@IdContradiccion", OleDbType.Numeric, 0, "IdContradiccion");
@@ -83,14 +84,14 @@ namespace ContradiccionesDirectorioApi.Model
                 dataAdapter.InsertCommand.Parameters.Add("@Responsable", OleDbType.VarChar, 0, "Responsable");
                 dataAdapter.InsertCommand.Parameters.Add("@OficioRespuesta", OleDbType.VarChar, 0, "OficioRespuesta");
                 dataAdapter.InsertCommand.Parameters.Add("@OficioRPath", OleDbType.VarChar, 0, "OficioRPath");
-
+                dataAdapter.InsertCommand.Parameters.Add("@IUS", OleDbType.Numeric, 0, "IUS");
 
                 dataAdapter.Update(dataSet, "Tesis");
 
                 dataSet.Dispose();
                 dataAdapter.Dispose();
 
-                tesis.IdTesis = this.GetInsertedTesisId(tesis);
+                //tesis.IdTesis = this.GetInsertedTesisId(tesis);
             }
             catch (OleDbException ex)
             {
@@ -149,6 +150,7 @@ namespace ContradiccionesDirectorioApi.Model
                     tesis.Responsable = reader["Responsable"].ToString();
                     tesis.OficioRespuesta = reader["OficioRespuesta"].ToString();
                     tesis.OficioRespuestaFilePath = reader["OficioRPath"].ToString();
+                    tesis.Ius = reader["IUS"] as int? ?? 0;
 
                     listaTesis.Add(tesis);
                 }
@@ -211,6 +213,7 @@ namespace ContradiccionesDirectorioApi.Model
                 dr["Responsable"] = tesis.Responsable;
                 dr["OficioRespuesta"] = tesis.OficioRespuesta;
                 dr["OficioRPath"] = tesis.OficioRespuestaFilePath;
+                dr["IUS"] = tesis.Ius;
                 dr.EndEdit();
 
                 dataAdapter.UpdateCommand = connectionBitacoraSql.CreateCommand();
@@ -219,7 +222,7 @@ namespace ContradiccionesDirectorioApi.Model
                                                        "Rubro = @Rubro,tatj = @tatj,OficioPublicacion = @OficioPublicacion,OficioPPath = @OficioPPath," +
                                                        "VersionPublica = @VersionPublica,VersionPPath = @VersionPPath,CopiaCertificada = @CopiaCertificada," +
                                                        "CopiaCPath = @CopiaCPath,Destinatario = @Destinatario,CambioCriterio = @CambioCriterio, " +
-                                                       "Responsable = @Responsable,OficioRespuesta = @OficioRespuesta,OficioRPath = @OficioRPath " +
+                                                       "Responsable = @Responsable,OficioRespuesta = @OficioRespuesta,OficioRPath = @OficioRPath, IUS = @IUS " +
                                                        " WHERE IdTesis = @IdTesis";
 
                 dataAdapter.UpdateCommand.Parameters.Add("@ClaveControl", OleDbType.VarChar, 0, "ClaveControl");
@@ -237,6 +240,7 @@ namespace ContradiccionesDirectorioApi.Model
                 dataAdapter.UpdateCommand.Parameters.Add("@Responsable", OleDbType.VarChar, 0, "Responsable");
                 dataAdapter.UpdateCommand.Parameters.Add("@OficioRespuesta", OleDbType.VarChar, 0, "OficioRespuesta");
                 dataAdapter.UpdateCommand.Parameters.Add("@OficioRPath", OleDbType.VarChar, 0, "OficioRPath");
+                dataAdapter.UpdateCommand.Parameters.Add("@IUS", OleDbType.Numeric, 0, "IUS");
                 dataAdapter.UpdateCommand.Parameters.Add("@IdTesis", OleDbType.Numeric, 0, "IdTesis");
 
                 dataAdapter.Update(dataSet, "Tesis");
@@ -316,50 +320,6 @@ namespace ContradiccionesDirectorioApi.Model
             return deleted;
         }
 
-        /// <summary>
-        /// Devuelve el identificador de la tesis que se inserto
-        /// </summary>
-        /// <param name="tesis"></param>
-        /// <returns></returns>
-        public int GetInsertedTesisId(Tesis tesis)
-        {
-            int idTesis = 0;
 
-            OleDbConnection oleConnection = DbConnDac.GetConnection();
-            OleDbCommand cmd;
-            OleDbDataReader reader;
-
-            string oleCadena = "SELECT IdTesis FROM Tesis WHERE IdContradiccion = " + tesis.IdContradiccion + " AND ClaveControl = '" + tesis.ClaveControl + "'";
-
-            try
-            {
-                oleConnection.Open();
-
-                cmd = new OleDbCommand(oleCadena, oleConnection);
-                reader = cmd.ExecuteReader();
-
-                while (reader.Read())
-                {
-                    idTesis = Convert.ToInt32(reader["IdTesis"]);
-                }
-
-                reader.Close();
-                cmd.Dispose();
-            }
-            catch (OleDbException ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-            finally
-            {
-                oleConnection.Close();
-            }
-
-            return idTesis;
-        }
     }
 }
