@@ -377,6 +377,23 @@ namespace ContradiccionDeTesisCaptura
 
         }
 
+        private void BtnEliminarTesis_Click(object sender, RoutedEventArgs e)
+        {
+            if (LstTesisRelacionadas.SelectedItem != null)
+            {
+
+                int ius = LstTesisRelacionadas.SelectedItem as int? ?? 0;
+
+                EjecutoriasModel model = new EjecutoriasModel();
+                model.DeleteRelacionesEjecutorias(ius, contradiccion.IdContradiccion, 1);
+                contradiccion.MiEjecutoria.TesisRelacionadas.Remove(ius);
+            }
+            else
+            {
+                MessageBox.Show("Selecciona el número de registro que deseas eliminar");
+            }
+        }
+
         
     }
 }

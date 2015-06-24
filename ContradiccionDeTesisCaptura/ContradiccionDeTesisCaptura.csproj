@@ -16,9 +16,9 @@
     <WarningLevel>4</WarningLevel>
     <TargetFrameworkProfile />
     <IsWebBootstrapper>false</IsWebBootstrapper>
-    <PublishUrl>S:\Updates\</PublishUrl>
+    <PublishUrl>\\ctpdc-26537-mrl\Users\mrodriguez\Desktop\Contradiccion de Tesis\Updates\</PublishUrl>
     <Install>true</Install>
-    <InstallFrom>Disk</InstallFrom>
+    <InstallFrom>Unc</InstallFrom>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateMode>Foreground</UpdateMode>
     <UpdateInterval>7</UpdateInterval>
@@ -27,7 +27,10 @@
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
     <UpdateUrl>\\ctpdc-26537-mrl\Users\mrodriguez\Desktop\Contradiccion de Tesis\Updates\</UpdateUrl>
-    <ApplicationRevision>20150617</ApplicationRevision>
+    <ProductName>Captura de contradicciones</ProductName>
+    <PublisherName>Suprema Corte de Justicia de la Nación</PublisherName>
+    <SuiteName>Contradicción de Tesis</SuiteName>
+    <ApplicationRevision>7</ApplicationRevision>
     <ApplicationVersion>1.2.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
@@ -65,10 +68,10 @@
     <ManifestKeyFile>ContradiccionDeTesisCaptura_ClaveTemporal.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <GenerateManifests>false</GenerateManifests>
+    <GenerateManifests>true</GenerateManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <SignManifests>true</SignManifests>
+    <SignManifests>false</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
     <TargetZone>LocalIntranet</TargetZone>
@@ -154,12 +157,6 @@
     <Compile Include="Returnos.xaml.cs">
       <DependentUpon>Returnos.xaml</DependentUpon>
     </Compile>
-    <Compile Include="TelerikScenario1.xaml.cs">
-      <DependentUpon>TelerikScenario1.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="TelerikScenario2.xaml.cs">
-      <DependentUpon>TelerikScenario2.xaml</DependentUpon>
-    </Compile>
     <Page Include="CapturaTesis.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -213,14 +210,6 @@
     <Page Include="Returnos.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="TelerikScenario1.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="TelerikScenario2.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="Themes\Botones.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -278,9 +267,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\clip.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="1393376608_86548.ico" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5">

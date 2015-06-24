@@ -23,6 +23,9 @@ namespace ContradiccionesDirectorioApi.Model
 
             try
             {
+
+                
+
                 string sqlCadena = "SELECT * FROM Ejecutorias WHERE IdContradiccion = 0";
 
                 dataAdapter = new OleDbDataAdapter();
@@ -155,6 +158,41 @@ namespace ContradiccionesDirectorioApi.Model
 
 
         }
+
+        public void DeleteRelacionesEjecutorias(int ius, int idContradiccion, int tipoRelacion)
+        {
+            OleDbConnection connectionBitacoraSql = DbConnDac.GetConnection();
+            OleDbCommand cmd;
+
+            cmd = connectionBitacoraSql.CreateCommand();
+            cmd.Connection = connectionBitacoraSql;
+
+            try
+            {
+                connectionBitacoraSql.Open();
+
+                cmd.CommandText = "DELETE FROM RelacionesEjecutoria WHERE IdContradiccion = @IdContradiccion AND TipoRelacion = @TipoRelacion AND IUS = @IUS";
+                cmd.Parameters.AddWithValue("@IdContradiccion", idContradiccion);
+                cmd.Parameters.AddWithValue("@TipoRelacion", tipoRelacion);
+                cmd.Parameters.AddWithValue("@IUS", ius);
+                cmd.ExecuteNonQuery();
+            }
+            catch (OleDbException ex)
+            {
+                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            finally
+            {
+                connectionBitacoraSql.Close();
+            }
+
+
+        }
+
 
         public void UpdateEjecutoria(Contradicciones contradiccion)
         {

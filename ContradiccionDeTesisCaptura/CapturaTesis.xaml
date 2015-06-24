@@ -32,11 +32,12 @@
                                 Mode=TwoWay}" />
         <Label Name="label10"
                Height="28"
-               Margin="396,29,0,0"
+               Margin="395,32,0,0"
                HorizontalAlignment="Left"
                VerticalAlignment="Top"
                Content="Tipo de tesis:" />
         <telerik:RadRadioButton Name="RadJuris"
+                                Width="120"
                                 Height="25"
                                 Margin="494,32,0,0"
                                 HorizontalAlignment="Left"
@@ -45,8 +46,9 @@
                                 Foreground="Black"
                                 GroupName="TipoTesis" />
         <telerik:RadRadioButton Name="RadAislada"
+                                Width="120"
                                 Height="25"
-                                Margin="588,32,0,0"
+                                Margin="619,32,0,0"
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Top"
                                 Content="  Tesis Aislada"
@@ -309,9 +311,10 @@
                            Click="BtnGuardar_Click"
                            Content="Guardar" />
         <telerik:RadRadioButton Name="RadImprocedente"
+                                Width="120"
                                 Height="25"
-                                Margin="0,32,125,0"
-                                HorizontalAlignment="Right"
+                                Margin="744,32,0,0"
+                                HorizontalAlignment="Left"
                                 VerticalAlignment="Top"
                                 Content=" Improcedente"
                                 Foreground="Black"

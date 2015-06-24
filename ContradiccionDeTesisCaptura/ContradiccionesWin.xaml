@@ -748,7 +748,7 @@
                                     Margin="171,74,0,0"
                                     HorizontalAlignment="Left"
                                     VerticalAlignment="Top"
-                                    Content="Eliminar &gt;&gt;" />
+                                    Content="Eliminar &gt;&gt;" Click="BtnEliminarTesis_Click" />
                         </Grid>
                     </GroupBox>
                     <GroupBox Name="groupBox2"
