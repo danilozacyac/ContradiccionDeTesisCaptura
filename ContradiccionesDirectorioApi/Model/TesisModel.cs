@@ -105,9 +105,6 @@ namespace ContradiccionesDirectorioApi.Model
             return tesis.IdTesis;
         }
 
-
-
-
         /// <summary>
         /// Devuelve la lista de tesis relacionadas a la Contradiccion 
         /// </summary>

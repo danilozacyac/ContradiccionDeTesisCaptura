@@ -34,6 +34,7 @@ namespace ContradiccionesDirectorioApi.Dao
             set
             {
                 this.ius = value;
+                this.OnPropertyChanged("Ius");
             }
         }
 

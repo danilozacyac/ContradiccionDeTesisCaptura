@@ -68,19 +68,16 @@ namespace ContradiccionDeTesisCaptura
             //    MessageBox.Show(ConstantMessages.SeleccionaTipoDeTesis);
             //    return;
             //}
-
             ///Valores ComboBox y RadioButtons
             contradiccion.IdPresidentePleno = (CbxPresidente.SelectedValue != null) ? (Int32)CbxPresidente.SelectedValue : 0;
             contradiccion.IdPonentePleno = (CbxPonente.SelectedValue != null) ? (Int32)CbxPonente.SelectedValue : 0;
             contradiccion.Status = (RadResuelto.IsChecked == true) ? 1 : 0;
             contradiccion.IdTipoAsunto = (Int32)CbxTiposAsuntos.SelectedValue;
             contradiccion.IdPlenoCircuito = (CbxPlenos.SelectedValue != null) ? (Int32)CbxPlenos.SelectedValue : 0;
-            
 
             ///Actualiza Info General de Contradiccion
             ContradiccionesModel contra = new ContradiccionesModel();
             contra.UpdateContradiccion(contradiccion);
-            
             
             ///Actualiza info Resolucion
             ResolucionModel resol = new ResolucionModel();
@@ -157,27 +154,27 @@ namespace ContradiccionDeTesisCaptura
             e.Handled = StringUtilities.IsTextAllowed(e.Text);
         }
 
-        private void BtnAgregarTesis_Click(object sender, RoutedEventArgs e)
-        {
-            if (contradiccion.MiEjecutoria.TesisRelacionadas == null)
-                contradiccion.MiEjecutoria.TesisRelacionadas = new ObservableCollection<int>();
+        //private void BtnAgregarTesis_Click(object sender, RoutedEventArgs e)
+        //{
+        //    if (contradiccion.MiEjecutoria.TesisRelacionadas == null)
+        //        contradiccion.MiEjecutoria.TesisRelacionadas = new ObservableCollection<int>();
 
-            NumIusModel numIusModel = new NumIusModel();
+        //    NumIusModel numIusModel = new NumIusModel();
 
-            TesisDto tesis = numIusModel.BuscaTesis(Convert.ToInt32(TxtRelTesis.Text));
+        //    TesisDto tesis = numIusModel.BuscaTesis(Convert.ToInt32(TxtRelTesis.Text));
 
-            if (tesis != null)
-            {
-                EjecutoriasModel model = new EjecutoriasModel();
-                model.SetRelacionesEjecutorias(tesis.Ius, contradiccion.IdContradiccion, 1);
-                TxtRelTesis.Text = String.Empty;
-                contradiccion.MiEjecutoria.TesisRelacionadas.Add(tesis.Ius);
-            }
-            else
-            {
-                MessageBox.Show("Ingrese un número de registro IUS válido");
-            }
-        }
+        //    if (tesis != null)
+        //    {
+        //        EjecutoriasModel model = new EjecutoriasModel();
+        //        model.SetRelacionesEjecutorias(tesis.Ius, contradiccion.IdContradiccion, 1);
+        //        TxtRelTesis.Text = String.Empty;
+        //        contradiccion.MiEjecutoria.TesisRelacionadas.Add(tesis.Ius);
+        //    }
+        //    else
+        //    {
+        //        MessageBox.Show("Ingrese un número de registro IUS válido");
+        //    }
+        //}
 
         private void BtnAgregarVoto_Click(object sender, RoutedEventArgs e)
         {
@@ -216,7 +213,6 @@ namespace ContradiccionDeTesisCaptura
 
             CbxTiposAsuntos.SelectedValue = contradiccion.IdTipoAsunto;
             CbxPlenos.SelectedValue = contradiccion.IdPlenoCircuito;
-
         }
 
         private void BtnEditCriterios_Click(object sender, RoutedEventArgs e)
@@ -225,7 +221,6 @@ namespace ContradiccionDeTesisCaptura
 
             if (editCriterio != null)
             {
-
                 CriteriosWin criterios = new CriteriosWin(contradiccion, editCriterio, true);
                 criterios.ShowDialog();
             }
@@ -299,20 +294,33 @@ namespace ContradiccionDeTesisCaptura
         }
 
         private Tesis selectedTesis;
+
         private void GTesisContra_SelectionChanged(object sender, Telerik.Windows.Controls.SelectionChangeEventArgs e)
         {
             selectedTesis = GTesisContra.SelectedItem as Tesis;
 
-            TxtCControl.Text = selectedTesis.ClaveControl;
-            TxtClaveIdent.Text = selectedTesis.ClaveIdentificacion;
-            TxtRubro.Text = selectedTesis.Rubro;
+            if (selectedTesis != null)
+            {
+                TxtCControl.Text = selectedTesis.ClaveControl;
+                TxtClaveIdent.Text = selectedTesis.ClaveIdentificacion;
+                TxtRubro.Text = selectedTesis.Rubro;
 
-            if (selectedTesis.Tatj == 1)
-                RadJuris.IsChecked = true;
-            else if (selectedTesis.Tatj == 0)
-                RadAislada.IsChecked = true;
+                if (selectedTesis.Tatj == 1)
+                    RadJuris.IsChecked = true;
+                else if (selectedTesis.Tatj == 0)
+                    RadAislada.IsChecked = true;
+                else
+                    RadImprocedente.IsChecked = true;
+            }
             else
-                RadImprocedente.IsChecked = true;
+            {
+                TxtCControl.Text = String.Empty;
+                TxtClaveIdent.Text = String.Empty;
+                TxtRubro.Text = String.Empty;
+                RadJuris.IsChecked = false;
+                RadAislada.IsChecked = false;
+                RadImprocedente.IsChecked = false;
+            }
         }
 
         private void BtnEditar_Click(object sender, RoutedEventArgs e)
@@ -340,10 +348,10 @@ namespace ContradiccionDeTesisCaptura
                 return;
             }
             
-            if(e.EditOperationType == GridViewEditOperationType.Insert)
+            if (e.EditOperationType == GridViewEditOperationType.Insert)
             {
                 OficiosModel model = new OficiosModel();
-                model.SetNewOficio(e.NewData as Oficios,contradiccion.IdContradiccion);
+                model.SetNewOficio(e.NewData as Oficios, contradiccion.IdContradiccion);
             }
 
             if (e.EditOperationType == GridViewEditOperationType.Edit)
@@ -369,31 +377,39 @@ namespace ContradiccionDeTesisCaptura
 
         private void GOficios_BeginningEdit(object sender, Telerik.Windows.Controls.GridViewBeginningEditRoutedEventArgs e)
         {
-
         }
 
         private void RadJuris_Click(object sender, RoutedEventArgs e)
         {
-
         }
 
-        private void BtnEliminarTesis_Click(object sender, RoutedEventArgs e)
+        //private void BtnEliminarTesis_Click(object sender, RoutedEventArgs e)
+        //{
+        //    if (LstTesisRelacionadas.SelectedItem != null)
+        //    {
+        //        int ius = LstTesisRelacionadas.SelectedItem as int? ?? 0;
+
+        //        EjecutoriasModel model = new EjecutoriasModel();
+        //        model.DeleteRelacionesEjecutorias(ius, contradiccion.IdContradiccion, 1);
+        //        contradiccion.MiEjecutoria.TesisRelacionadas.Remove(ius);
+        //    }
+        //    else
+        //    {
+        //        MessageBox.Show("Selecciona el número de registro que deseas eliminar");
+        //    }
+        //}
+
+        private void BtnEliminar_Click(object sender, RoutedEventArgs e)
         {
-            if (LstTesisRelacionadas.SelectedItem != null)
+            if (selectedTesis != null)
             {
-
-                int ius = LstTesisRelacionadas.SelectedItem as int? ?? 0;
-
-                EjecutoriasModel model = new EjecutoriasModel();
-                model.DeleteRelacionesEjecutorias(ius, contradiccion.IdContradiccion, 1);
-                contradiccion.MiEjecutoria.TesisRelacionadas.Remove(ius);
+                new TesisModel().DeleteTesis(selectedTesis);
+                contradiccion.MiTesis.Remove(selectedTesis);
             }
             else
             {
-                MessageBox.Show("Selecciona el número de registro que deseas eliminar");
+                MessageBox.Show("Selecciona la tesis que deseas eliminar");
             }
         }
-
-        
     }
 }

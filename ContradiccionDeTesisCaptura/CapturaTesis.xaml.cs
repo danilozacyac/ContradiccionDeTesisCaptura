@@ -16,7 +16,6 @@ namespace ContradiccionDeTesisCaptura
     {
         private Tesis tesis = null;
         private ObservableCollection<Tesis> listaTesis = null;
-        private readonly int idContradiccion;
         private readonly bool isUpdating;
 
         public CapturaTesis()
@@ -34,28 +33,21 @@ namespace ContradiccionDeTesisCaptura
         public CapturaTesis(ObservableCollection<Tesis> listaTesis,int idContradiccion)
         {
             InitializeComponent();
+            tesis = new Tesis();
 
             if (listaTesis == null)
-                listaTesis = new ObservableCollection<Tesis>();
-
-
+                this.listaTesis = new ObservableCollection<Tesis>();
+            else 
             this.listaTesis = listaTesis;
+            
             isUpdating = false;
-            this.idContradiccion = idContradiccion;
+            tesis.IdContradiccion = idContradiccion;
         }
 
         private void WinTesis_Loaded(object sender, RoutedEventArgs e)
         {
-            if (isUpdating) //Se va a actualizar
-            {
-                this.DataContext = tesis;
-            }
-            else if (!isUpdating)  //Se agregará una nueva tesis
-            {
-                tesis = new Tesis();
-                tesis.IdContradiccion = idContradiccion;
-                this.DataContext = tesis;
-            }
+          
+            this.DataContext = tesis;
             LoadNoBindings();
         }
 
@@ -192,16 +184,16 @@ namespace ContradiccionDeTesisCaptura
         {
             NumIusModel numIusModel = new NumIusModel();
 
-            TesisDto tesis = numIusModel.BuscaTesis(Convert.ToInt32(TxtNumIus.Text));
+            TesisDto tesisTo = numIusModel.BuscaTesis(Convert.ToInt32(TxtNumIus.Text));
 
-            if (tesis != null)
+            if (tesisTo != null)
             {
-                TxtCControl.Text = tesis.Tesis;
-                TxtRubro.Text = tesis.Rubro;
+                TxtCControl.Text = tesisTo.Tesis;
+                TxtRubro.Text = tesisTo.Rubro;
 
-                if (tesis.TaTj == 1)
+                if (tesisTo.TaTj == 1)
                     RadJuris.IsChecked = true;
-                else if (tesis.TaTj == 0)
+                else if (tesisTo.TaTj == 0)
                     RadAislada.IsChecked = true;
 
             }

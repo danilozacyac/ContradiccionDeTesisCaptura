@@ -28,8 +28,9 @@
                  Margin="178,51,0,0"
                  HorizontalAlignment="Left"
                  VerticalAlignment="Top"
-                 Text="{Binding ClaveControl,
-                                Mode=TwoWay}" />
+                 Text="{Binding Path=ClaveControl,
+                                Mode=TwoWay,
+                                UpdateSourceTrigger=PropertyChanged}" />
         <Label Name="label10"
                Height="28"
                Margin="395,72,0,0"
@@ -70,7 +71,8 @@
                      VerticalAlignment="Stretch"
                      AcceptsReturn="True"
                      Text="{Binding Rubro,
-                                    Mode=TwoWay}"
+                                    Mode=TwoWay,
+                                    UpdateSourceTrigger=PropertyChanged}"
                      TextWrapping="WrapWithOverflow" />
         </Grid>
         <Label Name="label14"
@@ -329,7 +331,7 @@
                  Margin="178,13,0,0"
                  HorizontalAlignment="Left"
                  VerticalAlignment="Top"
-                 Text="{Binding IUS,
+                 Text="{Binding Ius,
                                 Mode=TwoWay}"
                  TextWrapping="Wrap" />
         <Button x:Name="BtnSearchIus"
