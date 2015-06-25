@@ -90,6 +90,10 @@ namespace ContradiccionDeTesisCaptura
                 model.SetNewCriterios(criterios, contradiccion.IdContradiccion);
                 contradiccion.Criterios.Add(criterios);
             }
+            else
+            {
+                contradiccion.Criterios.Add(criterios);
+            }
 
             this.Close();
         }
