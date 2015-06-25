@@ -330,9 +330,10 @@
                              Margin="40,119,40,20"
                              HorizontalAlignment="Stretch"
                              VerticalAlignment="Stretch"
+                             AcceptsReturn="True"
                              Text="{Binding AcAdmisorio.Acuerdo,
                                             Mode=TwoWay}"
-                             TextWrapping="Wrap" AcceptsReturn="True" />
+                             TextWrapping="Wrap" />
                     <telerik:RadGridView Name="GOficios"
                                          Margin="10,118,10,15"
                                          AddingNewDataItem="GOficios_AddingNewDataItem"
@@ -369,130 +370,135 @@
                     </Grid.RowDefinitions>
                     <Grid Grid.Row="1">
                         <Label x:Name="label36"
-                        	Height="30"
-                        	Margin="37,10,0,0"
-                        	HorizontalAlignment="Left"
-                        	VerticalAlignment="Top"
-                        	Content="Returnos"
-                        	FontSize="18"
-                        	FontWeight="Bold" />
+                               Height="30"
+                               Margin="37,10,0,0"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Top"
+                               Content="Returnos"
+                               FontSize="18"
+                               FontWeight="Bold" />
                         <telerik:RadButton x:Name="BtnAgregaReturno"
-                        	Width="101"
-                        	Height="24"
-                        	Margin="0,0,35,12"
-                        	HorizontalAlignment="Right"
-                        	VerticalAlignment="Bottom"
-                        	Click="BtnAgregaReturno_Click"
-                        	Content="Añadir returno" />
+                                           Width="101"
+                                           Height="24"
+                                           Margin="0,0,35,12"
+                                           HorizontalAlignment="Right"
+                                           VerticalAlignment="Bottom"
+                                           Click="BtnAgregaReturno_Click"
+                                           Content="Añadir returno" />
                         <telerik:RadButton x:Name="BtnEditaReturno"
-                        	Width="103"
-                        	Height="24"
-                        	Margin="0,0,141,12"
-                        	HorizontalAlignment="Right"
-                        	VerticalAlignment="Bottom"
-                        	Click="BtnEditaReturno_Click"
-                        	Content="Editar Returno" />
+                                           Width="103"
+                                           Height="24"
+                                           Margin="0,0,141,12"
+                                           HorizontalAlignment="Right"
+                                           VerticalAlignment="Bottom"
+                                           Click="BtnEditaReturno_Click"
+                                           Content="Editar Returno" />
                         <telerik:RadButton x:Name="BtnEliminaReturno"
-                        	Width="106"
-                        	Height="24"
-                        	Margin="0,0,249,12"
-                        	HorizontalAlignment="Right"
-                        	VerticalAlignment="Bottom"
-                        	Click="BtnEliminaReturno_Click"
-                        	Content="Eliminar Returno" />
+                                           Width="106"
+                                           Height="24"
+                                           Margin="0,0,249,12"
+                                           HorizontalAlignment="Right"
+                                           VerticalAlignment="Bottom"
+                                           Click="BtnEliminaReturno_Click"
+                                           Content="Eliminar Returno" />
                         <telerik:RadGridView x:Name="RGridReturnos"
-                        	Margin="35,45,35,73"
-                        	HorizontalAlignment="Stretch"
-                        	VerticalAlignment="Stretch"
-                        	AutoGenerateColumns="False"
-                        	CanUserDeleteRows="False"
-                        	CanUserInsertRows="False"
-                        	IsReadOnly="True"
-                        	ItemsSource="{Binding Returnos, Mode=TwoWay}"
-                        	ShowGroupPanel="False">
+                                             Margin="35,45,35,73"
+                                             HorizontalAlignment="Stretch"
+                                             VerticalAlignment="Stretch"
+                                             AutoGenerateColumns="False"
+                                             CanUserDeleteRows="False"
+                                             CanUserInsertRows="False"
+                                             IsReadOnly="True"
+                                             ItemsSource="{Binding Returnos,
+                                                                   Mode=TwoWay}"
+                                             ShowGroupPanel="False">
                             <telerik:RadGridView.Columns>
 
 
                                 <telerik:GridViewDataColumn Width="150"
-                        			DataFormatString=" {0: dd/MM/yyyy} "
-                        			DataMemberBinding="{Binding Fecha}"
-                        			Header="Fecha" />
+                                                            DataFormatString=" {0: dd/MM/yyyy} "
+                                                            DataMemberBinding="{Binding Fecha}"
+                                                            Header="Fecha" />
                                 <telerik:GridViewDataColumn Width="*"
-                        			DataMemberBinding="{Binding IdOrganoOrigen, Converter={StaticResource orgConverter}}"
-                        			Header="Organismo Origen"
-                        			IsFilterable="True" />
+                                                            DataMemberBinding="{Binding IdOrganoOrigen,
+                                                                                        Converter={StaticResource orgConverter}}"
+                                                            Header="Organismo Origen"
+                                                            IsFilterable="True" />
                                 <telerik:GridViewDataColumn Width="*"
-                        			DataMemberBinding="{Binding IdOrganoDestino, Converter={StaticResource orgConverter}}"
-                        			Header="Organismo Destino" />
+                                                            DataMemberBinding="{Binding IdOrganoDestino,
+                                                                                        Converter={StaticResource orgConverter}}"
+                                                            Header="Organismo Destino" />
 
                             </telerik:RadGridView.Columns>
                         </telerik:RadGridView>
                     </Grid>
                     <telerik:RadGridView x:Name="RGridResolutivos"
-                    	Margin="35,57,35,70"
-                    	HorizontalAlignment="Stretch"
-                    	VerticalAlignment="Stretch"
-                    	AutoGenerateColumns="False"
-                    	CanUserDeleteRows="False"
-                    	CanUserInsertRows="False"
-                    	IsReadOnly="True"
-                    	ItemsSource="{Binding Resolutivo.PuntosResolutivos, Mode=TwoWay}"
-                    	ShowGroupPanel="False">
+                                         Margin="35,57,35,70"
+                                         HorizontalAlignment="Stretch"
+                                         VerticalAlignment="Stretch"
+                                         AutoGenerateColumns="False"
+                                         CanUserDeleteRows="False"
+                                         CanUserInsertRows="False"
+                                         IsReadOnly="True"
+                                         ItemsSource="{Binding Resolutivo.PuntosResolutivos,
+                                                               Mode=TwoWay}"
+                                         ShowGroupPanel="False">
                         <telerik:RadGridView.Columns>
 
 
 
                             <telerik:GridViewDataColumn Width="*"
-                    			DataMemberBinding="{Binding Resolutivo}"
-                    			Header="Puntos Resolutivos" />
+                                                        DataMemberBinding="{Binding Resolutivo}"
+                                                        Header="Puntos Resolutivos" />
 
                         </telerik:RadGridView.Columns>
                     </telerik:RadGridView>
                     <Label x:Name="label13"
-                    	Height="28"
-                    	Margin="545,16,0,0"
-                    	HorizontalAlignment="Left"
-                    	VerticalAlignment="Top"
-                    	Content="Registro Ejecutoria:" />
+                           Height="28"
+                           Margin="545,16,0,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Top"
+                           Content="Registro Ejecutoria:" />
                     <TextBox x:Name="TxtRegEjec"
-                    	Width="155"
-                    	Height="23"
-                    	Margin="662,16,0,0"
-                    	HorizontalAlignment="Left"
-                    	VerticalAlignment="Top"
-                    	Text="{Binding Resolutivo.RegEjecutoria, Mode=TwoWay}" />
+                             Width="155"
+                             Height="23"
+                             Margin="662,16,0,0"
+                             HorizontalAlignment="Left"
+                             VerticalAlignment="Top"
+                             Text="{Binding Resolutivo.RegEjecutoria,
+                                            Mode=TwoWay}" />
                     <Label x:Name="label12"
-                    	Height="30"
-                    	Margin="36,10,0,0"
-                    	HorizontalAlignment="Left"
-                    	VerticalAlignment="Top"
-                    	Content="Resolución"
-                    	FontSize="18"
-                    	FontWeight="Bold" />
+                           Height="30"
+                           Margin="36,10,0,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Top"
+                           Content="Resolución"
+                           FontSize="18"
+                           FontWeight="Bold" />
                     <telerik:RadButton x:Name="BtnAddResolutivo"
-                    	Width="100"
-                    	Height="23"
-                    	Margin="0,0,35,29"
-                    	HorizontalAlignment="Right"
-                    	VerticalAlignment="Bottom"
-                    	Click="BtnAddResolutivo_Click"
-                    	Content="Añadir resolutivo" />
+                                       Width="100"
+                                       Height="23"
+                                       Margin="0,0,35,29"
+                                       HorizontalAlignment="Right"
+                                       VerticalAlignment="Bottom"
+                                       Click="BtnAddResolutivo_Click"
+                                       Content="Añadir resolutivo" />
                     <telerik:RadButton x:Name="BtnEditResolutivo"
-                    	Width="102"
-                    	Height="23"
-                    	Margin="0,0,140,29"
-                    	HorizontalAlignment="Right"
-                    	VerticalAlignment="Bottom"
-                    	Click="BtnEditResolutivo_Click"
-                    	Content="Editar resolutivo" />
+                                       Width="102"
+                                       Height="23"
+                                       Margin="0,0,140,29"
+                                       HorizontalAlignment="Right"
+                                       VerticalAlignment="Bottom"
+                                       Click="BtnEditResolutivo_Click"
+                                       Content="Editar resolutivo" />
                     <telerik:RadButton x:Name="BtnDltResolutivo"
-                    	Width="106"
-                    	Height="23"
-                    	Margin="0,0,247,29"
-                    	HorizontalAlignment="Right"
-                    	VerticalAlignment="Bottom"
-                    	Click="BtnDltResolutivo_Click"
-                    	Content="Eliminar Resolutivo" />
+                                       Width="106"
+                                       Height="23"
+                                       Margin="0,0,247,29"
+                                       HorizontalAlignment="Right"
+                                       VerticalAlignment="Bottom"
+                                       Click="BtnDltResolutivo_Click"
+                                       Content="Eliminar Resolutivo" />
                 </Grid>
             </TabItem>
 
@@ -508,10 +514,10 @@
                                          Margin="40,30,30,45"
                                          HorizontalAlignment="Stretch"
                                          VerticalAlignment="Stretch"
-                                         ItemsSource="{Binding MiTesis}"
                                          AutoGenerateColumns="False"
+                                         ItemsSource="{Binding MiTesis}"
                                          SelectionChanged="GTesisContra_SelectionChanged"
-                                         ShowGroupPanel="False" >
+                                         ShowGroupPanel="False">
                         <telerik:RadGridView.Columns>
 
                             <telerik:GridViewDataColumn Width="100"
@@ -617,7 +623,8 @@
                                        Margin="0,0,256,12"
                                        HorizontalAlignment="Right"
                                        VerticalAlignment="Bottom"
-                                       Content="Eliminar Tesis" Click="BtnEliminar_Click" />
+                                       Click="BtnEliminar_Click"
+                                       Content="Eliminar Tesis" />
                     <telerik:RadButton Name="BtnAddTesis"
                                        Width="107"
                                        Height="23"

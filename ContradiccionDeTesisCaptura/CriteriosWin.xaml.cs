@@ -67,6 +67,10 @@ namespace ContradiccionDeTesisCaptura
             if (tesis != null)
             {
                 TxtTesis.Text = String.Empty;
+
+                if (criterios.TesisContendientes == null)
+                    criterios.TesisContendientes = new ObservableCollection<int>();
+                
                 criterios.TesisContendientes.Add(tesis.Ius);
             }
             else
