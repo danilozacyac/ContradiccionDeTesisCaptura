@@ -184,6 +184,9 @@ namespace ContradiccionesDirectorioApi.Model
                 dataAdapter.Update(dataSet, "Criterios");
                 dataSet.Dispose();
                 dataAdapter.Dispose();
+
+                this.DeleteCriterioTesis(criterio);
+                this.SetNewCriteriosTesis(criterio);
             }
             catch (OleDbException ex)
             {
@@ -316,6 +319,44 @@ namespace ContradiccionesDirectorioApi.Model
             {
                 connectionBitacoraSql.Close();
             }
+        }
+
+
+        public bool DeleteCriterioTesis(Criterios criterio)
+        {
+            bool isDeleteComplete = true;
+
+            OleDbConnection connectionBitacoraSql = DbConnDac.GetConnection();
+            OleDbCommand cmd;
+
+            cmd = connectionBitacoraSql.CreateCommand();
+            cmd.Connection = connectionBitacoraSql;
+
+            try
+            {
+                connectionBitacoraSql.Open();
+
+                cmd.CommandText = "DELETE FROM CriteriosTesis WHERE IdCriterio = @IdCriterio";
+                cmd.Parameters.AddWithValue("@IdCriterio", criterio.IdCriterio);
+                cmd.ExecuteNonQuery();
+
+            }
+            catch (OleDbException ex)
+            {
+                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                isDeleteComplete = false;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                isDeleteComplete = false;
+            }
+            finally
+            {
+                connectionBitacoraSql.Close();
+            }
+
+            return isDeleteComplete;
         }
 
         private int GetMaxOrderCriterio(int idContradiccion)
