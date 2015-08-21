@@ -103,12 +103,20 @@ namespace ContradiccionDeTesisCaptura
             }
 
             AdmisorioModel admisorio = new AdmisorioModel();
-            if (admisorio.CheckIfExist(contradiccion.AcAdmisorio.IdAcuerdo))
+            if (contradiccion.AcAdmisorio != null && admisorio.CheckIfExist(contradiccion.AcAdmisorio.IdAcuerdo))
             {
                 admisorio.UpdateAdmisorio(contradiccion.AcAdmisorio);
             }
             else
             {
+                if (contradiccion.AcAdmisorio == null)
+                {
+                    contradiccion.AcAdmisorio = new Admisorio();
+                    contradiccion.AcAdmisorio.IdContradiccion = contradiccion.IdContradiccion;
+                    contradiccion.AcAdmisorio.FechaAcuerdo = DtpAcuerdo.SelectedDate;
+                    contradiccion.AcAdmisorio.Acuerdo = TxtAcuerdo.Text;
+                }
+
                 admisorio.SetNewAdmisorio(contradiccion.AcAdmisorio, contradiccion.IdContradiccion);
             }
 

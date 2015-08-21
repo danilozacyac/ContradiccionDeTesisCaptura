@@ -13,6 +13,7 @@ namespace ContradiccionesDirectorioApi.Dao
         private int ordinal;
         private int materia;
         private String organismo;
+        private String especialidad;
         private String direccion;
         private String telefonos;
         //private String descrCiudad = "";
@@ -111,6 +112,20 @@ namespace ContradiccionesDirectorioApi.Dao
                 this.OnPropertyChanged("Organismo");
             }
         }
+
+        public string Especialidad
+        {
+            get
+            {
+                return this.especialidad;
+            }
+            set
+            {
+                this.especialidad = value;
+            }
+        }
+
+        
 
         public String Direccion
         {

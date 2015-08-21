@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data;
 using System.Data.OleDb;
 using System.Linq;
 using System.Windows.Forms;
 using ContradiccionesDirectorioApi.Dao;
 using ContradiccionesDirectorioApi.DataAccess;
+using ScjnUtilities;
 
 namespace ContradiccionesDirectorioApi.Model
 {
@@ -132,6 +134,107 @@ namespace ContradiccionesDirectorioApi.Model
             return organismos;
         }
 
+        public void SetNewPleno(Organismos organismo)
+        {
+            OleDbConnection connection = DbConnDac.GetConnection();
+            OleDbDataAdapter dataAdapter;
 
+            DataSet dataSet = new DataSet();
+            DataRow dr;
+
+            try
+            {
+                organismo.IdOrganismo = DataBaseUtilities.GetNextIdForUse("PlenoC", "IdPleno", connection);
+
+                string sqlCadena = "SELECT * FROM PlenoC WHERE IdPleno = 0";
+
+                dataAdapter = new OleDbDataAdapter();
+                dataAdapter.SelectCommand = new OleDbCommand(sqlCadena, connection);
+
+                dataAdapter.Fill(dataSet, "PlenoC");
+
+                dr = dataSet.Tables["PlenoC"].NewRow();
+                dr["Descripcion"] = organismo.Organismo;
+                dr["Especializacion"] = organismo.Especialidad;
+
+                dataSet.Tables["PlenoC"].Rows.Add(dr);
+
+                dataAdapter.InsertCommand = connection.CreateCommand();
+                dataAdapter.InsertCommand.CommandText = "INSERT INTO PlenoC(Descripcion,Especializacion)" +
+                                                        " VALUES(@Descripcion,@Especializacion)";
+
+                dataAdapter.InsertCommand.Parameters.Add("@Descripcion", OleDbType.VarChar, 0, "Descripcion");
+                dataAdapter.InsertCommand.Parameters.Add("@Especializacion", OleDbType.VarChar, 0, "Especializacion");
+
+                dataAdapter.Update(dataSet, "PlenoC");
+
+                dataSet.Dispose();
+                dataAdapter.Dispose();
+            }
+            catch (OleDbException ex)
+            {
+                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            finally
+            {
+                connection.Close();
+            }
+
+        }
+
+        public void UpdatePleno(Organismos organismo)
+        {
+            OleDbConnection connection = DbConnDac.GetConnection();
+            OleDbDataAdapter dataAdapter;
+
+            DataSet dataSet = new DataSet();
+            DataRow dr;
+
+            try
+            {
+
+                string sqlCadena = "SELECT * FROM PlenoC WHERE IdPleno = " + organismo.IdOrganismo;
+
+                dataAdapter = new OleDbDataAdapter();
+                dataAdapter.SelectCommand = new OleDbCommand(sqlCadena, connection);
+
+                dataAdapter.Fill(dataSet, "PlenoC");
+
+                dr = dataSet.Tables["PlenoC"].Rows[0];
+                dr.BeginEdit();
+                dr["Descripcion"] = organismo.Organismo;
+                dr["Especializacion"] = organismo.Especialidad;
+                dr.EndEdit();
+
+                dataAdapter.UpdateCommand = connection.CreateCommand();
+                dataAdapter.UpdateCommand.CommandText = "UPDATE PlenoC SET Descripcion = @Descripcion, Especializacion = @Especializacion WHERE IdPleno = @IdPleno";
+
+                dataAdapter.UpdateCommand.Parameters.Add("@Descripcion", OleDbType.VarChar, 0, "Descripcion");
+                dataAdapter.UpdateCommand.Parameters.Add("@Especializacion", OleDbType.VarChar, 0, "Especializacion");
+                dataAdapter.UpdateCommand.Parameters.Add("@IdPleno", OleDbType.Numeric, 0, "IdPleno");
+
+                dataAdapter.Update(dataSet, "PlenoC");
+
+                dataSet.Dispose();
+                dataAdapter.Dispose();
+            }
+            catch (OleDbException ex)
+            {
+                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            finally
+            {
+                connection.Close();
+            }
+
+        }
     }
 }

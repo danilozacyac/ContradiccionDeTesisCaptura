@@ -669,14 +669,14 @@
 
                     <Label Name="label26"
                            Height="28"
-                           Margin="39,149,0,0"
+                           Margin="407,149,0,0"
                            HorizontalAlignment="Left"
                            VerticalAlignment="Top"
                            Content="Referencia al SISE:" />
                     <TextBox Name="TxtSise"
                              Width="174"
                              Height="23"
-                             Margin="174,146,0,0"
+                             Margin="542,146,0,0"
                              HorizontalAlignment="Left"
                              VerticalAlignment="Top"
                              Text="{Binding MiEjecutoria.Sise,
@@ -684,7 +684,7 @@
                     <GroupBox Name="groupBox2"
                               Width="309"
                               Height="249"
-                              Margin="39,199,0,0"
+                              Margin="407,199,0,0"
                               HorizontalAlignment="Left"
                               VerticalAlignment="Top"
                               Header="Votos relacionados">
@@ -786,6 +786,20 @@
                              VerticalAlignment="Top"
                              Text="{Binding MiEjecutoria.Signatario,
                                             Mode=TwoWay}" />
+
+                    <Label Name="label245"
+                           Height="28"
+                           Margin="39,150,0,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Top"
+                           Content="Razones no resolución:" />
+                    <TextBox Name="TxtRazones"
+                             Width="300"
+                             Height="200"
+                             Margin="40,220,0,0"
+                             HorizontalAlignment="Left"
+                             VerticalAlignment="Top"
+                             Text="{Binding Razones}" />
                 </Grid>
             </TabItem>
         </TabControl>

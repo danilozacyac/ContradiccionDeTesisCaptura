@@ -16,8 +16,9 @@ namespace ContradiccionesDirectorioApi.Dao
         private String signatario;
         private String oficioRespuestaEj;
         private String fileEjecPath;
+        private String razones;
 
-        public ObservableCollection<int> TesisRelacionadas
+       public ObservableCollection<int> TesisRelacionadas
         {
             get
             {
@@ -147,6 +148,21 @@ namespace ContradiccionesDirectorioApi.Dao
                 this.OnPropertyChanged("FileEjecPath");
             }
         }
+
+        public string Razones
+        {
+            get
+            {
+                return this.razones;
+            }
+            set
+            {
+                this.razones = value;
+                this.OnPropertyChanged("Razones");
+            }
+        }
+
+        
 
         #region INotifyPropertyChanged Members
 

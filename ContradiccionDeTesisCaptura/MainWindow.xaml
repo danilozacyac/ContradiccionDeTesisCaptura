@@ -53,11 +53,21 @@
                                              LargeImage="Resources/word_128.png"
                                              Size="Large" />
                 </telerik:RadRibbonGroup>
+                <telerik:RadRibbonGroup Header="Plenos de Circuito">
+                    <telerik:RadRibbonButton Name="RBtnAddPleno"
+                                             LargeImage="Resources/building_128.png"
+                                             Size="Large" Click="RBtnAddPleno_Click" >
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock Text="Agregar" HorizontalAlignment="Center"/>
+                            <TextBlock Text="Pleno" HorizontalAlignment="Center"/>
+                        </StackPanel>
+                    </telerik:RadRibbonButton>
+                </telerik:RadRibbonGroup>
                 <telerik:RadRibbonGroup Header="Datos Externos">
                     <telerik:RadRibbonButton x:Name="RBtnImportarDatos"
                                              Click="RBtnImportarDatos_Click"
                                              Content="Importar"
-                                             IsEnabled="False"
+                                             IsEnabled="True"
                                              LargeImage="Resources/db_128.png"
                                              Size="Large" />
 

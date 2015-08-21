@@ -30,7 +30,7 @@
     <ProductName>Captura de contradicciones</ProductName>
     <PublisherName>Suprema Corte de Justicia de la Nación</PublisherName>
     <SuiteName>Contradicción de Tesis</SuiteName>
-    <ApplicationRevision>12</ApplicationRevision>
+    <ApplicationRevision>19</ApplicationRevision>
     <ApplicationVersion>1.2.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
@@ -147,6 +147,9 @@
     <Compile Include="Observaciones.xaml.cs">
       <DependentUpon>Observaciones.xaml</DependentUpon>
     </Compile>
+    <Compile Include="PlenosCircuito.xaml.cs">
+      <DependentUpon>PlenosCircuito.xaml</DependentUpon>
+    </Compile>
     <Compile Include="PuntoResolutivo.xaml.cs">
       <DependentUpon>PuntoResolutivo.xaml</DependentUpon>
     </Compile>
@@ -200,6 +203,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Observaciones.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PlenosCircuito.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -352,6 +359,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\search_24.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\building_128.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

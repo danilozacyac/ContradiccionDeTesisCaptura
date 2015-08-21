@@ -62,14 +62,15 @@ namespace ContradiccionesDirectorioApi.Model
                 dr["Signatario"] = contradiccion.MiEjecutoria.Signatario;
                 dr["Oficio"] = contradiccion.MiEjecutoria.OficioRespuestaEj;
                 dr["FileEjecPath"] = contradiccion.MiEjecutoria.FileEjecPath;
+                dr["Razones"] = contradiccion.MiEjecutoria.Razones;
 
                 dataSet.Tables["Ejecutorias"].Rows.Add(dr);
 
                 dataAdapter.InsertCommand = connectionBitacoraSql.CreateCommand();
                 dataAdapter.InsertCommand.CommandText = "INSERT INTO Ejecutorias(IdContradiccion,FechaResolucion,FechaResolucionInt,FechaEngrose,FechaEngroseInt," +
-                                                        "SISE,Responsable,Signatario,Oficio,FileEjecPath)" +
+                                                        "SISE,Responsable,Signatario,Oficio,FileEjecPath,Razones)" +
                                                         " VALUES(@IdContradiccion,@FechaResolucion,@FechaResolucionInt,@FechaEngrose,@FechaEngroseInt," +
-                                                        "@SISE,@Responsable,@Signatario,@Oficio,@FileEjecPath)";
+                                                        "@SISE,@Responsable,@Signatario,@Oficio,@FileEjecPath,@Razones)";
 
                 dataAdapter.InsertCommand.Parameters.Add("@IdContradiccion", OleDbType.Numeric, 0, "IdContradiccion");
                 dataAdapter.InsertCommand.Parameters.Add("@FechaResolucion", OleDbType.Date, 0, "FechaResolucion");
@@ -81,7 +82,7 @@ namespace ContradiccionesDirectorioApi.Model
                 dataAdapter.InsertCommand.Parameters.Add("@Signatario", OleDbType.VarChar, 0, "Signatario");
                 dataAdapter.InsertCommand.Parameters.Add("@Oficio", OleDbType.VarChar, 0, "Oficio");
                 dataAdapter.InsertCommand.Parameters.Add("@FileEjecPath", OleDbType.VarChar, 0, "FileEjecPath");
-
+                dataAdapter.InsertCommand.Parameters.Add("@Razones", OleDbType.VarChar, 0, "Razones");
 
                 dataAdapter.Update(dataSet, "Ejecutorias");
 
@@ -240,13 +241,14 @@ namespace ContradiccionesDirectorioApi.Model
                 dr["Signatario"] = contradiccion.MiEjecutoria.Signatario;
                 dr["Oficio"] = contradiccion.MiEjecutoria.OficioRespuestaEj;
                 dr["FileEjecPath"] = contradiccion.MiEjecutoria.FileEjecPath;
+                dr["Razones"] = contradiccion.MiEjecutoria.Razones;
                 dr.EndEdit();
 
                 dataAdapter.UpdateCommand = connectionBitacoraSql.CreateCommand();
                 dataAdapter.UpdateCommand.CommandText =
                                                        "UPDATE Ejecutorias SET FechaResolucion = @FechaResolucion,FechaResolucionInt = @FechaResolucionInt," +
                                                        "FechaEngrose = @FechaEngrose,FechaEngroseInt = @FechaEngroseInt,SISE = @SISE,Responsable = @Responsable," +
-                                                       "Signatario = @Signatario,Oficio = @Oficio,FileEjecPath = @FileEjecPath" +
+                                                       "Signatario = @Signatario,Oficio = @Oficio,FileEjecPath = @FileEjecPath, Razones = @Razones" +
                                                        " WHERE IdContradiccion = @IdContradiccion";
 
                 dataAdapter.UpdateCommand.Parameters.Add("@FechaResolucion", OleDbType.Date, 0, "FechaResolucion");
@@ -258,6 +260,7 @@ namespace ContradiccionesDirectorioApi.Model
                 dataAdapter.UpdateCommand.Parameters.Add("@Signatario", OleDbType.VarChar, 0, "Signatario");
                 dataAdapter.UpdateCommand.Parameters.Add("@Oficio", OleDbType.VarChar, 0, "Oficio");
                 dataAdapter.UpdateCommand.Parameters.Add("@FileEjecPath", OleDbType.VarChar, 0, "FileEjecPath");
+                dataAdapter.UpdateCommand.Parameters.Add("@Razones", OleDbType.VarChar, 0, "Razones");
                 dataAdapter.UpdateCommand.Parameters.Add("@IdContradiccion", OleDbType.Numeric, 0, "IdContradiccion");
 
 
@@ -311,6 +314,7 @@ namespace ContradiccionesDirectorioApi.Model
                     ejecutoria.Signatario = reader["Signatario"].ToString();
                     ejecutoria.OficioRespuestaEj = reader["Oficio"].ToString();
                     ejecutoria.FileEjecPath = reader["FileEjecPath"].ToString();
+                    ejecutoria.Razones = reader["Razones"].ToString();
                     ejecutoria.TesisRelacionadas = this.GetRelacionesEjecutoria(idContradiccion, 1);
                     ejecutoria.VotosRelacionados = this.GetRelacionesEjecutoria(idContradiccion, 3);
                 }

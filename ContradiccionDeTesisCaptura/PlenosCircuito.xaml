@@ -1,0 +1,52 @@
+﻿<Window x:Class="ContradiccionDeTesisCaptura.PlenosCircuito"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Plenos de Circuito"
+        Width="409"
+        Height="300"
+        Loaded="Window_Loaded"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen">
+    <Grid>
+        <TextBox x:Name="TxtPleno"
+                 Width="381"
+                 Height="82"
+                 Margin="10,52,0,0"
+                 HorizontalAlignment="Left"
+                 VerticalAlignment="Top"
+                 Text="{Binding Organismo,
+                                Mode=TwoWay}"
+                 TextWrapping="Wrap" />
+        <Label Margin="10,31,0,0"
+               HorizontalAlignment="Left"
+               VerticalAlignment="Top"
+               Content="Denominación del Pleno:" />
+        <CheckBox x:Name="ChkEspecializado"
+                  Margin="10,153,0,0"
+                  HorizontalAlignment="Left"
+                  VerticalAlignment="Top"
+                  Checked="ChkEspecializado_Checked"
+                  Content="Especializado"
+                  Unchecked="ChkEspecializado_Unchecked" />
+        <TextBox x:Name="TxtEspecializacion"
+                 Width="381"
+                 Height="23"
+                 Margin="10,184,0,0"
+                 HorizontalAlignment="Left"
+                 VerticalAlignment="Top"
+                 IsEnabled="False"
+                 Text="{Binding Especialidad,
+                                Mode=TwoWay}"
+                 TextWrapping="Wrap" />
+        <Button x:Name="BtnGuardar"
+                Width="75"
+                Height="32"
+                Margin="316,228,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Click="BtnGuardar_Click"
+                Content="Guardar" />
+
+    </Grid>
+</Window>
+

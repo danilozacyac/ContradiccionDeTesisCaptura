@@ -8,6 +8,7 @@ using ContradiccionesDirectorioApi.Model;
 using ContradiccionesDirectorioApi.Utils;
 using ContradiccionDeTesisCaptura.Report;
 using TableWordToDb;
+using ContradiccionesDirectorioApi.Singletons;
 
 namespace ContradiccionDeTesisCaptura
 {
@@ -122,6 +123,13 @@ namespace ContradiccionDeTesisCaptura
         {
             WordInfoProcess merge = new WordInfoProcess();
             merge.GetListaContradiccionesFaltantes();
+        }
+
+        private void RBtnAddPleno_Click(object sender, RoutedEventArgs e)
+        {
+            PlenosCircuito add = new PlenosCircuito();
+            add.ShowDialog();
+            
         }
 
 
