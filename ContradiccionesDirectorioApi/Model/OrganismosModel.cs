@@ -5,7 +5,6 @@ using System.Configuration;
 using System.Data;
 using System.Data.OleDb;
 using System.Linq;
-using System.Windows.Forms;
 using ContradiccionesDirectorioApi.Dao;
 using ContradiccionesDirectorioApi.DataAccess;
 using ScjnUtilities;
@@ -25,7 +24,7 @@ namespace ContradiccionesDirectorioApi.Model
         {
             List<Organismos> organismos = new List<Organismos>();
 
-            OleDbConnection oleConne = new OleDbConnection(ConfigurationManager.ConnectionStrings["Directorio"].ToString());
+            OleDbConnection connection = new OleDbConnection(ConfigurationManager.ConnectionStrings["Directorio"].ToString());
             OleDbCommand cmd = null;
             OleDbDataReader reader = null;
 
@@ -34,9 +33,9 @@ namespace ContradiccionesDirectorioApi.Model
 
             try
             {
-                oleConne.Open();
+                connection.Open();
 
-                cmd = new OleDbCommand(sqlCadena, oleConne);
+                cmd = new OleDbCommand(sqlCadena, connection);
                 reader = cmd.ExecuteReader();
 
                 if (reader.HasRows)
@@ -66,20 +65,22 @@ namespace ContradiccionesDirectorioApi.Model
                         organismos.Add(organismoAdd);
                     }
                 }
+                cmd.Dispose();
+                reader.Close();
             }
-            catch (OleDbException sql)
+            catch (OleDbException ex)
             {
-                MessageBox.Show("Error ({0}) : {1}" + sql.Source + sql.Message, "Error Interno");
+                string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
+                ErrorUtilities.SetNewErrorMessage(ex, methodName + " Exception,OrganismosModel", "Contradicciones");
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, "Error Interno");
+                string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
+                ErrorUtilities.SetNewErrorMessage(ex, methodName + " Exception,OrganismosModel", "Contradicciones");
             }
             finally
             {
-                cmd.Dispose();
-                reader.Close();
-                oleConne.Close();
+                connection.Close();
             }
 
             return organismos;
@@ -90,7 +91,7 @@ namespace ContradiccionesDirectorioApi.Model
         {
             ObservableCollection<Organismos> organismos = new ObservableCollection<Organismos>();
 
-            OleDbConnection oleConne = DbConnDac.GetConnection();
+            OleDbConnection connection = DbConnDac.GetConnection();
             OleDbCommand cmd = null;
             OleDbDataReader reader = null;
 
@@ -98,9 +99,9 @@ namespace ContradiccionesDirectorioApi.Model
 
             try
             {
-                oleConne.Open();
+                connection.Open();
 
-                cmd = new OleDbCommand(sqlCadena, oleConne);
+                cmd = new OleDbCommand(sqlCadena, connection);
                 reader = cmd.ExecuteReader();
 
                 if (reader.HasRows)
@@ -116,20 +117,22 @@ namespace ContradiccionesDirectorioApi.Model
                         organismos.Add(organismoAdd);
                     }
                 }
+                cmd.Dispose();
+                reader.Close();
             }
-            catch (OleDbException sql)
+            catch (OleDbException ex)
             {
-                MessageBox.Show("Error ({0}) : {1}" + sql.Source + sql.Message, "Error Interno");
+                string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
+                ErrorUtilities.SetNewErrorMessage(ex, methodName + " Exception,OrganismosModel", "Contradicciones");
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, "Error Interno");
+                string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
+                ErrorUtilities.SetNewErrorMessage(ex, methodName + " Exception,OrganismosModel", "Contradicciones");
             }
             finally
             {
-                cmd.Dispose();
-                reader.Close();
-                oleConne.Close();
+                connection.Close();
             }
 
             return organismos;
@@ -174,11 +177,13 @@ namespace ContradiccionesDirectorioApi.Model
             }
             catch (OleDbException ex)
             {
-                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
+                ErrorUtilities.SetNewErrorMessage(ex, methodName + " Exception,OrganismosModel", "Contradicciones");
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
+                ErrorUtilities.SetNewErrorMessage(ex, methodName + " Exception,OrganismosModel", "Contradicciones");
             }
             finally
             {
@@ -225,11 +230,13 @@ namespace ContradiccionesDirectorioApi.Model
             }
             catch (OleDbException ex)
             {
-                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
+                ErrorUtilities.SetNewErrorMessage(ex, methodName + " Exception,OrganismosModel", "Contradicciones");
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
+                ErrorUtilities.SetNewErrorMessage(ex, methodName + " Exception,OrganismosModel", "Contradicciones");
             }
             finally
             {

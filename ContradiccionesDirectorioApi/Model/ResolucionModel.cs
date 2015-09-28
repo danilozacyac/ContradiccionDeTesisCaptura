@@ -4,7 +4,6 @@ using System.Data.OleDb;
 using System.Linq;
 using ContradiccionesDirectorioApi.Dao;
 using ContradiccionesDirectorioApi.DataAccess;
-using System.Windows.Forms;
 using System.Collections.ObjectModel;
 using ScjnUtilities;
 
@@ -26,10 +25,10 @@ namespace ContradiccionesDirectorioApi.Model
             string sqlCmd = @"SELECT * FROM Resolucion " +
                             " WHERE IdContradiccion = @IdContradiccion";
 
-            OleDbConnection connectionBitacoraSql = DbConnDac.GetConnection();
+            OleDbConnection connection = DbConnDac.GetConnection();
             OleDbCommand cmd = new OleDbCommand();
 
-            cmd.Connection = connectionBitacoraSql;
+            cmd.Connection = connection;
             cmd.CommandText = sqlCmd;
             cmd.CommandType = CommandType.Text;
 
@@ -43,7 +42,7 @@ namespace ContradiccionesDirectorioApi.Model
 
                 cmd.Parameters.Add(parameter);
 
-                connectionBitacoraSql.Open();
+                connection.Open();
 
                 OleDbDataReader reader = cmd.ExecuteReader();
 
@@ -58,15 +57,17 @@ namespace ContradiccionesDirectorioApi.Model
             }
             catch (OleDbException ex)
             {
-                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
+                ErrorUtilities.SetNewErrorMessage(ex, methodName + " Exception,ResolucionModel", "Contradicciones");
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
+                ErrorUtilities.SetNewErrorMessage(ex, methodName + " Exception,ResolucionModel", "Contradicciones");
             }
             finally
             {
-                connectionBitacoraSql.Close();
+                connection.Close();
             }
 
             return resolutivos;
@@ -84,10 +85,10 @@ namespace ContradiccionesDirectorioApi.Model
             string sqlCmd = @"SELECT * FROM Resolucion " +
                             " WHERE IdContradiccion = @IdContradiccion";
 
-            OleDbConnection connectionBitacoraSql = DbConnDac.GetConnection();
+            OleDbConnection connection = DbConnDac.GetConnection();
             OleDbCommand cmd = new OleDbCommand();
 
-            cmd.Connection = connectionBitacoraSql;
+            cmd.Connection = connection;
             cmd.CommandText = sqlCmd;
             cmd.CommandType = CommandType.Text;
 
@@ -101,7 +102,7 @@ namespace ContradiccionesDirectorioApi.Model
 
                 cmd.Parameters.Add(parameter);
 
-                connectionBitacoraSql.Open();
+                connection.Open();
 
                 OleDbDataReader reader = cmd.ExecuteReader();
 
@@ -113,15 +114,17 @@ namespace ContradiccionesDirectorioApi.Model
             }
             catch (OleDbException ex)
             {
-                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
+                ErrorUtilities.SetNewErrorMessage(ex, methodName + " Exception,ResolucionModel", "Contradicciones");
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
+                ErrorUtilities.SetNewErrorMessage(ex, methodName + " Exception,ResolucionModel", "Contradicciones");
             }
             finally
             {
-                connectionBitacoraSql.Close();
+                connection.Close();
             }
 
             return doExist;
@@ -133,7 +136,7 @@ namespace ContradiccionesDirectorioApi.Model
         /// <param name="contradiccion"></param>
         public void SetNewResolucion(Contradicciones contradiccion)
         {
-            OleDbConnection connectionBitacoraSql = DbConnDac.GetConnection();
+            OleDbConnection connection = DbConnDac.GetConnection();
             OleDbDataAdapter dataAdapter;
 
             DataSet dataSet = new DataSet();
@@ -144,7 +147,7 @@ namespace ContradiccionesDirectorioApi.Model
                 string sqlCadena = "SELECT * FROM Resolucion WHERE IdContradiccion = 0";
 
                 dataAdapter = new OleDbDataAdapter();
-                dataAdapter.SelectCommand = new OleDbCommand(sqlCadena, connectionBitacoraSql);
+                dataAdapter.SelectCommand = new OleDbCommand(sqlCadena, connection);
 
                 dataAdapter.Fill(dataSet, "Resolucion");
 
@@ -157,7 +160,7 @@ namespace ContradiccionesDirectorioApi.Model
 
                 dataSet.Tables["Resolucion"].Rows.Add(dr);
 
-                dataAdapter.InsertCommand = connectionBitacoraSql.CreateCommand();
+                dataAdapter.InsertCommand = connection.CreateCommand();
                 dataAdapter.InsertCommand.CommandText = "INSERT INTO Resolucion(IdContradiccion,RegEjecutoria,RegTesis,RubroTesis)" +
                                                         " VALUES(@IdContradiccion,@RegEjecutoria,@RegTesis,@RubroTesis)";
 
@@ -174,15 +177,17 @@ namespace ContradiccionesDirectorioApi.Model
             }
             catch (OleDbException ex)
             {
-                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
+                ErrorUtilities.SetNewErrorMessage(ex, methodName + " Exception,ResolucionModel", "Contradicciones");
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
+                ErrorUtilities.SetNewErrorMessage(ex, methodName + " Exception,ResolucionModel", "Contradicciones");
             }
             finally
             {
-                connectionBitacoraSql.Close();
+                connection.Close();
             }
 
         }
@@ -194,7 +199,7 @@ namespace ContradiccionesDirectorioApi.Model
         /// <param name="idContradiccion"></param>
         public void UpdateResolucion(Resolutivos resolutivo, int idContradiccion)
         {
-            OleDbConnection connectionBitacoraSql = DbConnDac.GetConnection();
+            OleDbConnection connection = DbConnDac.GetConnection();
             OleDbDataAdapter dataAdapter;
 
             DataSet dataSet = new DataSet();
@@ -205,7 +210,7 @@ namespace ContradiccionesDirectorioApi.Model
                 string sqlCadena = "SELECT * FROM Resolucion WHERE IdContradiccion =" + idContradiccion;
 
                 dataAdapter = new OleDbDataAdapter();
-                dataAdapter.SelectCommand = new OleDbCommand(sqlCadena, connectionBitacoraSql);
+                dataAdapter.SelectCommand = new OleDbCommand(sqlCadena, connection);
 
                 dataAdapter.Fill(dataSet, "Resolucion");
 
@@ -217,7 +222,7 @@ namespace ContradiccionesDirectorioApi.Model
                 dr["IdContradiccion"] = idContradiccion;
                 dr.EndEdit();
 
-                dataAdapter.UpdateCommand = connectionBitacoraSql.CreateCommand();
+                dataAdapter.UpdateCommand = connection.CreateCommand();
                 dataAdapter.UpdateCommand.CommandText =
                                                        "UPDATE Resolucion SET RegEjecutoria = @RegEjecutoria,RegTesis = @RegTesis,RubroTesis = @RubroTesis" +
                                                        " WHERE IdContradiccion = @IdContradiccion";
@@ -233,15 +238,17 @@ namespace ContradiccionesDirectorioApi.Model
             }
             catch (OleDbException ex)
             {
-                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
+                ErrorUtilities.SetNewErrorMessage(ex, methodName + " Exception,ResolucionModel", "Contradicciones");
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
+                ErrorUtilities.SetNewErrorMessage(ex, methodName + " Exception,ResolucionModel", "Contradicciones");
             }
             finally
             {
-                connectionBitacoraSql.Close();
+                connection.Close();
             }
         }
 
@@ -252,36 +259,36 @@ namespace ContradiccionesDirectorioApi.Model
         /// <returns></returns>
         public bool DeleteResolucion(Contradicciones contradiccion)
         {
-            bool isDeleteComplete = true;
+            bool isDeleteComplete = false;
 
-            OleDbConnection connectionBitacoraSql = DbConnDac.GetConnection();
+            OleDbConnection connection = DbConnDac.GetConnection();
             OleDbCommand cmd;
 
-            cmd = connectionBitacoraSql.CreateCommand();
-            cmd.Connection = connectionBitacoraSql;
+            cmd = connection.CreateCommand();
+            cmd.Connection = connection;
 
             try
             {
-                connectionBitacoraSql.Open();
+                connection.Open();
 
                 cmd.CommandText = "DELETE FROM Resolucion WHERE IdContradiccion = @IdContradiccion";
                 cmd.Parameters.AddWithValue("@IdContradiccion", contradiccion.IdContradiccion);
                 cmd.ExecuteNonQuery();
-
+                isDeleteComplete = true;
             }
             catch (OleDbException ex)
             {
-                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                isDeleteComplete = false;
+                string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
+                ErrorUtilities.SetNewErrorMessage(ex, methodName + " Exception,ResolucionModel", "Contradicciones");
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                isDeleteComplete = false;
+                string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
+                ErrorUtilities.SetNewErrorMessage(ex, methodName + " Exception,ResolucionModel", "Contradicciones");
             }
             finally
             {
-                connectionBitacoraSql.Close();
+                connection.Close();
             }
 
             return isDeleteComplete;
@@ -295,7 +302,7 @@ namespace ContradiccionesDirectorioApi.Model
 
         public void SetNewResolutivo(PResolutivos resolutivos, int idContradiccion)
         {
-            OleDbConnection connectionBitacoraSql = DbConnDac.GetConnection();
+            OleDbConnection connection = DbConnDac.GetConnection();
             OleDbDataAdapter dataAdapter;
 
             DataSet dataSet = new DataSet();
@@ -303,12 +310,12 @@ namespace ContradiccionesDirectorioApi.Model
 
             try
             {
-                resolutivos.IdResolutivo = DataBaseUtilities.GetNextIdForUse("Resolutivos", "IdResolutivo", connectionBitacoraSql);
+                resolutivos.IdResolutivo = DataBaseUtilities.GetNextIdForUse("Resolutivos", "IdResolutivo", connection);
 
                 string sqlCadena = "SELECT * FROM Resolutivos WHERE IdContradiccion = 0";
 
                 dataAdapter = new OleDbDataAdapter();
-                dataAdapter.SelectCommand = new OleDbCommand(sqlCadena, connectionBitacoraSql);
+                dataAdapter.SelectCommand = new OleDbCommand(sqlCadena, connection);
 
                 dataAdapter.Fill(dataSet, "Resolutivos");
 
@@ -319,7 +326,7 @@ namespace ContradiccionesDirectorioApi.Model
 
                 dataSet.Tables["Resolutivos"].Rows.Add(dr);
 
-                dataAdapter.InsertCommand = connectionBitacoraSql.CreateCommand();
+                dataAdapter.InsertCommand = connection.CreateCommand();
                 dataAdapter.InsertCommand.CommandText = "INSERT INTO Resolutivos(IdContradiccion,Resolutivo,IdResolutivo)" +
                                                         " VALUES(@IdContradiccion,@Resolutivo,@IdResolutivo)";
 
@@ -334,15 +341,17 @@ namespace ContradiccionesDirectorioApi.Model
             }
             catch (OleDbException ex)
             {
-                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
+                ErrorUtilities.SetNewErrorMessage(ex, methodName + " Exception,ResolucionModel", "Contradicciones");
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
+                ErrorUtilities.SetNewErrorMessage(ex, methodName + " Exception,ResolucionModel", "Contradicciones");
             }
             finally
             {
-                connectionBitacoraSql.Close();
+                connection.Close();
             }
         }
         
@@ -353,10 +362,10 @@ namespace ContradiccionesDirectorioApi.Model
             string sqlCmd = @"SELECT * FROM Resolutivos " +
                             " WHERE IdContradiccion = @IdContradiccion";
 
-            OleDbConnection connectionBitacoraSql = DbConnDac.GetConnection();
+            OleDbConnection connection = DbConnDac.GetConnection();
             OleDbCommand cmd = new OleDbCommand();
 
-            cmd.Connection = connectionBitacoraSql;
+            cmd.Connection = connection;
             cmd.CommandText = sqlCmd;
             cmd.CommandType = CommandType.Text;
 
@@ -370,7 +379,7 @@ namespace ContradiccionesDirectorioApi.Model
 
                 cmd.Parameters.Add(parameter);
 
-                connectionBitacoraSql.Open();
+                connection.Open();
 
                 OleDbDataReader reader = cmd.ExecuteReader();
 
@@ -387,15 +396,17 @@ namespace ContradiccionesDirectorioApi.Model
             }
             catch (OleDbException ex)
             {
-                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
+                ErrorUtilities.SetNewErrorMessage(ex, methodName + " Exception,ResolucionModel", "Contradicciones");
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
+                ErrorUtilities.SetNewErrorMessage(ex, methodName + " Exception,ResolucionModel", "Contradicciones");
             }
             finally
             {
-                connectionBitacoraSql.Close();
+                connection.Close();
             }
 
             return resolutivos;
@@ -403,7 +414,7 @@ namespace ContradiccionesDirectorioApi.Model
 
         public void UpdateResolutivo(PResolutivos resolutivo)
         {
-            OleDbConnection connectionBitacoraSql = DbConnDac.GetConnection();
+            OleDbConnection connection = DbConnDac.GetConnection();
             OleDbDataAdapter dataAdapter;
 
             DataSet dataSet = new DataSet();
@@ -414,7 +425,7 @@ namespace ContradiccionesDirectorioApi.Model
                 string sqlCadena = "SELECT * FROM Resolutivos WHERE IdResolutivo =" + resolutivo.IdResolutivo;
 
                 dataAdapter = new OleDbDataAdapter();
-                dataAdapter.SelectCommand = new OleDbCommand(sqlCadena, connectionBitacoraSql);
+                dataAdapter.SelectCommand = new OleDbCommand(sqlCadena, connection);
 
                 dataAdapter.Fill(dataSet, "Resolutivos");
 
@@ -423,7 +434,7 @@ namespace ContradiccionesDirectorioApi.Model
                 dr["Resolutivo"] = resolutivo.Resolutivo;
                 dr.EndEdit();
 
-                dataAdapter.UpdateCommand = connectionBitacoraSql.CreateCommand();
+                dataAdapter.UpdateCommand = connection.CreateCommand();
                 dataAdapter.UpdateCommand.CommandText =
                                                        "UPDATE Resolutivos SET Resolutivo = @Resolutivo " +
                                                        " WHERE IdResolutivo = @IdResolutivo";
@@ -437,15 +448,17 @@ namespace ContradiccionesDirectorioApi.Model
             }
             catch (OleDbException ex)
             {
-                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
+                ErrorUtilities.SetNewErrorMessage(ex, methodName + " Exception,ResolucionModel", "Contradicciones");
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
+                ErrorUtilities.SetNewErrorMessage(ex, methodName + " Exception,ResolucionModel", "Contradicciones");
             }
             finally
             {
-                connectionBitacoraSql.Close();
+                connection.Close();
             }
         }
 
@@ -456,35 +469,35 @@ namespace ContradiccionesDirectorioApi.Model
         /// <returns></returns>
         public bool DeleteResolutivo(int idResolutivo)
         {
-            bool isDeleteComplete = true;
-            OleDbConnection connectionBitacoraSql = DbConnDac.GetConnection();
+            bool isDeleteComplete = false;
+            OleDbConnection connection = DbConnDac.GetConnection();
             OleDbCommand cmd;
 
-            cmd = connectionBitacoraSql.CreateCommand();
-            cmd.Connection = connectionBitacoraSql;
+            cmd = connection.CreateCommand();
+            cmd.Connection = connection;
 
             try
             {
-                connectionBitacoraSql.Open();
+                connection.Open();
 
                 cmd.CommandText = "DELETE FROM Resolutivos WHERE IdResolutivo = @IdResolutivo";
                 cmd.Parameters.AddWithValue("@IdResolutivo", idResolutivo);
                 cmd.ExecuteNonQuery();
-
+                isDeleteComplete = true;
             }
             catch (OleDbException ex)
             {
-                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                isDeleteComplete = false;
+                string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
+                ErrorUtilities.SetNewErrorMessage(ex, methodName + " Exception,ResolucionModel", "Contradicciones");
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                isDeleteComplete = false;
+                string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
+                ErrorUtilities.SetNewErrorMessage(ex, methodName + " Exception,ResolucionModel", "Contradicciones");
             }
             finally
             {
-                connectionBitacoraSql.Close();
+                connection.Close();
             }
 
             return isDeleteComplete;

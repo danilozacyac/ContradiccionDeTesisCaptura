@@ -1,11 +1,10 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.Data;
 using System.Data.OleDb;
 using System.Linq;
 using ContradiccionesDirectorioApi.Dao;
 using ContradiccionesDirectorioApi.DataAccess;
-using System.Windows.Forms;
-using System.Collections.ObjectModel;
 using ScjnUtilities;
 
 namespace ContradiccionesDirectorioApi.Model
@@ -95,7 +94,13 @@ namespace ContradiccionesDirectorioApi.Model
             }
             catch (OleDbException ex)
             {
-                MessageBox.Show(ex.Message);
+                string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
+                ErrorUtilities.SetNewErrorMessage(ex, methodName + " Exception,TesisModel", "Contradicciones");
+            }
+            catch (Exception ex)
+            {
+                string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
+                ErrorUtilities.SetNewErrorMessage(ex, methodName + " Exception,TesisModel", "Contradicciones");
             }
             finally
             {
@@ -114,7 +119,7 @@ namespace ContradiccionesDirectorioApi.Model
         {
             ObservableCollection<Tesis> listaTesis = new ObservableCollection<Tesis>();
 
-            OleDbConnection oleConnection = DbConnDac.GetConnection();
+            OleDbConnection connection = DbConnDac.GetConnection();
             OleDbCommand cmd;
             OleDbDataReader reader;
 
@@ -122,9 +127,9 @@ namespace ContradiccionesDirectorioApi.Model
 
             try
             {
-                oleConnection.Open();
+                connection.Open();
 
-                cmd = new OleDbCommand(oleCadena, oleConnection);
+                cmd = new OleDbCommand(oleCadena, connection);
                 reader = cmd.ExecuteReader();
 
                 while (reader.Read())
@@ -157,15 +162,17 @@ namespace ContradiccionesDirectorioApi.Model
             }
             catch (OleDbException ex)
             {
-                MessageBox.Show(ex.Message);
+                string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
+                ErrorUtilities.SetNewErrorMessage(ex, methodName + " Exception,TesisModel", "Contradicciones");
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
+                ErrorUtilities.SetNewErrorMessage(ex, methodName + " Exception,TesisModel", "Contradicciones");
             }
             finally
             {
-                oleConnection.Close();
+                connection.Close();
             }
 
             return listaTesis;
@@ -178,7 +185,7 @@ namespace ContradiccionesDirectorioApi.Model
         /// <param name="tesis"></param>
         public void UpdateTesis(Tesis tesis)
         {
-            OleDbConnection connectionBitacoraSql = DbConnDac.GetConnection();
+            OleDbConnection connection = DbConnDac.GetConnection();
             OleDbDataAdapter dataAdapter;
 
             DataSet dataSet = new DataSet();
@@ -189,7 +196,7 @@ namespace ContradiccionesDirectorioApi.Model
                 string sqlCadena = "SELECT * FROM Tesis WHERE IdTesis =" + tesis.IdTesis;
 
                 dataAdapter = new OleDbDataAdapter();
-                dataAdapter.SelectCommand = new OleDbCommand(sqlCadena, connectionBitacoraSql);
+                dataAdapter.SelectCommand = new OleDbCommand(sqlCadena, connection);
 
                 dataAdapter.Fill(dataSet, "Tesis");
 
@@ -213,7 +220,7 @@ namespace ContradiccionesDirectorioApi.Model
                 dr["IUS"] = tesis.Ius;
                 dr.EndEdit();
 
-                dataAdapter.UpdateCommand = connectionBitacoraSql.CreateCommand();
+                dataAdapter.UpdateCommand = connection.CreateCommand();
                 dataAdapter.UpdateCommand.CommandText =
                                                        "UPDATE Tesis SET ClaveControl = @ClaveControl,ClaveIdentificacion = @ClaveIdentificacion," +
                                                        "Rubro = @Rubro,tatj = @tatj,OficioPublicacion = @OficioPublicacion,OficioPPath = @OficioPPath," +
@@ -244,17 +251,19 @@ namespace ContradiccionesDirectorioApi.Model
                 dataSet.Dispose();
                 dataAdapter.Dispose();
             }
-            catch (OleDbException sql)
+            catch (OleDbException ex)
             {
-                MessageBox.Show("Error ({0}) : {1}" + sql.Source + sql.Message);
+                string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
+                ErrorUtilities.SetNewErrorMessage(ex, methodName + " Exception,TesisModel", "Contradicciones");
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message);
+                string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
+                ErrorUtilities.SetNewErrorMessage(ex, methodName + " Exception,TesisModel", "Contradicciones");
             }
             finally
             {
-                connectionBitacoraSql.Close();
+                connection.Close();
             }
         }
 
@@ -265,35 +274,35 @@ namespace ContradiccionesDirectorioApi.Model
         /// <returns></returns>
         public bool DeleteTesis(Tesis tesis)
         {
-            bool isDeleteComplete = true;
-            OleDbConnection connectionBitacoraSql = DbConnDac.GetConnection();
+            bool isDeleteComplete = false;
+            OleDbConnection connection = DbConnDac.GetConnection();
             OleDbCommand cmd;
 
-            cmd = connectionBitacoraSql.CreateCommand();
-            cmd.Connection = connectionBitacoraSql;
+            cmd = connection.CreateCommand();
+            cmd.Connection = connection;
 
             try
             {
-                connectionBitacoraSql.Open();
+                connection.Open();
 
                 cmd.CommandText = "DELETE FROM Tesis WHERE IdTesis = @IdTesis";
                 cmd.Parameters.AddWithValue("@IdTesis", tesis.IdTesis);
                 cmd.ExecuteNonQuery();
-
+                isDeleteComplete = true;
             }
             catch (OleDbException ex)
             {
-                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                isDeleteComplete = false;
+                string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
+                ErrorUtilities.SetNewErrorMessage(ex, methodName + " Exception,TesisModel", "Contradicciones");
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                isDeleteComplete = false;
+                string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
+                ErrorUtilities.SetNewErrorMessage(ex, methodName + " Exception,TesisModel", "Contradicciones");
             }
             finally
             {
-                connectionBitacoraSql.Close();
+                connection.Close();
             }
 
             return isDeleteComplete;

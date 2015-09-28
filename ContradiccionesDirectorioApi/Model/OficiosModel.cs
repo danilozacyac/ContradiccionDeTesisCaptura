@@ -3,7 +3,6 @@ using System.Collections.ObjectModel;
 using System.Data;
 using System.Data.OleDb;
 using System.Linq;
-using System.Windows.Forms;
 using ContradiccionesDirectorioApi.Dao;
 using ContradiccionesDirectorioApi.DataAccess;
 using ScjnUtilities;
@@ -22,13 +21,12 @@ namespace ContradiccionesDirectorioApi.Model
         {
             ObservableCollection<Oficios> listaOficios = new ObservableCollection<Oficios>();
 
-            string sqlCmd = @"SELECT * FROM Oficios " +
-                            " WHERE IdContradiccion = @IdContradiccion";
+            string sqlCmd = @"SELECT * FROM Oficios WHERE IdContradiccion = @IdContradiccion";
 
-            OleDbConnection connectionBitacoraSql = DbConnDac.GetConnection();
+            OleDbConnection connection = DbConnDac.GetConnection();
             OleDbCommand cmd = new OleDbCommand();
 
-            cmd.Connection = connectionBitacoraSql;
+            cmd.Connection = connection;
             cmd.CommandText = sqlCmd;
 
             try
@@ -36,7 +34,7 @@ namespace ContradiccionesDirectorioApi.Model
 
                 cmd.Parameters.AddWithValue("@IdContradiccion", idContradiccion);
 
-                connectionBitacoraSql.Open();
+                connection.Open();
 
                 OleDbDataReader reader = cmd.ExecuteReader();
 
@@ -54,15 +52,17 @@ namespace ContradiccionesDirectorioApi.Model
             }
             catch (OleDbException ex)
             {
-                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
+                ErrorUtilities.SetNewErrorMessage(ex, methodName + " Exception,OficiosModel", "Contradicciones");
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
+                ErrorUtilities.SetNewErrorMessage(ex, methodName + " Exception,OficiosModel", "Contradicciones");
             }
             finally
             {
-                connectionBitacoraSql.Close();
+                connection.Close();
             }
 
             return listaOficios;
@@ -126,11 +126,13 @@ namespace ContradiccionesDirectorioApi.Model
             }
             catch (OleDbException ex)
             {
-                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
+                ErrorUtilities.SetNewErrorMessage(ex, methodName + " Exception,OficiosModel", "Contradicciones");
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
+                ErrorUtilities.SetNewErrorMessage(ex, methodName + " Exception,OficiosModel", "Contradicciones");
             }
             finally
             {
@@ -145,7 +147,7 @@ namespace ContradiccionesDirectorioApi.Model
         /// <param name="oficio"></param>
         public void UpdateOficio(Oficios oficio)
         {
-            OleDbConnection connectionBitacoraSql = DbConnDac.GetConnection();
+            OleDbConnection connection = DbConnDac.GetConnection();
             OleDbDataAdapter dataAdapter;
 
             DataSet dataSet = new DataSet();
@@ -156,7 +158,7 @@ namespace ContradiccionesDirectorioApi.Model
                 string sqlCadena = "SELECT * FROM Oficios WHERE IdOficio = " + oficio.IdOficio;
 
                 dataAdapter = new OleDbDataAdapter();
-                dataAdapter.SelectCommand = new OleDbCommand(sqlCadena, connectionBitacoraSql);
+                dataAdapter.SelectCommand = new OleDbCommand(sqlCadena, connection);
 
                 dataAdapter.Fill(dataSet, "Oficios");
 
@@ -175,7 +177,7 @@ namespace ContradiccionesDirectorioApi.Model
                 }
                 dr.EndEdit();
 
-                dataAdapter.UpdateCommand = connectionBitacoraSql.CreateCommand();
+                dataAdapter.UpdateCommand = connection.CreateCommand();
                 dataAdapter.UpdateCommand.CommandText =
                                                        "UPDATE Oficios SET Oficio = @Oficio,Fecha = @Fecha,FechaInt = @FechaInt " +
                                                        " WHERE IdOficio = @IdOficio";
@@ -191,15 +193,17 @@ namespace ContradiccionesDirectorioApi.Model
             }
             catch (OleDbException ex)
             {
-                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
+                ErrorUtilities.SetNewErrorMessage(ex, methodName + " Exception,OficiosModel", "Contradicciones");
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
+                ErrorUtilities.SetNewErrorMessage(ex, methodName + " Exception,OficiosModel", "Contradicciones");
             }
             finally
             {
-                connectionBitacoraSql.Close();
+                connection.Close();
             }
         }
 
@@ -210,38 +214,37 @@ namespace ContradiccionesDirectorioApi.Model
         /// <returns></returns>
         public bool DeleteOficio(Oficios oficio)
         {
-            bool isDeleteComplete = true;
+            bool isDeleteComplete = false;
 
-            OleDbConnection connectionBitacoraSql = DbConnDac.GetConnection();
+            OleDbConnection connection = DbConnDac.GetConnection();
             OleDbCommand cmd;
 
-            cmd = connectionBitacoraSql.CreateCommand();
-            cmd.Connection = connectionBitacoraSql;
+            cmd = connection.CreateCommand();
+            cmd.Connection = connection;
 
             try
             {
-                connectionBitacoraSql.Open();
+                connection.Open();
 
                 cmd.CommandText = "DELETE FROM Oficios WHERE IdOficio = @IdOficio";
                 cmd.Parameters.AddWithValue("@IdOficio", oficio.IdOficio);
                 cmd.ExecuteNonQuery();
-
+                isDeleteComplete = true;
             }
             catch (OleDbException ex)
             {
-                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                isDeleteComplete = false;
+                string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
+                ErrorUtilities.SetNewErrorMessage(ex, methodName + " Exception,OficiosModel", "Contradicciones");
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                isDeleteComplete = false;
+                string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
+                ErrorUtilities.SetNewErrorMessage(ex, methodName + " Exception,OficiosModel", "Contradicciones");
             }
             finally
             {
-                connectionBitacoraSql.Close();
+                connection.Close();
             }
-
             return isDeleteComplete;
         }
 

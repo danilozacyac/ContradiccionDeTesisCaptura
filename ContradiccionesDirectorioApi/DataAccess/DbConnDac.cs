@@ -12,9 +12,9 @@ namespace ContradiccionesDirectorioApi.DataAccess
         {
             String bdStringSql = ConfigurationManager.ConnectionStrings["CT"].ConnectionString;
 
-            OleDbConnection oleConne = new OleDbConnection(bdStringSql);
+            OleDbConnection connection = new OleDbConnection(bdStringSql);
 
-            return oleConne;
+            return connection;
         }
 
 

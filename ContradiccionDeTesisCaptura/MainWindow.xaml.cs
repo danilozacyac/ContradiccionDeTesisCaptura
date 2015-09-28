@@ -3,12 +3,11 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows;
+using ContradiccionDeTesisCaptura.Report;
 using ContradiccionesDirectorioApi.Dao;
 using ContradiccionesDirectorioApi.Model;
 using ContradiccionesDirectorioApi.Utils;
-using ContradiccionDeTesisCaptura.Report;
 using TableWordToDb;
-using ContradiccionesDirectorioApi.Singletons;
 
 namespace ContradiccionDeTesisCaptura
 {

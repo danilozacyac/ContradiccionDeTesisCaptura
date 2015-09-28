@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Data.OleDb;
 using System.Linq;
 using ContradiccionesDirectorioApi.Dao;
-using System.Windows.Forms;
 using ContradiccionesDirectorioApi.DataAccess;
+using ScjnUtilities;
 
 namespace ContradiccionesDirectorioApi.Model
 {
@@ -17,7 +17,7 @@ namespace ContradiccionesDirectorioApi.Model
         /// <returns></returns>
         public List<Tipos> GetTiposAsunto()
         {
-            OleDbConnection connectionBitacoraSql = DbConnDac.GetConnection();
+            OleDbConnection connection = DbConnDac.GetConnection();
             List<Tipos> tipoAuntos = new List<Tipos>();
 
             OleDbCommand cmd;
@@ -27,9 +27,9 @@ namespace ContradiccionesDirectorioApi.Model
 
             try
             {
-                connectionBitacoraSql.Open();
+                connection.Open();
 
-                cmd = new OleDbCommand(sqlCadena, connectionBitacoraSql);
+                cmd = new OleDbCommand(sqlCadena, connection);
                 reader = cmd.ExecuteReader();
 
                 if (reader.HasRows)
@@ -44,18 +44,19 @@ namespace ContradiccionesDirectorioApi.Model
                 }
                 reader.Close();
             }
-            catch (OleDbException sql)
+            catch (OleDbException ex)
             {
-                MessageBox.Show("Error ({0}) : {1}" + sql.Source + sql.Message, "Error Interno");
+                string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
+                ErrorUtilities.SetNewErrorMessage(ex, methodName + " Exception,TiposModel", "Contradicciones");
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, "Error Interno");
+                string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
+                ErrorUtilities.SetNewErrorMessage(ex, methodName + " Exception,TiposModel", "Contradicciones");
             }
             finally
             {
-                reader.Close();
-                connectionBitacoraSql.Close();
+                connection.Close();
             }
 
             return tipoAuntos;

@@ -14,8 +14,6 @@ namespace TableWordToDb
     {
         public void GetListaContradiccionesFaltantes()
         {
-            ContradiccionesModel cModel = new ContradiccionesModel();
-
             List<Contradicciones> listaContradicciones = new List<Contradicciones>();
 
             ReadTable readInfo = new ReadTable();

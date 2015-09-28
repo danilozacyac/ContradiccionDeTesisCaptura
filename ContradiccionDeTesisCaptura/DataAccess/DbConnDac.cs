@@ -11,9 +11,9 @@ namespace ContradiccionDeTesisCaptura.DataAccess
         {
              String bdStringSql = ConfigurationManager.ConnectionStrings["CT"].ConnectionString;
 
-            OleDbConnection oleConne = new OleDbConnection(bdStringSql);
+            OleDbConnection connection = new OleDbConnection(bdStringSql);
 
-            return oleConne;
+            return connection;
         }
 
 
@@ -21,9 +21,9 @@ namespace ContradiccionDeTesisCaptura.DataAccess
         //{
         //    String bdStringSql = ConfigurationManager.ConnectionStrings["Directorio"].ConnectionString;
 
-        //    OleDbConnection oleConne = new OleDbConnection(bdStringSql);
+        //    OleDbConnection connection = new OleDbConnection(bdStringSql);
 
-        //    return oleConne;
+        //    return connection;
         //}
 
     }

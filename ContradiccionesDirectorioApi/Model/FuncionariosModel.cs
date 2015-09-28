@@ -3,8 +3,8 @@ using System.Collections.ObjectModel;
 using System.Configuration;
 using System.Data.OleDb;
 using System.Linq;
-using System.Windows.Forms;
 using ContradiccionesDirectorioApi.Dao;
+using ScjnUtilities;
 
 namespace ContradiccionesDirectorioApi.Model
 {
@@ -20,7 +20,7 @@ namespace ContradiccionesDirectorioApi.Model
         {
             ObservableCollection<Funcionarios> funcionarios = new ObservableCollection<Funcionarios>();
 
-            OleDbConnection oleConne = new OleDbConnection(ConfigurationManager.ConnectionStrings["Directorio"].ToString());
+            OleDbConnection connection = new OleDbConnection(ConfigurationManager.ConnectionStrings["Directorio"].ToString());
             OleDbCommand cmd = null;
             OleDbDataReader reader = null;
 
@@ -35,9 +35,9 @@ namespace ContradiccionesDirectorioApi.Model
 
             try
             {
-                oleConne.Open();
+                connection.Open();
 
-                cmd = new OleDbCommand(sqlCadena, oleConne);
+                cmd = new OleDbCommand(sqlCadena, connection);
                 reader = cmd.ExecuteReader();
 
                 if (reader.HasRows)
@@ -56,20 +56,22 @@ namespace ContradiccionesDirectorioApi.Model
                         funcionarios.Add(funcionario);
                     }
                 }
+                cmd.Dispose();
+                reader.Close();
             }
-            catch (OleDbException sql)
+            catch (OleDbException ex)
             {
-                MessageBox.Show("Error ({0}) : {1}" + sql.Source + sql.Message, "Error Interno");
+                string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
+                ErrorUtilities.SetNewErrorMessage(ex, methodName + " Exception,FuncionariosModel", "Contradicciones");
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, "Error Interno");
+                string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
+                ErrorUtilities.SetNewErrorMessage(ex, methodName + " Exception,FuncionariosModel", "Contradicciones");
             }
             finally
             {
-                cmd.Dispose();
-                reader.Close();
-                oleConne.Close();
+                connection.Close();
             }
 
             return funcionarios;
