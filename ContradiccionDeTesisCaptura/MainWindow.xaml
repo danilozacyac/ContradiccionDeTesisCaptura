@@ -54,14 +54,25 @@
                                              Size="Large" />
                 </telerik:RadRibbonGroup>
                 <telerik:RadRibbonGroup Header="Plenos de Circuito">
-                    <telerik:RadRibbonButton Name="RBtnAddPleno"
-                                             LargeImage="Resources/building_128.png"
-                                             Size="Large" Click="RBtnAddPleno_Click" >
+                    <telerik:RadRibbonButton Name="RBtnUpdatePleno"
+                                             Click="RBtnUpdatePleno_Click"
+                                             LargeImage="Resources/list_128.png"
+                                             Size="Large">
                         <StackPanel Orientation="Vertical">
-                            <TextBlock Text="Agregar" HorizontalAlignment="Center"/>
-                            <TextBlock Text="Pleno" HorizontalAlignment="Center"/>
+                            <TextBlock HorizontalAlignment="Center" Text="Listado de" />
+                            <TextBlock HorizontalAlignment="Center" Text="Plenos" />
                         </StackPanel>
                     </telerik:RadRibbonButton>
+                    <telerik:RadRibbonButton Name="RBtnAddPleno"
+                                             Click="RBtnAddPleno_Click"
+                                             LargeImage="Resources/building_128.png"
+                                             Size="Large">
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock HorizontalAlignment="Center" Text="Agregar" />
+                            <TextBlock HorizontalAlignment="Center" Text="Pleno" />
+                        </StackPanel>
+                    </telerik:RadRibbonButton>
+
                 </telerik:RadRibbonGroup>
                 <telerik:RadRibbonGroup Header="Datos Externos">
                     <telerik:RadRibbonButton x:Name="RBtnImportarDatos"

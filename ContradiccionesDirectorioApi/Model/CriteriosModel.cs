@@ -502,6 +502,8 @@ namespace ContradiccionesDirectorioApi.Model
                                        where n.IdOrganismo == criterio.IdOrgano
                                        select n.Organismo).ToList()[0];
 
+                    criterio.TesisContendientes = this.GetCriteriosTesis(criterio.IdCriterio);
+
                     criterios.Add(criterio);
                 }
 
@@ -523,6 +525,50 @@ namespace ContradiccionesDirectorioApi.Model
 
             return criterios;
         }
+
+
+        public ObservableCollection<int> GetCriteriosTesis(int idCriterio)
+        {
+            ObservableCollection<int> tesisRelacionadas = new ObservableCollection<int>();
+
+            OleDbConnection oleConnection = DbConnDac.GetConnection();
+            OleDbCommand cmd;
+            OleDbDataReader reader;
+
+            string oleCadena = "SELECT * FROM CriteriosTesis WHERE IdCriterio = @IdCriterio";
+
+            try
+            {
+                oleConnection.Open();
+
+                cmd = new OleDbCommand(oleCadena, oleConnection);
+                cmd.Parameters.AddWithValue("@IdCriterio", idCriterio);
+                reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    tesisRelacionadas.Add(Convert.ToInt32(reader["IUS"]));
+                }
+
+                reader.Close();
+                cmd.Dispose();
+            }
+            catch (OleDbException ex)
+            {
+                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            finally
+            {
+                oleConnection.Close();
+            }
+
+            return tesisRelacionadas;
+        }
+
 
         private void AddParms(OleDbCommand cmd, params string[] cols)
         {

@@ -133,6 +133,16 @@ namespace ContradiccionDeTesisCaptura.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap list_128 {
+            get {
+                object obj = ResourceManager.GetObject("list_128", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap pdf_128 {
             get {
                 object obj = ResourceManager.GetObject("pdf_128", resourceCulture);

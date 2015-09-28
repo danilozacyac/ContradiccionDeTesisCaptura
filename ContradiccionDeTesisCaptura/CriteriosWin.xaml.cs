@@ -43,6 +43,8 @@ namespace ContradiccionDeTesisCaptura
 
             if (isUpdatingCriterio)
                 CbxOrganismos.SelectedValue = criterios.IdOrgano;
+
+            LstTesisContendientes.DataContext = criterios.TesisContendientes;
         }
 
         private void TxtTesis_PreviewTextInput(object sender, TextCompositionEventArgs e)

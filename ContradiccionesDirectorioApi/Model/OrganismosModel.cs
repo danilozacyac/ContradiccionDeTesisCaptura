@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Configuration;
 using System.Data;
 using System.Data.OleDb;
@@ -85,9 +86,9 @@ namespace ContradiccionesDirectorioApi.Model
         }
 
 
-        public List<Organismos> GetPlenos()
+        public ObservableCollection<Organismos> GetPlenos()
         {
-            List<Organismos> organismos = new List<Organismos>();
+            ObservableCollection<Organismos> organismos = new ObservableCollection<Organismos>();
 
             OleDbConnection oleConne = DbConnDac.GetConnection();
             OleDbCommand cmd = null;

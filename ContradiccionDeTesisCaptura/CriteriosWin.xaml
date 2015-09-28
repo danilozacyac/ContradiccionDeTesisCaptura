@@ -62,8 +62,7 @@
                  Margin="28,373,0,0"
                  HorizontalAlignment="Left"
                  VerticalAlignment="Top"
-                 ItemsSource="{Binding TesisContendientes,
-                                       Mode=TwoWay}" />
+                 ItemsSource="{Binding}" />
         <Label Name="label4"
                Height="28"
                Margin="369,348,0,0"

@@ -132,6 +132,13 @@ namespace ContradiccionDeTesisCaptura
             
         }
 
+        private void RBtnUpdatePleno_Click(object sender, RoutedEventArgs e)
+        {
+            PlenosLista plenos = new PlenosLista();
+            plenos.Owner = this;
+            plenos.ShowDialog();
+        }
+
 
     }
 

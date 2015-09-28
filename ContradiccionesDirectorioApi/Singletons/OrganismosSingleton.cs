@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using ContradiccionesDirectorioApi.Dao;
 using ContradiccionesDirectorioApi.Model;
@@ -11,7 +12,7 @@ namespace ContradiccionesDirectorioApi.Singletons
         private static List<Organismos> colegiados;
         private static List<Organismos> unitarios;
         private static List<Organismos> juzgados;
-        private static List<Organismos> plenos;
+        private static ObservableCollection<Organismos> plenos;
 
         private OrganismosSingleton()
         {
@@ -50,7 +51,7 @@ namespace ContradiccionesDirectorioApi.Singletons
             }
         }
 
-        public static List<Organismos> Plenos
+        public static ObservableCollection<Organismos> Plenos
         {
             get
             {
