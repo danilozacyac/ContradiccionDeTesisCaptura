@@ -4,12 +4,9 @@
              StartupUri="Launcher.xaml">
     <Application.Resources>
         <ResourceDictionary>
-            <!--
-                <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Themes/ShinyRed.xaml" />
-                <ResourceDictionary Source="/Themes/Botones.xaml" />
-                </ResourceDictionary.MergedDictionaries>
-            -->
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Themes/ContradicTheme.xaml" />
+            </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

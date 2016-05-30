@@ -164,13 +164,13 @@ namespace ContradiccionesDirectorioApi.Model
             OleDbCommand cmd;
             OleDbDataReader reader;
 
-            CriteriosModel critModel = new CriteriosModel();
-            TesisModel tesModel = new TesisModel();
-            EjecutoriasModel ejecModel = new EjecutoriasModel();
-            ReturnosModel returnoModel = new ReturnosModel();
-            ResolucionModel resolucion = new ResolucionModel();
-            OficiosModel oficios = new OficiosModel();
-            AdmisorioModel admin = new AdmisorioModel();
+            //CriteriosModel critModel = new CriteriosModel();
+            //TesisModel tesModel = new TesisModel();
+            //EjecutoriasModel ejecModel = new EjecutoriasModel();
+            //ReturnosModel returnoModel = new ReturnosModel();
+            //ResolucionModel resolucion = new ResolucionModel();
+            //OficiosModel oficios = new OficiosModel();
+            //AdmisorioModel admin = new AdmisorioModel();
 
             string oleCadena = "SELECT * FROM Contradicciones WHERE IdContradiccion > 0 ORDER By ExpedienteAnio,ExpedienteNumero";
 
@@ -197,15 +197,10 @@ namespace ContradiccionesDirectorioApi.Model
                     contra.IdPlenoCircuito = Convert.ToInt32(reader["IdPlenoCircuito"]);
                     contra.IdPresidentePleno = Convert.ToInt32(reader["IdPresidentePleno"]);
                     contra.IdPonentePleno = Convert.ToInt32(reader["IdPonentePleno"]);
-                    contra.Criterios = critModel.GetCriterios(contra.IdContradiccion);
-                    contra.MiTesis = tesModel.GetTesisPorContradiccion(contra.IdContradiccion);
-                    contra.MiEjecutoria = ejecModel.GetEjecutoriasPorContradiccion(contra.IdContradiccion);
-                    contra.Returnos = returnoModel.GetReturnos(contra.IdContradiccion);
-                    contra.Resolutivo = resolucion.GetResolucion(contra.IdContradiccion);
+                    
                     contra.IsComplete = Convert.ToBoolean(reader["Completa"] as Int16? ?? 0);
                     contra.ExpProvisional = reader["ExpedienteProvisional"].ToString();
-                    contra.Oficios = oficios.GetOficios(contra.IdContradiccion);
-                    contra.AcAdmisorio = admin.GetAcuerdo(contra.IdContradiccion);
+                    
 
                     contradicciones.Add(contra);
                 }
@@ -231,6 +226,16 @@ namespace ContradiccionesDirectorioApi.Model
             return contradicciones;
         }
 
+        public void GetContradiccionComplementInfo(ref Contradicciones contradiccion)
+        {
+            contradiccion.Criterios = new CriteriosModel().GetCriterios(contradiccion.IdContradiccion);
+            contradiccion.MiTesis = new TesisModel().GetTesisPorContradiccion(contradiccion.IdContradiccion);
+            contradiccion.MiEjecutoria = new EjecutoriasModel().GetEjecutoriasPorContradiccion(contradiccion.IdContradiccion);
+            contradiccion.Returnos = new ReturnosModel().GetReturnos(contradiccion.IdContradiccion);
+            contradiccion.Resolutivo = new ResolucionModel().GetResolucion(contradiccion.IdContradiccion);
+            contradiccion.Oficios = new OficiosModel().GetOficios(contradiccion.IdContradiccion);
+            contradiccion.AcAdmisorio = new AdmisorioModel().GetAcuerdo(contradiccion.IdContradiccion);
+        }
 
         /// <summary>
         /// Actualiza la información de una de las contradicciones registradas

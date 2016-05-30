@@ -70,6 +70,9 @@ namespace ContradiccionDeTesisCaptura
         private void RBtnViewContra_Click(object sender, RoutedEventArgs e)
         {
             Contradicciones contra = (Contradicciones)RGridContradicciones.SelectedItem;
+
+            new ContradiccionesModel().GetContradiccionComplementInfo(ref contra);
+
             ContradiccionesWin win = new ContradiccionesWin(contra, false);
             win.ShowDialog();
 

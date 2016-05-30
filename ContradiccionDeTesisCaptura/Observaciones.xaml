@@ -15,7 +15,8 @@
         <TextBox Name="TxtObservaciones"
                  HorizontalAlignment="Stretch"
                  VerticalAlignment="Stretch"
-                 AcceptsReturn="True" />
+                 AcceptsReturn="True"
+                 TextWrapping="Wrap" />
         <telerik:RadButton Name="BtnAceptar"
                            Grid.Row="1"
                            Width="75"
