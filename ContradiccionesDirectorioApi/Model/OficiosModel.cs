@@ -21,13 +21,10 @@ namespace ContradiccionesDirectorioApi.Model
         {
             ObservableCollection<Oficios> listaOficios = new ObservableCollection<Oficios>();
 
-            string sqlCmd = @"SELECT * FROM Oficios WHERE IdContradiccion = @IdContradiccion";
+            const string SqlQuery = @"SELECT * FROM Oficios WHERE IdContradiccion = @IdContradiccion";
 
             SqlConnection connection = DbConnDac.GetConnection();
-            SqlCommand cmd = new SqlCommand();
-
-            cmd.Connection = connection;
-            cmd.CommandText = sqlCmd;
+            SqlCommand cmd = new SqlCommand() { Connection = connection, CommandText = SqlQuery };
 
             try
             {
@@ -40,11 +37,13 @@ namespace ContradiccionesDirectorioApi.Model
 
                 while (reader.Read())
                 {
-                    Oficios oficio = new Oficios();
-                    oficio.IdOficio = reader["IdOficio"] as int? ?? 0;
-                    oficio.IdContradiccion = reader["IdContradiccion"] as int? ?? 0;
-                    oficio.Oficio = reader["Oficio"].ToString();
-                    oficio.FechaOficio = DateTimeUtilities.GetDateFromReader(reader, "Fecha");
+                    Oficios oficio = new Oficios()
+                    {
+                        IdOficio = Convert.ToInt32(reader["IdOficio"]),
+                        IdContradiccion = Convert.ToInt32(reader["IdContradiccion"]),
+                        Oficio = reader["Oficio"].ToString(),
+                        FechaOficio = DateTimeUtilities.GetDateFromReader(reader, "Fecha")
+                    };
 
                     listaOficios.Add(oficio);
                 }
@@ -72,7 +71,7 @@ namespace ContradiccionesDirectorioApi.Model
         /// Agrega un oficio relacionado a la contradicción
         /// </summary>
         /// <param name="admisorio"></param>
-        public void SetNewOficio(Oficios oficio,int idContradiccion)
+        public void SetNewOficio(Oficios oficio, int idContradiccion)
         {
             SqlConnection connection = DbConnDac.GetConnection();
             SqlDataAdapter dataAdapter;
@@ -82,12 +81,12 @@ namespace ContradiccionesDirectorioApi.Model
 
             try
             {
-                oficio.IdOficio = DataBaseUtilities.GetNextIdForUse("Oficios", "IdOficio",connection);
+                oficio.IdOficio = DataBaseUtilities.GetNextIdForUse("Oficios", "IdOficio", connection);
 
-                string sqlCadena = "SELECT * FROM Oficios WHERE IdOficio = 0";
+                const string SqlQuery = "SELECT * FROM Oficios WHERE IdOficio = 0";
 
                 dataAdapter = new SqlDataAdapter();
-                dataAdapter.SelectCommand = new SqlCommand(sqlCadena, connection);
+                dataAdapter.SelectCommand = new SqlCommand(SqlQuery, connection);
 
                 dataAdapter.Fill(dataSet, "Oficios");
 
@@ -98,7 +97,7 @@ namespace ContradiccionesDirectorioApi.Model
 
                 if (oficio.FechaOficio == null)
                 {
-                    dr["Fecha"] = System.DBNull.Value;
+                    dr["Fecha"] = DBNull.Value;
                     dr["FechaInt"] = 0;
                 }
                 else
@@ -167,7 +166,7 @@ namespace ContradiccionesDirectorioApi.Model
                 dr["Oficio"] = oficio.Oficio;
                 if (oficio.FechaOficio == null)
                 {
-                    dr["Fecha"] = System.DBNull.Value;
+                    dr["Fecha"] = DBNull.Value;
                     dr["FechaInt"] = 0;
                 }
                 else
@@ -217,9 +216,7 @@ namespace ContradiccionesDirectorioApi.Model
             bool isDeleteComplete = false;
 
             SqlConnection connection = DbConnDac.GetConnection();
-            SqlCommand cmd;
-
-            cmd = connection.CreateCommand();
+            SqlCommand cmd = connection.CreateCommand();
             cmd.Connection = connection;
 
             try

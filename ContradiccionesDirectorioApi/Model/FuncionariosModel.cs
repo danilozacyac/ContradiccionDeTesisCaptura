@@ -44,14 +44,16 @@ namespace ContradiccionesDirectorioApi.Model
                 {
                     while (reader.Read())
                     {
-                        Funcionarios funcionario = new Funcionarios();
-                        funcionario.IdFuncionario = Convert.ToInt32(reader["idFunc"]);
-                        funcionario.IdOrganismo = reader["IdOrg"] as int? ?? 0;
-                        funcionario.Puesto = reader["Puesto"].ToString();
-                        funcionario.Apellidos = reader["Apellidos"].ToString();
-                        funcionario.Nombre = reader["Nombre"].ToString();
-                        funcionario.NombreCompleto = reader["Nombre"].ToString() + " " + reader["Apellidos"].ToString();
-                        funcionario.Texto = reader["Texto"].ToString();
+                        Funcionarios funcionario = new Funcionarios()
+                        {
+                            IdFuncionario = Convert.ToInt32(reader["idFunc"]),
+                            IdOrganismo = reader["IdOrg"] as int? ?? 0,
+                            Puesto = reader["Puesto"].ToString(),
+                            Apellidos = reader["Apellidos"].ToString(),
+                            Nombre = reader["Nombre"].ToString(),
+                            NombreCompleto = String.Format("{0} {1}", reader["Nombre"], reader["Apellidos"]),
+                            Texto = reader["Texto"].ToString()
+                        };
 
                         funcionarios.Add(funcionario);
                     }

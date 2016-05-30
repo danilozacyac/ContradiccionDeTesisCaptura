@@ -29,38 +29,35 @@ namespace ContradiccionesDirectorioApi.Model
             SqlDataReader reader = null;
 
             String sqlCadena = "SELECT O.*, C.Ciudad, E.Abrev " +
-                               "FROM Organismos O INNER JOIN (Ciudades C INNER JOIN Estados E ON C.IdEstado = E.IdEstado) ON O.Ciudad = C.IdCiudad WHERE TpoOrg = " + tipoOrganismo + " ORDER BY OrdenImpr";
+                               "FROM Organismos O INNER JOIN (Ciudades C INNER JOIN Estados E ON C.IdEstado = E.IdEstado) " + 
+                               "ON O.Ciudad = C.IdCiudad WHERE TpoOrg = @TipoOrg ORDER BY OrdenImpr";
 
             try
             {
                 connection.Open();
 
                 cmd = new SqlCommand(sqlCadena, connection);
+                cmd.Parameters.AddWithValue("@TipoOrg", tipoOrganismo);
                 reader = cmd.ExecuteReader();
 
                 if (reader.HasRows)
                 {
                     while (reader.Read())
                     {
-                        //int age = reader["Age"] as int? ?? -1;
-                        Organismos organismoAdd = new Organismos();
-                        organismoAdd.IdOrganismo = reader["IdOrg"] as int? ?? -1;
-                        organismoAdd.TipoOrganismo = reader["TpoOrg"] as int? ?? -1;
-                        organismoAdd.Circuito = reader["Circuito"] as int? ?? -1;
-                        organismoAdd.Ordinal = reader["Ordinal"] as int? ?? -1;
-                        organismoAdd.Materia = reader["Materia"] as int? ?? -1;
-                        organismoAdd.Organismo = reader["Organismo"].ToString();
-                        organismoAdd.Direccion = reader["Direccion"].ToString();
-                        organismoAdd.Telefonos = reader["Tels"].ToString();
-                        organismoAdd.Ciudad = reader["O.Ciudad"] as int? ?? -1;
-                        organismoAdd.Integrantes = reader["Integrantes"] as int? ?? -1;
-                        organismoAdd.OrdenImpresion = reader["OrdenImpr"] as int? ?? -1;
-                       // organismoAdd.ListaFuncionarios = new ObservableCollection<Funcionarios>();
-
-                        //foreach (Funcionarios func in new FuncionariosModel().GetFuncionariosPorOrganismo(organismoAdd.IdOrganismo))
-                        //    organismoAdd.ListaFuncionarios.Add(func);
-
-                        //organismoAdd.Integrantes = organismoAdd.ListaFuncionarios.Count;
+                        Organismos organismoAdd = new Organismos()
+                        {
+                            IdOrganismo = reader["IdOrg"] as int? ?? -1,
+                            TipoOrganismo = reader["TpoOrg"] as int? ?? -1,
+                            Circuito = reader["Circuito"] as int? ?? -1,
+                            Ordinal = reader["Ordinal"] as int? ?? -1,
+                            Materia = reader["Materia"] as int? ?? -1,
+                            Organismo = reader["Organismo"].ToString(),
+                            Direccion = reader["Direccion"].ToString(),
+                            Telefonos = reader["Tels"].ToString(),
+                            Ciudad = reader["O.Ciudad"] as int? ?? -1,
+                            Integrantes = reader["Integrantes"] as int? ?? -1,
+                            OrdenImpresion = reader["OrdenImpr"] as int? ?? -1
+                        };
 
                         organismos.Add(organismoAdd);
                     }
@@ -95,13 +92,11 @@ namespace ContradiccionesDirectorioApi.Model
             SqlCommand cmd = null;
             SqlDataReader reader = null;
 
-            String sqlCadena = "SELECT * FROM PlenoC Order By OrdenImpr";
-
             try
             {
                 connection.Open();
 
-                cmd = new SqlCommand(sqlCadena, connection);
+                cmd = new SqlCommand("SELECT * FROM PlenoC Order By OrdenImpr", connection);
                 reader = cmd.ExecuteReader();
 
                 if (reader.HasRows)
@@ -109,10 +104,10 @@ namespace ContradiccionesDirectorioApi.Model
                     while (reader.Read())
                     {
                         //int age = reader["Age"] as int? ?? -1;
-                        Organismos organismoAdd = new Organismos();
-                        organismoAdd.IdOrganismo = reader["IdPleno"] as int? ?? -1;
-                        organismoAdd.Organismo = reader["Descripcion"].ToString() + "(" + reader["Especializacion"].ToString() + ")";
-                        organismoAdd.OrdenImpresion = reader["OrdenImpr"] as int? ?? -1;
+                        Organismos organismoAdd = new Organismos() {
+                            IdOrganismo = reader["IdPleno"] as int? ?? -1,
+                            Organismo = String.Format("{0}({1})", reader["Descripcion"], reader["Especializacion"]), 
+                            OrdenImpresion = reader["OrdenImpr"] as int? ?? -1 };
 
                         organismos.Add(organismoAdd);
                     }
@@ -150,10 +145,8 @@ namespace ContradiccionesDirectorioApi.Model
             {
                 organismo.IdOrganismo = DataBaseUtilities.GetNextIdForUse("PlenoC", "IdPleno", connection);
 
-                string sqlCadena = "SELECT * FROM PlenoC WHERE IdPleno = 0";
-
                 dataAdapter = new SqlDataAdapter();
-                dataAdapter.SelectCommand = new SqlCommand(sqlCadena, connection);
+                dataAdapter.SelectCommand = new SqlCommand("SELECT * FROM PlenoC WHERE IdPleno = 0", connection);
 
                 dataAdapter.Fill(dataSet, "PlenoC");
 

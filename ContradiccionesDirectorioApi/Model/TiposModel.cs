@@ -23,13 +23,11 @@ namespace ContradiccionesDirectorioApi.Model
             SqlCommand cmd;
             SqlDataReader reader = null;
 
-            String sqlCadena = "SELECT * FROM TipoAsunto";
-
             try
             {
                 connection.Open();
 
-                cmd = new SqlCommand(sqlCadena, connection);
+                cmd = new SqlCommand("SELECT * FROM TipoAsunto", connection);
                 reader = cmd.ExecuteReader();
 
                 if (reader.HasRows)

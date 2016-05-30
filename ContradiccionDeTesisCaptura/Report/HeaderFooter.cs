@@ -5,7 +5,7 @@ using iTextSharp.text.pdf;
 
 namespace ContradiccionDeTesisCaptura.Report
 {
-    public class HeaderFooter : iTextSharp.text.pdf.PdfPageEventHelper
+    public class HeaderFooter : PdfPageEventHelper
     {
         public override void OnStartPage(PdfWriter writer, Document doc)
         {
@@ -28,8 +28,7 @@ namespace ContradiccionDeTesisCaptura.Report
             //Create a paragraph that contains the footer text
             Paragraph para;// = new Paragraph("", Fuentes.footer);
             DateTime time = DateTime.Now;              // Use current time
-            string format = "dd/MM/yyyy";    // Use this format
-            para = new Paragraph(time.ToString(format), Fuentes.Footer);
+            para = new Paragraph(time.ToString("dd/MM/yyyy"), Fuentes.Footer);
 
             //add a carriage return
             para.Add(Environment.NewLine);

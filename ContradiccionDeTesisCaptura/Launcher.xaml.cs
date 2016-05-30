@@ -29,7 +29,7 @@ namespace ContradiccionDeTesisCaptura
 
             this.LaunchBusyIndicator();
 
-            string path = ConfigurationManager.AppSettings["ErrorPath"].ToString();
+            string path = ConfigurationManager.AppSettings["ErrorPath"];
 
             if (!File.Exists(path))
             {

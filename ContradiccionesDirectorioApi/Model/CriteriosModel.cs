@@ -6,6 +6,7 @@ using System.Linq;
 using ContradiccionesDirectorioApi.Dao;
 using ContradiccionesDirectorioApi.DataAccess;
 using ScjnUtilities;
+using ContradiccionesDirectorioApi.Singletons;
 
 namespace ContradiccionesDirectorioApi.Model
 {
@@ -30,10 +31,8 @@ namespace ContradiccionesDirectorioApi.Model
             {
                 foreach (Criterios criterio in contradiccion.Criterios)
                 {
-                    string sqlCadena = "SELECT * FROM Criterios WHERE IdCriterio = 0";
-
                     dataAdapter = new SqlDataAdapter();
-                    dataAdapter.SelectCommand = new SqlCommand(sqlCadena, connection);
+                    dataAdapter.SelectCommand = new SqlCommand("SELECT * FROM Criterios WHERE IdCriterio = 0", connection);
                     criterio.Orden = currentOrder;
 
                     dataAdapter.Fill(dataSet, "Criterios");
@@ -100,10 +99,9 @@ namespace ContradiccionesDirectorioApi.Model
             try
             {
                 criterio.Orden = this.GetMaxOrderCriterio(idContradiccion);
-                string sqlCadena = "SELECT * FROM Criterios WHERE IdCriterio = 0";
 
                 dataAdapter = new SqlDataAdapter();
-                dataAdapter.SelectCommand = new SqlCommand(sqlCadena, connection);
+                dataAdapter.SelectCommand = new SqlCommand("SELECT * FROM Criterios WHERE IdCriterio = 0", connection);
 
                 dataAdapter.Fill(dataSet, "Criterios");
 
@@ -152,7 +150,7 @@ namespace ContradiccionesDirectorioApi.Model
             }
         }
 
-        public void UpdateCriterios(Criterios criterio, int idContradiccion)
+        public void UpdateCriterios(Criterios criterio)
         {
             SqlConnection connection = DbConnDac.GetConnection();
             SqlDataAdapter dataAdapter;
@@ -217,9 +215,7 @@ namespace ContradiccionesDirectorioApi.Model
             bool isDeleteComplete = false;
 
             SqlConnection connection = DbConnDac.GetConnection();
-            SqlCommand cmd ;
-
-            cmd = connection.CreateCommand();
+            SqlCommand cmd = connection.CreateCommand();
             cmd.Connection = connection;
 
             try
@@ -286,10 +282,8 @@ namespace ContradiccionesDirectorioApi.Model
                 {
                     foreach (int tesis in criterio.TesisContendientes)
                     {
-                        string sqlCadena = "SELECT * FROM CriteriosTesis WHERE IdCriterio = 0";
-
                         dataAdapter = new SqlDataAdapter();
-                        dataAdapter.SelectCommand = new SqlCommand(sqlCadena, connection);
+                        dataAdapter.SelectCommand = new SqlCommand("SELECT * FROM CriteriosTesis WHERE IdCriterio = 0", connection);
 
                         dataAdapter.Fill(dataSet, "Criterios");
 
@@ -335,9 +329,7 @@ namespace ContradiccionesDirectorioApi.Model
             bool isDeleteComplete = false;
 
             SqlConnection connection = DbConnDac.GetConnection();
-            SqlCommand cmd;
-
-            cmd = connection.CreateCommand();
+            SqlCommand cmd = connection.CreateCommand();
             cmd.Connection = connection;
 
             try
@@ -384,22 +376,15 @@ namespace ContradiccionesDirectorioApi.Model
 
             try
             {
-                SqlParameter parameter = new SqlParameter();
-                parameter.ParameterName = "@IdContradiccion";
-                parameter.SqlDbType = SqlDbType.Int;
-                parameter.Direction = ParameterDirection.Input;
-                parameter.Value = idContradiccion;
-
-                cmd.Parameters.Add(parameter);
-                
                 connection.Open();
 
+                cmd.Parameters.AddWithValue("@IdContradiccion", idContradiccion);
                 reader = cmd.ExecuteReader();
 
                 while (reader.Read())
                 {
 
-                    if (reader["Orden"] != System.DBNull.Value)
+                    if (reader["Orden"] != DBNull.Value)
                         maxOrden = Convert.ToInt32(reader["Orden"]);
                     else
                         maxOrden = 0;
@@ -431,32 +416,14 @@ namespace ContradiccionesDirectorioApi.Model
                             " WHERE IdContradiccion = @IdContradiccion AND Orden = @Orden";
 
             SqlConnection connection = DbConnDac.GetConnection();
-            SqlCommand cmd = new SqlCommand();
-
-            cmd.Connection = connection;
-            cmd.CommandText = sqlCmd;
-            cmd.CommandType = CommandType.Text;
+            SqlCommand cmd = new SqlCommand() { Connection = connection, CommandText = sqlCmd, CommandType = CommandType.Text };
 
             try
             {
-                SqlParameter parameter = new SqlParameter();
-                parameter.ParameterName = "@IdContradiccion";
-                parameter.SqlDbType = SqlDbType.Int;
-                parameter.Direction = ParameterDirection.Input;
-                parameter.Value = idContradiccion;
-
-                cmd.Parameters.Add(parameter);
-
-                SqlParameter parameter2 = new SqlParameter();
-                parameter2.ParameterName = "@Orden";
-                parameter2.SqlDbType = SqlDbType.Int;
-                parameter2.Direction = ParameterDirection.Input;
-                parameter2.Value = maxOrden;
-
-                cmd.Parameters.Add(parameter2);
-
                 connection.Open();
 
+                cmd.Parameters.AddWithValue("@IdContradiccion", idContradiccion);
+                cmd.Parameters.AddWithValue("@Orden", maxOrden);
                 SqlDataReader reader = cmd.ExecuteReader();
 
                 while (reader.Read())
@@ -501,18 +468,21 @@ namespace ContradiccionesDirectorioApi.Model
 
                 while (reader.Read())
                 {
-                    Criterios criterio = new Criterios();
-                    criterio.IdContradiccion = Convert.ToInt32(reader["idContradiccion"]);
-                    criterio.IdCriterio = Convert.ToInt32(reader["IdCriterio"]);
-                    criterio.Orden = Convert.ToInt32(reader["Orden"]);
-                    criterio.Criterio = reader["Criterio"].ToString();
-                    criterio.IdOrgano = Convert.ToInt32(reader["IdOrgano"]);
-                    criterio.Observaciones = reader["Observaciones"].ToString();
+                    Criterios criterio = new Criterios()
+                    {
+                        IdContradiccion = Convert.ToInt32(reader["idContradiccion"]),
+                        IdCriterio = Convert.ToInt32(reader["IdCriterio"]),
+                        Orden =
+                            Convert.ToInt32(reader["Orden"]),
+                        Criterio = reader["Criterio"].ToString(),
+                        IdOrgano = Convert.ToInt32(reader["IdOrgano"]),
+                        Observaciones = reader["Observaciones"].ToString()
+                    };
 
-                    if(criterio.IdOrgano != -1000)
-                    criterio.Organo = (from n in Singletons.OrganismosSingleton.Colegiados
-                                       where n.IdOrganismo == criterio.IdOrgano
-                                       select n.Organismo).ToList()[0];
+                    if (criterio.IdOrgano != -1000)
+                        criterio.Organo = (from n in OrganismosSingleton.Colegiados
+                                           where n.IdOrganismo == criterio.IdOrgano
+                                           select n.Organismo).ToList()[0];
 
                     criterio.TesisContendientes = this.GetCriteriosTesis(criterio.IdCriterio);
 
@@ -549,13 +519,11 @@ namespace ContradiccionesDirectorioApi.Model
             SqlCommand cmd;
             SqlDataReader reader;
 
-            string oleCadena = "SELECT * FROM CriteriosTesis WHERE IdCriterio = @IdCriterio";
-
             try
             {
                 connection.Open();
 
-                cmd = new SqlCommand(oleCadena, connection);
+                cmd = new SqlCommand("SELECT * FROM CriteriosTesis WHERE IdCriterio = @IdCriterio", connection);
                 cmd.Parameters.AddWithValue("@IdCriterio", idCriterio);
                 reader = cmd.ExecuteReader();
 

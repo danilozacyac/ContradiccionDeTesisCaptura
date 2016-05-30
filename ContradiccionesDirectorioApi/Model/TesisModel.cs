@@ -27,12 +27,12 @@ namespace ContradiccionesDirectorioApi.Model
 
             try
             {
-                string sqlCadena = "SELECT * FROM Tesis WHERE IdTesis = 0";
+                const string SqlQuery = "SELECT * FROM Tesis WHERE IdTesis = 0";
 
                 tesis.IdTesis = DataBaseUtilities.GetNextIdForUse("Tesis", "IdTesis",connection);
 
                 dataAdapter = new SqlDataAdapter();
-                dataAdapter.SelectCommand = new SqlCommand(sqlCadena, connection);
+                dataAdapter.SelectCommand = new SqlCommand(SqlQuery, connection);
 
                 dataAdapter.Fill(dataSet, "Tesis");
 
@@ -134,25 +134,27 @@ namespace ContradiccionesDirectorioApi.Model
 
                 while (reader.Read())
                 {
-                    Tesis tesis = new Tesis();
-                    tesis.IdTesis = Convert.ToInt32(reader["IdTesis"]);
-                    tesis.IdContradiccion = Convert.ToInt32(reader["IdContradiccion"]);
-                    tesis.ClaveControl = reader["Clavecontrol"].ToString();
-                    tesis.ClaveIdentificacion = reader["ClaveIdentificacion"].ToString();
-                    tesis.Rubro = reader["Rubro"].ToString();
-                    tesis.Tatj = Convert.ToInt32(reader["tatj"]);
-                    tesis.OficioPublicacion = reader["OficioPublicacion"].ToString();
-                    tesis.OficioPublicacionFilePath = reader["OficioPPath"].ToString();
-                    tesis.VersionPublica = Convert.ToInt32(reader["VersionPublica"].ToString());
-                    tesis.VersionPublicaFilePath = reader["VersionPPath"].ToString();
-                    tesis.CopiaCertificada = Convert.ToInt32(reader["CopiaCertificada"].ToString());
-                    tesis.CopiaCertificadaFilePath = reader["CopiaCPath"].ToString();
-                    tesis.Destinatario = reader["Destinatario"].ToString();
-                    tesis.CambioCriterio = Convert.ToInt32(reader["CambioCriterio"]);
-                    tesis.Responsable = reader["Responsable"].ToString();
-                    tesis.OficioRespuesta = reader["OficioRespuesta"].ToString();
-                    tesis.OficioRespuestaFilePath = reader["OficioRPath"].ToString();
-                    tesis.Ius = reader["IUS"] as int? ?? 0;
+                    Tesis tesis = new Tesis()
+                    {
+                        IdTesis = Convert.ToInt32(reader["IdTesis"]),
+                        IdContradiccion = Convert.ToInt32(reader["IdContradiccion"]),
+                        ClaveControl = reader["Clavecontrol"].ToString(),
+                        ClaveIdentificacion = reader["ClaveIdentificacion"].ToString(),
+                        Rubro = reader["Rubro"].ToString(),
+                        Tatj = Convert.ToInt32(reader["tatj"]),
+                        OficioPublicacion = reader["OficioPublicacion"].ToString(),
+                        OficioPublicacionFilePath = reader["OficioPPath"].ToString(),
+                        VersionPublica = Convert.ToInt32(reader["VersionPublica"]),
+                        VersionPublicaFilePath = reader["VersionPPath"].ToString(),
+                        CopiaCertificada = Convert.ToInt32(reader["CopiaCertificada"]),
+                        CopiaCertificadaFilePath = reader["CopiaCPath"].ToString(),
+                        Destinatario = reader["Destinatario"].ToString(),
+                        CambioCriterio = Convert.ToInt32(reader["CambioCriterio"]),
+                        Responsable = reader["Responsable"].ToString(),
+                        OficioRespuesta = reader["OficioRespuesta"].ToString(),
+                        OficioRespuestaFilePath = reader["OficioRPath"].ToString(),
+                        Ius = reader["IUS"] as int? ?? 0
+                    };
 
                     listaTesis.Add(tesis);
                 }
@@ -276,9 +278,7 @@ namespace ContradiccionesDirectorioApi.Model
         {
             bool isDeleteComplete = false;
             SqlConnection connection = DbConnDac.GetConnection();
-            SqlCommand cmd;
-
-            cmd = connection.CreateCommand();
+            SqlCommand cmd = connection.CreateCommand();
             cmd.Connection = connection;
 
             try

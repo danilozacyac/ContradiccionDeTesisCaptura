@@ -89,7 +89,7 @@ namespace ContradiccionDeTesisCaptura
 
             if (isUpdatingCriterio)
             {
-                model.UpdateCriterios(criterios, contradiccion.IdContradiccion);
+                model.UpdateCriterios(criterios);
             }
             else if (contradiccion.IsUpdating)
             {

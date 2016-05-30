@@ -52,12 +52,6 @@ namespace ContradiccionesDirectorioApi.Dao
             }
         }
 
-        public void AgregaVoto(int ius)
-        {
-            if (votosRelacionados == null)
-                votosRelacionados = new ObservableCollection<int>();
-        }    
-
         public DateTime? FechaResolucion
         {
             get

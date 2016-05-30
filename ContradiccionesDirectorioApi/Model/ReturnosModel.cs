@@ -35,14 +35,16 @@ namespace ContradiccionesDirectorioApi.Model
 
                 while (reader.Read())
                 {
-                    ReturnosClass returno = new ReturnosClass();
-                    returno.IdReturno = Convert.ToInt32(reader["IdReturno"]);
-                    returno.IdContradiccion = Convert.ToInt32(reader["IdContradiccion"]);
-                    returno.Fecha = Convert.ToDateTime(reader["Fecha"]);
-                    returno.IdOrganoOrigen = Convert.ToInt32(reader["IdOrgOrigen"]);
-                    returno.IdOrganoDestino = Convert.ToInt32(reader["IdOrgDestino"]);
-                    returno.ExpOrigen = reader["ExpOrigen"].ToString();
-                    returno.ExpDestino = reader["ExpDestino"].ToString();
+                    ReturnosClass returno = new ReturnosClass()
+                    {
+                        IdReturno = Convert.ToInt32(reader["IdReturno"]),
+                        IdContradiccion = Convert.ToInt32(reader["IdContradiccion"]),
+                        Fecha = Convert.ToDateTime(reader["Fecha"]),
+                        IdOrganoOrigen = Convert.ToInt32(reader["IdOrgOrigen"]),
+                        IdOrganoDestino = Convert.ToInt32(reader["IdOrgDestino"]),
+                        ExpOrigen = reader["ExpOrigen"].ToString(),
+                        ExpDestino = reader["ExpDestino"].ToString()
+                    };
 
                     returnos.Add(returno);
                 }
@@ -83,10 +85,8 @@ namespace ContradiccionesDirectorioApi.Model
 
             try
             {
-                string sqlCadena = "SELECT * FROM Returnos WHERE IdContradiccion = 0";
-
                 dataAdapter = new SqlDataAdapter();
-                dataAdapter.SelectCommand = new SqlCommand(sqlCadena, connection);
+                dataAdapter.SelectCommand = new SqlCommand("SELECT * FROM Returnos WHERE IdContradiccion = 0", connection);
 
                 dataAdapter.Fill(dataSet, "Returnos");
 
@@ -208,11 +208,9 @@ namespace ContradiccionesDirectorioApi.Model
         /// <param name="idReturno">Identificador del returno a eliminar</param>
         public bool DeleteReturno(int idReturno)
         {
-            bool isDeleteComplete = true;
+            bool isDeleteComplete = false;
             SqlConnection connection = DbConnDac.GetConnection();
-            SqlCommand cmd;
-
-            cmd = connection.CreateCommand();
+            SqlCommand cmd = connection.CreateCommand();
             cmd.Connection = connection;
 
             try
@@ -222,7 +220,7 @@ namespace ContradiccionesDirectorioApi.Model
                 cmd.CommandText = "DELETE FROM Returnos WHERE IdReturno = @IdReturno";
                 cmd.Parameters.AddWithValue("@IdReturno", idReturno);
                 cmd.ExecuteNonQuery();
-
+                isDeleteComplete = true;
             }
             catch (SqlException ex)
             {

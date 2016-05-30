@@ -87,9 +87,7 @@ namespace ContradiccionDeTesisCaptura
             CriteriosModel crit = new CriteriosModel();
             OficiosModel ofi = new OficiosModel();
 
-            Oficios oficio = new Oficios();
-            oficio.Oficio = TxtOficio.Text;
-            oficio.FechaOficio = DateFOficio.SelectedDate;
+            Oficios oficio = new Oficios() { Oficio = TxtOficio.Text, FechaOficio = DateFOficio.SelectedDate };
 
             contradiccion.IdContradiccion = contra.SetNewContradiccion(contradiccion);
             crit.SetNewCriterios(contradiccion);

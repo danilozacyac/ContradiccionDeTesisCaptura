@@ -19,7 +19,7 @@ namespace ContradiccionDeTesisCaptura
     public partial class ContradiccionesWin 
     {
         private Contradicciones contradiccion;
-        private ListadoDeContradicciones listado;
+       // private ListadoDeContradicciones listado;
         private readonly bool isUpdating = false;
 
         /// <summary>
@@ -344,7 +344,7 @@ namespace ContradiccionDeTesisCaptura
             }
         }
 
-        private void GOficios_AddingNewDataItem(object sender, Telerik.Windows.Controls.GridView.GridViewAddingNewEventArgs e)
+        private void GOficios_AddingNewDataItem(object sender, GridViewAddingNewEventArgs e)
         {
             e.NewObject = new Oficios();
         }
@@ -383,29 +383,6 @@ namespace ContradiccionDeTesisCaptura
             }
         }
 
-        private void GOficios_BeginningEdit(object sender, Telerik.Windows.Controls.GridViewBeginningEditRoutedEventArgs e)
-        {
-        }
-
-        private void RadJuris_Click(object sender, RoutedEventArgs e)
-        {
-        }
-
-        //private void BtnEliminarTesis_Click(object sender, RoutedEventArgs e)
-        //{
-        //    if (LstTesisRelacionadas.SelectedItem != null)
-        //    {
-        //        int ius = LstTesisRelacionadas.SelectedItem as int? ?? 0;
-
-        //        EjecutoriasModel model = new EjecutoriasModel();
-        //        model.DeleteRelacionesEjecutorias(ius, contradiccion.IdContradiccion, 1);
-        //        contradiccion.MiEjecutoria.TesisRelacionadas.Remove(ius);
-        //    }
-        //    else
-        //    {
-        //        MessageBox.Show("Selecciona el número de registro que deseas eliminar");
-        //    }
-        //}
 
         private void BtnEliminar_Click(object sender, RoutedEventArgs e)
         {

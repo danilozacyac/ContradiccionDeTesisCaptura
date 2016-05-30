@@ -22,28 +22,20 @@ namespace ContradiccionesDirectorioApi.Model
         {
             Resolutivos resolutivos = new Resolutivos();
 
-            string sqlCmd = @"SELECT * FROM Resolucion " +
-                            " WHERE IdContradiccion = @IdContradiccion";
-
             SqlConnection connection = DbConnDac.GetConnection();
-            SqlCommand cmd = new SqlCommand();
-
-            cmd.Connection = connection;
-            cmd.CommandText = sqlCmd;
-            cmd.CommandType = CommandType.Text;
+            SqlCommand cmd = new SqlCommand()
+            {
+                Connection = connection,
+                CommandText = "SELECT * FROM Resolucion WHERE IdContradiccion = @IdContradiccion",
+                CommandType = CommandType.Text
+            };
 
             try
             {
-                SqlParameter parameter = new SqlParameter();
-                parameter.ParameterName = "@IdContradiccion";
-                parameter.SqlDbType = SqlDbType.Int;
-                parameter.Direction = ParameterDirection.Input;
-                parameter.Value = idContradiccion;
-
-                cmd.Parameters.Add(parameter);
 
                 connection.Open();
 
+                cmd.Parameters.AddWithValue("@IdContradiccion", idContradiccion);
                 SqlDataReader reader = cmd.ExecuteReader();
 
                 while (reader.Read())
@@ -82,28 +74,17 @@ namespace ContradiccionesDirectorioApi.Model
         {
             bool doExist = false;
 
-            string sqlCmd = @"SELECT * FROM Resolucion " +
-                            " WHERE IdContradiccion = @IdContradiccion";
-
             SqlConnection connection = DbConnDac.GetConnection();
-            SqlCommand cmd = new SqlCommand();
-
-            cmd.Connection = connection;
-            cmd.CommandText = sqlCmd;
-            cmd.CommandType = CommandType.Text;
+            SqlCommand cmd = new SqlCommand() { 
+                Connection = connection, 
+                CommandText = "SELECT * FROM Resolucion WHERE IdContradiccion = @IdContradiccion", 
+                CommandType = CommandType.Text };
 
             try
             {
-                SqlParameter parameter = new SqlParameter();
-                parameter.ParameterName = "@IdContradiccion";
-                parameter.SqlDbType = SqlDbType.Int;
-                parameter.Direction = ParameterDirection.Input;
-                parameter.Value = idContradiccion;
-
-                cmd.Parameters.Add(parameter);
-
                 connection.Open();
 
+                cmd.Parameters.AddWithValue("@IdContradiccion", idContradiccion);
                 SqlDataReader reader = cmd.ExecuteReader();
 
                 while (reader.Read())
@@ -144,10 +125,8 @@ namespace ContradiccionesDirectorioApi.Model
 
             try
             {
-                string sqlCadena = "SELECT * FROM Resolucion WHERE IdContradiccion = 0";
-
                 dataAdapter = new SqlDataAdapter();
-                dataAdapter.SelectCommand = new SqlCommand(sqlCadena, connection);
+                dataAdapter.SelectCommand = new SqlCommand("SELECT * FROM Resolucion WHERE IdContradiccion = 0", connection);
 
                 dataAdapter.Fill(dataSet, "Resolucion");
 
@@ -262,9 +241,7 @@ namespace ContradiccionesDirectorioApi.Model
             bool isDeleteComplete = false;
 
             SqlConnection connection = DbConnDac.GetConnection();
-            SqlCommand cmd;
-
-            cmd = connection.CreateCommand();
+            SqlCommand cmd = connection.CreateCommand();
             cmd.Connection = connection;
 
             try
@@ -312,10 +289,8 @@ namespace ContradiccionesDirectorioApi.Model
             {
                 resolutivos.IdResolutivo = DataBaseUtilities.GetNextIdForUse("Resolutivos", "IdResolutivo", connection);
 
-                string sqlCadena = "SELECT * FROM Resolutivos WHERE IdContradiccion = 0";
-
                 dataAdapter = new SqlDataAdapter();
-                dataAdapter.SelectCommand = new SqlCommand(sqlCadena, connection);
+                dataAdapter.SelectCommand = new SqlCommand("SELECT * FROM Resolutivos WHERE IdContradiccion = 0", connection);
 
                 dataAdapter.Fill(dataSet, "Resolutivos");
 
@@ -359,35 +334,27 @@ namespace ContradiccionesDirectorioApi.Model
         {
             ObservableCollection<PResolutivos> resolutivos = new ObservableCollection<PResolutivos>();
 
-            string sqlCmd = @"SELECT * FROM Resolutivos " +
-                            " WHERE IdContradiccion = @IdContradiccion";
-
             SqlConnection connection = DbConnDac.GetConnection();
-            SqlCommand cmd = new SqlCommand();
-
-            cmd.Connection = connection;
-            cmd.CommandText = sqlCmd;
-            cmd.CommandType = CommandType.Text;
+            SqlCommand cmd = new SqlCommand()
+            {
+                Connection = connection,
+                CommandText = "SELECT * FROM Resolutivos WHERE IdContradiccion = @IdContradiccion",
+                CommandType = CommandType.Text
+            };
 
             try
             {
-                SqlParameter parameter = new SqlParameter();
-                parameter.ParameterName = "@IdContradiccion";
-                parameter.SqlDbType = SqlDbType.Int;
-                parameter.Direction = ParameterDirection.Input;
-                parameter.Value = idContradiccion;
-
-                cmd.Parameters.Add(parameter);
-
                 connection.Open();
-
+                cmd.Parameters.AddWithValue("@IdContradiccion", idContradiccion);
                 SqlDataReader reader = cmd.ExecuteReader();
 
                 while (reader.Read())
                 {
-                    PResolutivos resolutivo = new PResolutivos();
-                    resolutivo.IdResolutivo = Convert.ToInt32(reader["IdResolutivo"]);
-                    resolutivo.Resolutivo = reader["Resolutivo"].ToString();
+                    PResolutivos resolutivo = new PResolutivos()
+                    {
+                        IdResolutivo = Convert.ToInt32(reader["IdResolutivo"]),
+                        Resolutivo = reader["Resolutivo"].ToString()
+                    };
 
                     resolutivos.Add(resolutivo);
                 }
@@ -471,9 +438,7 @@ namespace ContradiccionesDirectorioApi.Model
         {
             bool isDeleteComplete = false;
             SqlConnection connection = DbConnDac.GetConnection();
-            SqlCommand cmd;
-
-            cmd = connection.CreateCommand();
+            SqlCommand cmd = connection.CreateCommand();
             cmd.Connection = connection;
 
             try

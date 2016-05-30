@@ -23,10 +23,7 @@ namespace ContradiccionesDirectorioApi.Model
                             " WHERE IdContradiccion = @IdContradiccion";
 
             SqlConnection connection = DbConnDac.GetConnection();
-            SqlCommand cmd = new SqlCommand();
-
-            cmd.Connection = connection;
-            cmd.CommandText = sqlCmd;
+            SqlCommand cmd = new SqlCommand() { Connection = connection, CommandText = sqlCmd };
 
             try
             {
@@ -73,19 +70,15 @@ namespace ContradiccionesDirectorioApi.Model
         {
             bool doExist = false;
 
-            string sqlCmd = @"SELECT * FROM AcAdmisorio WHERE IdAcuerdo = @IdAcuerdo";
-
+            const string SqlQuery = @"SELECT * FROM AcAdmisorio WHERE IdAcuerdo = @IdAcuerdo";
             SqlConnection connection = DbConnDac.GetConnection();
-            SqlCommand cmd = new SqlCommand();
-
-            cmd.Connection = connection;
-            cmd.CommandText = sqlCmd;
+            
 
             try
             {
-
+               
+                SqlCommand cmd = new SqlCommand() { Connection = connection, CommandText = SqlQuery };
                 cmd.Parameters.AddWithValue("@IdAcuerdo", idAcuerdo);
-
                 connection.Open();
 
                 SqlDataReader reader = cmd.ExecuteReader();
@@ -118,7 +111,7 @@ namespace ContradiccionesDirectorioApi.Model
         /// Agrega una resolución para la contradicción señalada
         /// </summary>
         /// <param name="admisorio"></param>
-        public void SetNewAdmisorio(Admisorio admisorio,int idContradiccion)
+        public void SetNewAdmisorio(Admisorio admisorio, int idContradiccion)
         {
             SqlConnection connection = DbConnDac.GetConnection();
             SqlDataAdapter dataAdapter;
@@ -128,12 +121,12 @@ namespace ContradiccionesDirectorioApi.Model
 
             try
             {
-                admisorio.IdAcuerdo = DataBaseUtilities.GetNextIdForUse("AcAdmisorio", "IdAcuerdo",connection);
+                admisorio.IdAcuerdo = DataBaseUtilities.GetNextIdForUse("AcAdmisorio", "IdAcuerdo", connection);
 
-                string sqlCadena = "SELECT * FROM AcAdmisorio WHERE IdContradiccion = 0";
+                const string SqlQuery = "SELECT * FROM AcAdmisorio WHERE IdContradiccion = 0";
 
                 dataAdapter = new SqlDataAdapter();
-                dataAdapter.SelectCommand = new SqlCommand(sqlCadena, connection);
+                dataAdapter.SelectCommand = new SqlCommand(SqlQuery, connection);
 
                 dataAdapter.Fill(dataSet, "AcAdmisorio");
 
@@ -144,7 +137,7 @@ namespace ContradiccionesDirectorioApi.Model
                 if (admisorio.FechaAcuerdo != null)
                     dr["FechaAcuerdo"] = admisorio.FechaAcuerdo;
                 else
-                    dr["FechaAcuerdo"] = System.DBNull.Value;
+                    dr["FechaAcuerdo"] = DBNull.Value;
 
                 dr["Acuerdo"] = admisorio.Acuerdo;
 
@@ -208,7 +201,7 @@ namespace ContradiccionesDirectorioApi.Model
                 if (admisorio.FechaAcuerdo != null)
                     dr["FechaAcuerdo"] = admisorio.FechaAcuerdo;
                 else
-                    dr["FechaAcuerdo"] = System.DBNull.Value;
+                    dr["FechaAcuerdo"] = DBNull.Value;
 
                 dr["Acuerdo"] = admisorio.Acuerdo;
                 dr.EndEdit();
@@ -252,9 +245,7 @@ namespace ContradiccionesDirectorioApi.Model
             bool isDeleteComplete = false;
 
             SqlConnection connection = DbConnDac.GetConnection();
-            SqlCommand cmd;
-
-            cmd = connection.CreateCommand();
+            SqlCommand cmd = connection.CreateCommand();
             cmd.Connection = connection;
 
             try

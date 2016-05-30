@@ -22,13 +22,8 @@ namespace ContradiccionesDirectorioApi.Model
 
             try
             {
-
-                
-
-                string sqlCadena = "SELECT * FROM Ejecutorias WHERE IdContradiccion = 0";
-
                 dataAdapter = new SqlDataAdapter();
-                dataAdapter.SelectCommand = new SqlCommand(sqlCadena, connection);
+                dataAdapter.SelectCommand = new SqlCommand("SELECT * FROM Ejecutorias WHERE IdContradiccion = 0", connection);
 
                 dataAdapter.Fill(dataSet, "Ejecutorias");
 
@@ -42,7 +37,7 @@ namespace ContradiccionesDirectorioApi.Model
                 }
                 else
                 {
-                    dr["FechaResolucion"] = System.DBNull.Value;
+                    dr["FechaResolucion"] = DBNull.Value;
                     dr["FechaResolucionInt"] = 0;
                 }
 
@@ -53,7 +48,7 @@ namespace ContradiccionesDirectorioApi.Model
                 }
                 else
                 {
-                    dr["FechaEngrose"] = System.DBNull.Value;
+                    dr["FechaEngrose"] = DBNull.Value;
                     dr["FechaEngroseInt"] = 0;
                 }
                 dr["SISE"] = contradiccion.MiEjecutoria.Sise;
@@ -88,7 +83,7 @@ namespace ContradiccionesDirectorioApi.Model
                 dataSet.Dispose();
                 dataAdapter.Dispose();
 
-               
+
             }
             catch (SqlException ex)
             {
@@ -118,10 +113,10 @@ namespace ContradiccionesDirectorioApi.Model
 
             try
             {
-                    string sqlCadena = "SELECT * FROM RelacionesEjecutoria WHERE IdContradiccion = 0";
+                    const string SqlQuery = "SELECT * FROM RelacionesEjecutoria WHERE IdContradiccion = 0";
 
                     dataAdapter = new SqlDataAdapter();
-                    dataAdapter.SelectCommand = new SqlCommand(sqlCadena, connection);
+                    dataAdapter.SelectCommand = new SqlCommand(SqlQuery, connection);
 
                     dataAdapter.Fill(dataSet, "Ejecutorias");
 
@@ -166,9 +161,7 @@ namespace ContradiccionesDirectorioApi.Model
         public void DeleteRelacionesEjecutorias(int ius, int idContradiccion, int tipoRelacion)
         {
             SqlConnection connection = DbConnDac.GetConnection();
-            SqlCommand cmd;
-
-            cmd = connection.CreateCommand();
+            SqlCommand cmd = connection.CreateCommand();
             cmd.Connection = connection;
 
             try
@@ -227,8 +220,8 @@ namespace ContradiccionesDirectorioApi.Model
                 }
                 else
                 {
-                    dr["FechaResolucion"] = System.DBNull.Value;
-                    dr["FechaResolucionInt"] = System.DBNull.Value;
+                    dr["FechaResolucion"] = DBNull.Value;
+                    dr["FechaResolucionInt"] = DBNull.Value;
                 }
 
                 if (contradiccion.MiEjecutoria.FechaEngrose != null)
@@ -238,8 +231,8 @@ namespace ContradiccionesDirectorioApi.Model
                 }
                 else
                 {
-                    dr["FechaEngrose"] = System.DBNull.Value;
-                    dr["FechaEngroseInt"] = System.DBNull.Value;
+                    dr["FechaEngrose"] = DBNull.Value;
+                    dr["FechaEngroseInt"] = DBNull.Value;
                 }
                 dr["SISE"] = contradiccion.MiEjecutoria.Sise;
                 dr["Responsable"] = contradiccion.MiEjecutoria.Responsable;
@@ -409,13 +402,15 @@ namespace ContradiccionesDirectorioApi.Model
             SqlCommand cmd;
             SqlDataReader reader;
 
-            string oleCadena = "SELECT * FROM RelacionesEjecutoria WHERE IdContradiccion = " + idContradiccion + " AND TipoRelacion = " + tipo;
+            const string SqlQuery = "SELECT * FROM RelacionesEjecutoria WHERE IdContradiccion = @IdContradiccion AND TipoRelacion = @Tipo";
 
             try
             {
                 connection.Open();
 
-                cmd = new SqlCommand(oleCadena, connection);
+                cmd = new SqlCommand(SqlQuery, connection);
+                cmd.Parameters.AddWithValue("@IdContradiccion", idContradiccion);
+                cmd.Parameters.AddWithValue("@Tipo", tipo);
                 reader = cmd.ExecuteReader();
 
                 while (reader.Read())
@@ -454,9 +449,7 @@ namespace ContradiccionesDirectorioApi.Model
             bool isDeleteComplete = false;
 
             SqlConnection connection = DbConnDac.GetConnection();
-            SqlCommand cmd;
-
-            cmd = connection.CreateCommand();
+            SqlCommand cmd = connection.CreateCommand();
             cmd.Connection = connection;
 
             try
