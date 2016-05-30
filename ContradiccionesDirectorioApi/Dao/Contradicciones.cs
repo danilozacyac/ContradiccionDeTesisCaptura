@@ -341,10 +341,6 @@ namespace ContradiccionesDirectorioApi.Dao
             if (this.PropertyChanged != null)
                 this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 
-            if (propertyName.Equals("IsComplete"))
-            {
-                new ContradiccionesModel().UpdateContradiccionStatus(this);
-            }
         }
 
         #endregion // INotifyPropertyChanged Members

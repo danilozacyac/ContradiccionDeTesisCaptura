@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Data.OleDb;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Configuration;
 
@@ -8,11 +8,11 @@ namespace ContradiccionesDirectorioApi.DataAccess
     public class DbConnDac
     {
 
-        public static OleDbConnection GetConnection()
+        public static SqlConnection GetConnection()
         {
             String bdStringSql = ConfigurationManager.ConnectionStrings["CT"].ConnectionString;
 
-            OleDbConnection connection = new OleDbConnection(bdStringSql);
+            SqlConnection connection = new SqlConnection(bdStringSql);
 
             return connection;
         }

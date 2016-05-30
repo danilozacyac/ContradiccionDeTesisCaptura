@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.OleDb;
+using System.Data.SqlClient;
 using System.Linq;
 using ContradiccionesDirectorioApi.Dao;
 using ContradiccionesDirectorioApi.DataAccess;
@@ -17,11 +17,11 @@ namespace ContradiccionesDirectorioApi.Model
         /// <returns></returns>
         public List<Tipos> GetTiposAsunto()
         {
-            OleDbConnection connection = DbConnDac.GetConnection();
+            SqlConnection connection = DbConnDac.GetConnection();
             List<Tipos> tipoAuntos = new List<Tipos>();
 
-            OleDbCommand cmd;
-            OleDbDataReader reader = null;
+            SqlCommand cmd;
+            SqlDataReader reader = null;
 
             String sqlCadena = "SELECT * FROM TipoAsunto";
 
@@ -29,7 +29,7 @@ namespace ContradiccionesDirectorioApi.Model
             {
                 connection.Open();
 
-                cmd = new OleDbCommand(sqlCadena, connection);
+                cmd = new SqlCommand(sqlCadena, connection);
                 reader = cmd.ExecuteReader();
 
                 if (reader.HasRows)
@@ -44,7 +44,7 @@ namespace ContradiccionesDirectorioApi.Model
                 }
                 reader.Close();
             }
-            catch (OleDbException ex)
+            catch (SqlException ex)
             {
                 string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
                 ErrorUtilities.SetNewErrorMessage(ex, methodName + " Exception,TiposModel", "Contradicciones");

@@ -27,10 +27,6 @@ namespace ContradiccionDeTesisCaptura
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            //contradicciones = new ListadoDeContradicciones();
-            //ContradiccionesModel conModel = new ContradiccionesModel();
-            //contradicciones.Listado = conModel.GetContradicciones();
-
             RGridContradicciones.DataContext = contradicciones.Listado;
         }
 
@@ -139,6 +135,32 @@ namespace ContradiccionDeTesisCaptura
             PlenosLista plenos = new PlenosLista();
             plenos.Owner = this;
             plenos.ShowDialog();
+        }
+
+        private void RBtnCerrarContra_Click(object sender, RoutedEventArgs e)
+        {
+            if (selectedContradiction == null)
+            {
+                MessageBox.Show("Antes de continuar debes de seleccionar un elemento de la lista", "ATENCIÓN:", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
+            selectedContradiction.IsComplete = true;
+
+            new ContradiccionesModel().UpdateContradiccionStatus(selectedContradiction);
+        }
+
+        private void RBtnReabrirContra_Click(object sender, RoutedEventArgs e)
+        {
+            if (selectedContradiction == null)
+            {
+                MessageBox.Show("Antes de continuar debes de seleccionar un elemento de la lista", "ATENCIÓN:", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
+            selectedContradiction.IsComplete = false;
+
+            new ContradiccionesModel().UpdateContradiccionStatus(selectedContradiction);
         }
 
 

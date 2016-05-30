@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Data.OleDb;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Configuration;
 
@@ -7,21 +7,21 @@ namespace ContradiccionDeTesisCaptura.DataAccess
 {
     public class DbConnDac
     {
-        public static OleDbConnection GetConnection()
+        public static SqlConnection GetConnection()
         {
              String bdStringSql = ConfigurationManager.ConnectionStrings["CT"].ConnectionString;
 
-            OleDbConnection connection = new OleDbConnection(bdStringSql);
+            SqlConnection connection = new SqlConnection(bdStringSql);
 
             return connection;
         }
 
 
-        //public static OleDbConnection GetConnectionDirectorio()
+        //public static SqlConnection GetConnectionDirectorio()
         //{
         //    String bdStringSql = ConfigurationManager.ConnectionStrings["Directorio"].ConnectionString;
 
-        //    OleDbConnection connection = new OleDbConnection(bdStringSql);
+        //    SqlConnection connection = new SqlConnection(bdStringSql);
 
         //    return connection;
         //}

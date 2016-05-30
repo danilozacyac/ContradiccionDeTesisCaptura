@@ -43,6 +43,16 @@
                                              Content="Eliminar"
                                              LargeImage="Resources/1425495925_delete-notes.png"
                                              Size="Large" />
+                    <telerik:RadRibbonButton x:Name="RBtnCerrarContra"
+                                             Click="RBtnCerrarContra_Click"
+                                             Content="Cerrar"
+                                             LargeImage="Resources/check.png"
+                                             Size="Large" />
+                    <telerik:RadRibbonButton x:Name="RBtnReabrirContra"
+                                             Click="RBtnReabrirContra_Click"
+                                             Content="Abrir"
+                                             LargeImage="Resources/uncheck.png"
+                                             Size="Large" />
                 </telerik:RadRibbonGroup>
                 <telerik:RadRibbonGroup Header="Reportes">
                     <telerik:RadRibbonButton Name="RBtnPdf"
@@ -104,10 +114,10 @@
                 <CustomColumn:MyColumnNumber Width="30"
                                              CellStyle="{StaticResource ColumnaNumerica}"
                                              Header="#" />
-                <telerik:GridViewCheckBoxColumn Width="40"
+                <!--<telerik:GridViewCheckBoxColumn Width="40"
                                                 DataMemberBinding="{Binding IsComplete}"
                                                 Header="¿Cerrada?"
-                                                IsFilterable="True" />
+                                                IsFilterable="True" />-->
                 <telerik:GridViewDataColumn Width="40"
                                             DataMemberBinding="{Binding IdContradiccion}"
                                             Header="Id"

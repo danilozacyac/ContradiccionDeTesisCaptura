@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Data;
-using System.Data.OleDb;
+using System.Data.SqlClient;
 using System.Linq;
 using ContradiccionesDirectorioApi.Dao;
 using ContradiccionesDirectorioApi.DataAccess;
@@ -18,8 +18,8 @@ namespace ContradiccionesDirectorioApi.Model
         /// <param name="contradiccion"></param>
         public void SetNewCriterios(Contradicciones contradiccion)
         {
-            OleDbConnection connection = DbConnDac.GetConnection();
-            OleDbDataAdapter dataAdapter;
+            SqlConnection connection = DbConnDac.GetConnection();
+            SqlDataAdapter dataAdapter;
 
             DataSet dataSet = new DataSet();
             DataRow dr;
@@ -32,8 +32,8 @@ namespace ContradiccionesDirectorioApi.Model
                 {
                     string sqlCadena = "SELECT * FROM Criterios WHERE IdCriterio = 0";
 
-                    dataAdapter = new OleDbDataAdapter();
-                    dataAdapter.SelectCommand = new OleDbCommand(sqlCadena, connection);
+                    dataAdapter = new SqlDataAdapter();
+                    dataAdapter.SelectCommand = new SqlCommand(sqlCadena, connection);
                     criterio.Orden = currentOrder;
 
                     dataAdapter.Fill(dataSet, "Criterios");
@@ -51,11 +51,11 @@ namespace ContradiccionesDirectorioApi.Model
                     dataAdapter.InsertCommand.CommandText = "INSERT INTO Criterios(IdContradiccion,Orden,Criterio,IdOrgano,Observaciones)" +
                                                             " VALUES(@IdContradiccion,@Orden,@Criterio,@IdOrgano,@Observaciones)";
 
-                    dataAdapter.InsertCommand.Parameters.Add("@IdContradiccion", OleDbType.Numeric, 0, "IdContradiccion");
-                    dataAdapter.InsertCommand.Parameters.Add("@Orden", OleDbType.Numeric, 0, "Orden");
-                    dataAdapter.InsertCommand.Parameters.Add("@Criterio", OleDbType.VarChar, 0, "Criterio");
-                    dataAdapter.InsertCommand.Parameters.Add("@IdOrgano", OleDbType.Numeric, 0, "IdOrgano");
-                    dataAdapter.InsertCommand.Parameters.Add("@Observaciones", OleDbType.VarChar, 0, "Observaciones");
+                    dataAdapter.InsertCommand.Parameters.Add("@IdContradiccion", SqlDbType.Int, 0, "IdContradiccion");
+                    dataAdapter.InsertCommand.Parameters.Add("@Orden", SqlDbType.Int, 0, "Orden");
+                    dataAdapter.InsertCommand.Parameters.Add("@Criterio", SqlDbType.VarChar, 0, "Criterio");
+                    dataAdapter.InsertCommand.Parameters.Add("@IdOrgano", SqlDbType.Int, 0, "IdOrgano");
+                    dataAdapter.InsertCommand.Parameters.Add("@Observaciones", SqlDbType.VarChar, 0, "Observaciones");
 
                     dataAdapter.Update(dataSet, "Criterios");
 
@@ -68,7 +68,7 @@ namespace ContradiccionesDirectorioApi.Model
                     currentOrder++;
                 }
             }
-            catch (OleDbException ex)
+            catch (SqlException ex)
             {
                 string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
                 ErrorUtilities.SetNewErrorMessage(ex, methodName + " Exception,CriteriosModel", "Contradicciones");
@@ -91,8 +91,8 @@ namespace ContradiccionesDirectorioApi.Model
         /// <param name="idContradiccion"></param>
         public void SetNewCriterios(Criterios criterio, int idContradiccion)
         {
-            OleDbConnection connection = DbConnDac.GetConnection();
-            OleDbDataAdapter dataAdapter;
+            SqlConnection connection = DbConnDac.GetConnection();
+            SqlDataAdapter dataAdapter;
 
             DataSet dataSet = new DataSet();
             DataRow dr;
@@ -102,8 +102,8 @@ namespace ContradiccionesDirectorioApi.Model
                 criterio.Orden = this.GetMaxOrderCriterio(idContradiccion);
                 string sqlCadena = "SELECT * FROM Criterios WHERE IdCriterio = 0";
 
-                dataAdapter = new OleDbDataAdapter();
-                dataAdapter.SelectCommand = new OleDbCommand(sqlCadena, connection);
+                dataAdapter = new SqlDataAdapter();
+                dataAdapter.SelectCommand = new SqlCommand(sqlCadena, connection);
 
                 dataAdapter.Fill(dataSet, "Criterios");
 
@@ -120,11 +120,11 @@ namespace ContradiccionesDirectorioApi.Model
                 dataAdapter.InsertCommand.CommandText = "INSERT INTO Criterios(IdContradiccion,Orden,Criterio,IdOrgano,Observaciones)" +
                                                         " VALUES(@IdContradiccion,@Orden,@Criterio,@IdOrgano,@Observaciones)";
 
-                dataAdapter.InsertCommand.Parameters.Add("@IdContradiccion", OleDbType.Numeric, 0, "IdContradiccion");
-                dataAdapter.InsertCommand.Parameters.Add("@Orden", OleDbType.Numeric, 0, "Orden");
-                dataAdapter.InsertCommand.Parameters.Add("@Criterio", OleDbType.VarChar, 0, "Criterio");
-                dataAdapter.InsertCommand.Parameters.Add("@IdOrgano", OleDbType.Numeric, 0, "IdOrgano");
-                dataAdapter.InsertCommand.Parameters.Add("@Observaciones", OleDbType.VarChar, 0, "Observaciones");
+                dataAdapter.InsertCommand.Parameters.Add("@IdContradiccion", SqlDbType.Int, 0, "IdContradiccion");
+                dataAdapter.InsertCommand.Parameters.Add("@Orden", SqlDbType.Int, 0, "Orden");
+                dataAdapter.InsertCommand.Parameters.Add("@Criterio", SqlDbType.VarChar, 0, "Criterio");
+                dataAdapter.InsertCommand.Parameters.Add("@IdOrgano", SqlDbType.Int, 0, "IdOrgano");
+                dataAdapter.InsertCommand.Parameters.Add("@Observaciones", SqlDbType.VarChar, 0, "Observaciones");
 
                 dataAdapter.Update(dataSet, "Criterios");
 
@@ -136,7 +136,7 @@ namespace ContradiccionesDirectorioApi.Model
                 this.SetNewCriteriosTesis(criterio);
                 //currentOrder++;
             }
-            catch (OleDbException ex)
+            catch (SqlException ex)
             {
                 string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
                 ErrorUtilities.SetNewErrorMessage(ex, methodName + " Exception,CriteriosModel", "Contradicciones");
@@ -154,8 +154,8 @@ namespace ContradiccionesDirectorioApi.Model
 
         public void UpdateCriterios(Criterios criterio, int idContradiccion)
         {
-            OleDbConnection connection = DbConnDac.GetConnection();
-            OleDbDataAdapter dataAdapter;
+            SqlConnection connection = DbConnDac.GetConnection();
+            SqlDataAdapter dataAdapter;
 
             DataSet dataSet = new DataSet();
             DataRow dr;
@@ -164,8 +164,8 @@ namespace ContradiccionesDirectorioApi.Model
             {
                 string sqlCadena = "SELECT * FROM Criterios WHERE IdCriterio =" + criterio.IdCriterio;
 
-                dataAdapter = new OleDbDataAdapter();
-                dataAdapter.SelectCommand = new OleDbCommand(sqlCadena, connection);
+                dataAdapter = new SqlDataAdapter();
+                dataAdapter.SelectCommand = new SqlCommand(sqlCadena, connection);
 
                 dataAdapter.Fill(dataSet, "Criterios");
 
@@ -192,7 +192,7 @@ namespace ContradiccionesDirectorioApi.Model
                 this.DeleteCriterioTesis(criterio);
                 this.SetNewCriteriosTesis(criterio);
             }
-            catch (OleDbException ex)
+            catch (SqlException ex)
             {
                 string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
                 ErrorUtilities.SetNewErrorMessage(ex, methodName + " Exception,CriteriosModel", "Contradicciones");
@@ -216,8 +216,8 @@ namespace ContradiccionesDirectorioApi.Model
         {
             bool isDeleteComplete = false;
 
-            OleDbConnection connection = DbConnDac.GetConnection();
-            OleDbCommand cmd ;
+            SqlConnection connection = DbConnDac.GetConnection();
+            SqlCommand cmd ;
 
             cmd = connection.CreateCommand();
             cmd.Connection = connection;
@@ -235,7 +235,7 @@ namespace ContradiccionesDirectorioApi.Model
                 cmd.ExecuteNonQuery();
                 isDeleteComplete = true;
             }
-            catch (OleDbException ex)
+            catch (SqlException ex)
             {
                 string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
                 ErrorUtilities.SetNewErrorMessage(ex, methodName + " Exception,CriteriosModel", "Contradicciones");
@@ -274,8 +274,8 @@ namespace ContradiccionesDirectorioApi.Model
         
         private void SetNewCriteriosTesis(Criterios criterio)
         {
-            OleDbConnection connection = DbConnDac.GetConnection();
-            OleDbDataAdapter dataAdapter;
+            SqlConnection connection = DbConnDac.GetConnection();
+            SqlDataAdapter dataAdapter;
 
             DataSet dataSet = new DataSet();
             DataRow dr;
@@ -288,8 +288,8 @@ namespace ContradiccionesDirectorioApi.Model
                     {
                         string sqlCadena = "SELECT * FROM CriteriosTesis WHERE IdCriterio = 0";
 
-                        dataAdapter = new OleDbDataAdapter();
-                        dataAdapter.SelectCommand = new OleDbCommand(sqlCadena, connection);
+                        dataAdapter = new SqlDataAdapter();
+                        dataAdapter.SelectCommand = new SqlCommand(sqlCadena, connection);
 
                         dataAdapter.Fill(dataSet, "Criterios");
 
@@ -303,8 +303,8 @@ namespace ContradiccionesDirectorioApi.Model
                         dataAdapter.InsertCommand.CommandText = "INSERT INTO CriteriosTesis(IdCriterio,IUS)" +
                                                                 " VALUES(@IdCriterio,@IUS)";
 
-                        dataAdapter.InsertCommand.Parameters.Add("@IdCriterio", OleDbType.Numeric, 0, "IdCriterio");
-                        dataAdapter.InsertCommand.Parameters.Add("@IUS", OleDbType.Numeric, 0, "IUS");
+                        dataAdapter.InsertCommand.Parameters.Add("@IdCriterio", SqlDbType.Int, 0, "IdCriterio");
+                        dataAdapter.InsertCommand.Parameters.Add("@IUS", SqlDbType.Int, 0, "IUS");
 
                         dataAdapter.Update(dataSet, "Criterios");
 
@@ -313,7 +313,7 @@ namespace ContradiccionesDirectorioApi.Model
                     }
                 }
             }
-            catch (OleDbException ex)
+            catch (SqlException ex)
             {
                 string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
                 ErrorUtilities.SetNewErrorMessage(ex, methodName + " Exception,CriteriosModel", "Contradicciones");
@@ -334,8 +334,8 @@ namespace ContradiccionesDirectorioApi.Model
         {
             bool isDeleteComplete = false;
 
-            OleDbConnection connection = DbConnDac.GetConnection();
-            OleDbCommand cmd;
+            SqlConnection connection = DbConnDac.GetConnection();
+            SqlCommand cmd;
 
             cmd = connection.CreateCommand();
             cmd.Connection = connection;
@@ -349,7 +349,7 @@ namespace ContradiccionesDirectorioApi.Model
                 cmd.ExecuteNonQuery();
                 isDeleteComplete = true;
             }
-            catch (OleDbException ex)
+            catch (SqlException ex)
             {
                 string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
                 ErrorUtilities.SetNewErrorMessage(ex, methodName + " Exception,CriteriosModel", "Contradicciones");
@@ -374,9 +374,9 @@ namespace ContradiccionesDirectorioApi.Model
             string sqlCmd = @"SELECT Max(Orden) AS Orden FROM Criterios " +
                             " WHERE IdContradiccion = @IdContradiccion ";
 
-            OleDbConnection connection = DbConnDac.GetConnection();
-            OleDbCommand cmd = new OleDbCommand();
-            OleDbDataReader reader;
+            SqlConnection connection = DbConnDac.GetConnection();
+            SqlCommand cmd = new SqlCommand();
+            SqlDataReader reader;
 
             cmd.Connection = connection;
             cmd.CommandText = sqlCmd;
@@ -384,9 +384,9 @@ namespace ContradiccionesDirectorioApi.Model
 
             try
             {
-                OleDbParameter parameter = new OleDbParameter();
+                SqlParameter parameter = new SqlParameter();
                 parameter.ParameterName = "@IdContradiccion";
-                parameter.OleDbType = OleDbType.Numeric;
+                parameter.SqlDbType = SqlDbType.Int;
                 parameter.Direction = ParameterDirection.Input;
                 parameter.Value = idContradiccion;
 
@@ -405,7 +405,7 @@ namespace ContradiccionesDirectorioApi.Model
                         maxOrden = 0;
                 }
             }
-            catch (OleDbException ex)
+            catch (SqlException ex)
             {
                 string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
                 ErrorUtilities.SetNewErrorMessage(ex, methodName + " Exception,CriteriosModel", "Contradicciones");
@@ -430,8 +430,8 @@ namespace ContradiccionesDirectorioApi.Model
             string sqlCmd = @"SELECT IdCriterio FROM Criterios " +
                             " WHERE IdContradiccion = @IdContradiccion AND Orden = @Orden";
 
-            OleDbConnection connection = DbConnDac.GetConnection();
-            OleDbCommand cmd = new OleDbCommand();
+            SqlConnection connection = DbConnDac.GetConnection();
+            SqlCommand cmd = new SqlCommand();
 
             cmd.Connection = connection;
             cmd.CommandText = sqlCmd;
@@ -439,17 +439,17 @@ namespace ContradiccionesDirectorioApi.Model
 
             try
             {
-                OleDbParameter parameter = new OleDbParameter();
+                SqlParameter parameter = new SqlParameter();
                 parameter.ParameterName = "@IdContradiccion";
-                parameter.OleDbType = OleDbType.Numeric;
+                parameter.SqlDbType = SqlDbType.Int;
                 parameter.Direction = ParameterDirection.Input;
                 parameter.Value = idContradiccion;
 
                 cmd.Parameters.Add(parameter);
 
-                OleDbParameter parameter2 = new OleDbParameter();
+                SqlParameter parameter2 = new SqlParameter();
                 parameter2.ParameterName = "@Orden";
-                parameter2.OleDbType = OleDbType.Numeric;
+                parameter2.SqlDbType = SqlDbType.Int;
                 parameter2.Direction = ParameterDirection.Input;
                 parameter2.Value = maxOrden;
 
@@ -457,14 +457,14 @@ namespace ContradiccionesDirectorioApi.Model
 
                 connection.Open();
 
-                OleDbDataReader reader = cmd.ExecuteReader();
+                SqlDataReader reader = cmd.ExecuteReader();
 
                 while (reader.Read())
                 {
                     lastId = Convert.ToInt32(reader["IdCriterio"]);
                 }
             }
-            catch (OleDbException ex)
+            catch (SqlException ex)
             {
                 string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
                 ErrorUtilities.SetNewErrorMessage(ex, methodName + " Exception,CriteriosModel", "Contradicciones");
@@ -486,9 +486,9 @@ namespace ContradiccionesDirectorioApi.Model
         {
             ObservableCollection<Criterios> criterios = new ObservableCollection<Criterios>();
 
-            OleDbConnection connection = DbConnDac.GetConnection();
-            OleDbCommand cmd;
-            OleDbDataReader reader;
+            SqlConnection connection = DbConnDac.GetConnection();
+            SqlCommand cmd;
+            SqlDataReader reader;
 
             string oleCadena = "SELECT * FROM Criterios WHERE idContradiccion = " + idContradiccion;
 
@@ -496,7 +496,7 @@ namespace ContradiccionesDirectorioApi.Model
             {
                 connection.Open();
 
-                cmd = new OleDbCommand(oleCadena, connection);
+                cmd = new SqlCommand(oleCadena, connection);
                 reader = cmd.ExecuteReader();
 
                 while (reader.Read())
@@ -522,7 +522,7 @@ namespace ContradiccionesDirectorioApi.Model
                 reader.Close();
                 cmd.Dispose();
             }
-            catch (OleDbException ex)
+            catch (SqlException ex)
             {
                 string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
                 ErrorUtilities.SetNewErrorMessage(ex, methodName + " Exception,CriteriosModel", "Contradicciones");
@@ -545,9 +545,9 @@ namespace ContradiccionesDirectorioApi.Model
         {
             ObservableCollection<int> tesisRelacionadas = new ObservableCollection<int>();
 
-            OleDbConnection connection = DbConnDac.GetConnection();
-            OleDbCommand cmd;
-            OleDbDataReader reader;
+            SqlConnection connection = DbConnDac.GetConnection();
+            SqlCommand cmd;
+            SqlDataReader reader;
 
             string oleCadena = "SELECT * FROM CriteriosTesis WHERE IdCriterio = @IdCriterio";
 
@@ -555,7 +555,7 @@ namespace ContradiccionesDirectorioApi.Model
             {
                 connection.Open();
 
-                cmd = new OleDbCommand(oleCadena, connection);
+                cmd = new SqlCommand(oleCadena, connection);
                 cmd.Parameters.AddWithValue("@IdCriterio", idCriterio);
                 reader = cmd.ExecuteReader();
 
@@ -567,7 +567,7 @@ namespace ContradiccionesDirectorioApi.Model
                 reader.Close();
                 cmd.Dispose();
             }
-            catch (OleDbException ex)
+            catch (SqlException ex)
             {
                 string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
                 ErrorUtilities.SetNewErrorMessage(ex, methodName + " Exception,CriteriosModel", "Contradicciones");
@@ -586,13 +586,13 @@ namespace ContradiccionesDirectorioApi.Model
         }
 
 
-        private void AddParms(OleDbCommand cmd, params string[] cols)
+        private void AddParms(SqlCommand cmd, params string[] cols)
         {
             // Add each parameter. Note that each colum in
             // table "Customers" is of type VARCHAR !
             foreach (String column in cols)
             {
-                cmd.Parameters.Add("@" + column, OleDbType.Char, 0, column);
+                cmd.Parameters.Add("@" + column, SqlDbType.Char, 0, column);
             }
         }
     }

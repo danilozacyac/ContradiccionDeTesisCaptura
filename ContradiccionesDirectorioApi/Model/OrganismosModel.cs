@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Configuration;
 using System.Data;
-using System.Data.OleDb;
+using System.Data.SqlClient;
 using System.Linq;
 using ContradiccionesDirectorioApi.Dao;
 using ContradiccionesDirectorioApi.DataAccess;
@@ -24,9 +24,9 @@ namespace ContradiccionesDirectorioApi.Model
         {
             List<Organismos> organismos = new List<Organismos>();
 
-            OleDbConnection connection = new OleDbConnection(ConfigurationManager.ConnectionStrings["Directorio"].ToString());
-            OleDbCommand cmd = null;
-            OleDbDataReader reader = null;
+            SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["Directorio"].ToString());
+            SqlCommand cmd = null;
+            SqlDataReader reader = null;
 
             String sqlCadena = "SELECT O.*, C.Ciudad, E.Abrev " +
                                "FROM Organismos O INNER JOIN (Ciudades C INNER JOIN Estados E ON C.IdEstado = E.IdEstado) ON O.Ciudad = C.IdCiudad WHERE TpoOrg = " + tipoOrganismo + " ORDER BY OrdenImpr";
@@ -35,7 +35,7 @@ namespace ContradiccionesDirectorioApi.Model
             {
                 connection.Open();
 
-                cmd = new OleDbCommand(sqlCadena, connection);
+                cmd = new SqlCommand(sqlCadena, connection);
                 reader = cmd.ExecuteReader();
 
                 if (reader.HasRows)
@@ -68,7 +68,7 @@ namespace ContradiccionesDirectorioApi.Model
                 cmd.Dispose();
                 reader.Close();
             }
-            catch (OleDbException ex)
+            catch (SqlException ex)
             {
                 string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
                 ErrorUtilities.SetNewErrorMessage(ex, methodName + " Exception,OrganismosModel", "Contradicciones");
@@ -91,9 +91,9 @@ namespace ContradiccionesDirectorioApi.Model
         {
             ObservableCollection<Organismos> organismos = new ObservableCollection<Organismos>();
 
-            OleDbConnection connection = DbConnDac.GetConnection();
-            OleDbCommand cmd = null;
-            OleDbDataReader reader = null;
+            SqlConnection connection = DbConnDac.GetConnection();
+            SqlCommand cmd = null;
+            SqlDataReader reader = null;
 
             String sqlCadena = "SELECT * FROM PlenoC Order By OrdenImpr";
 
@@ -101,7 +101,7 @@ namespace ContradiccionesDirectorioApi.Model
             {
                 connection.Open();
 
-                cmd = new OleDbCommand(sqlCadena, connection);
+                cmd = new SqlCommand(sqlCadena, connection);
                 reader = cmd.ExecuteReader();
 
                 if (reader.HasRows)
@@ -120,7 +120,7 @@ namespace ContradiccionesDirectorioApi.Model
                 cmd.Dispose();
                 reader.Close();
             }
-            catch (OleDbException ex)
+            catch (SqlException ex)
             {
                 string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
                 ErrorUtilities.SetNewErrorMessage(ex, methodName + " Exception,OrganismosModel", "Contradicciones");
@@ -140,8 +140,8 @@ namespace ContradiccionesDirectorioApi.Model
 
         public void SetNewPleno(Organismos organismo)
         {
-            OleDbConnection connection = DbConnDac.GetConnection();
-            OleDbDataAdapter dataAdapter;
+            SqlConnection connection = DbConnDac.GetConnection();
+            SqlDataAdapter dataAdapter;
 
             DataSet dataSet = new DataSet();
             DataRow dr;
@@ -152,8 +152,8 @@ namespace ContradiccionesDirectorioApi.Model
 
                 string sqlCadena = "SELECT * FROM PlenoC WHERE IdPleno = 0";
 
-                dataAdapter = new OleDbDataAdapter();
-                dataAdapter.SelectCommand = new OleDbCommand(sqlCadena, connection);
+                dataAdapter = new SqlDataAdapter();
+                dataAdapter.SelectCommand = new SqlCommand(sqlCadena, connection);
 
                 dataAdapter.Fill(dataSet, "PlenoC");
 
@@ -167,15 +167,15 @@ namespace ContradiccionesDirectorioApi.Model
                 dataAdapter.InsertCommand.CommandText = "INSERT INTO PlenoC(Descripcion,Especializacion)" +
                                                         " VALUES(@Descripcion,@Especializacion)";
 
-                dataAdapter.InsertCommand.Parameters.Add("@Descripcion", OleDbType.VarChar, 0, "Descripcion");
-                dataAdapter.InsertCommand.Parameters.Add("@Especializacion", OleDbType.VarChar, 0, "Especializacion");
+                dataAdapter.InsertCommand.Parameters.Add("@Descripcion", SqlDbType.VarChar, 0, "Descripcion");
+                dataAdapter.InsertCommand.Parameters.Add("@Especializacion", SqlDbType.VarChar, 0, "Especializacion");
 
                 dataAdapter.Update(dataSet, "PlenoC");
 
                 dataSet.Dispose();
                 dataAdapter.Dispose();
             }
-            catch (OleDbException ex)
+            catch (SqlException ex)
             {
                 string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
                 ErrorUtilities.SetNewErrorMessage(ex, methodName + " Exception,OrganismosModel", "Contradicciones");
@@ -194,8 +194,8 @@ namespace ContradiccionesDirectorioApi.Model
 
         public void UpdatePleno(Organismos organismo)
         {
-            OleDbConnection connection = DbConnDac.GetConnection();
-            OleDbDataAdapter dataAdapter;
+            SqlConnection connection = DbConnDac.GetConnection();
+            SqlDataAdapter dataAdapter;
 
             DataSet dataSet = new DataSet();
             DataRow dr;
@@ -205,8 +205,8 @@ namespace ContradiccionesDirectorioApi.Model
 
                 string sqlCadena = "SELECT * FROM PlenoC WHERE IdPleno = " + organismo.IdOrganismo;
 
-                dataAdapter = new OleDbDataAdapter();
-                dataAdapter.SelectCommand = new OleDbCommand(sqlCadena, connection);
+                dataAdapter = new SqlDataAdapter();
+                dataAdapter.SelectCommand = new SqlCommand(sqlCadena, connection);
 
                 dataAdapter.Fill(dataSet, "PlenoC");
 
@@ -219,16 +219,16 @@ namespace ContradiccionesDirectorioApi.Model
                 dataAdapter.UpdateCommand = connection.CreateCommand();
                 dataAdapter.UpdateCommand.CommandText = "UPDATE PlenoC SET Descripcion = @Descripcion, Especializacion = @Especializacion WHERE IdPleno = @IdPleno";
 
-                dataAdapter.UpdateCommand.Parameters.Add("@Descripcion", OleDbType.VarChar, 0, "Descripcion");
-                dataAdapter.UpdateCommand.Parameters.Add("@Especializacion", OleDbType.VarChar, 0, "Especializacion");
-                dataAdapter.UpdateCommand.Parameters.Add("@IdPleno", OleDbType.Numeric, 0, "IdPleno");
+                dataAdapter.UpdateCommand.Parameters.Add("@Descripcion", SqlDbType.VarChar, 0, "Descripcion");
+                dataAdapter.UpdateCommand.Parameters.Add("@Especializacion", SqlDbType.VarChar, 0, "Especializacion");
+                dataAdapter.UpdateCommand.Parameters.Add("@IdPleno", SqlDbType.Int, 0, "IdPleno");
 
                 dataAdapter.Update(dataSet, "PlenoC");
 
                 dataSet.Dispose();
                 dataAdapter.Dispose();
             }
-            catch (OleDbException ex)
+            catch (SqlException ex)
             {
                 string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
                 ErrorUtilities.SetNewErrorMessage(ex, methodName + " Exception,OrganismosModel", "Contradicciones");

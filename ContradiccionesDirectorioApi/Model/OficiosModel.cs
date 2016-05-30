@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Data;
-using System.Data.OleDb;
+using System.Data.SqlClient;
 using System.Linq;
 using ContradiccionesDirectorioApi.Dao;
 using ContradiccionesDirectorioApi.DataAccess;
@@ -23,8 +23,8 @@ namespace ContradiccionesDirectorioApi.Model
 
             string sqlCmd = @"SELECT * FROM Oficios WHERE IdContradiccion = @IdContradiccion";
 
-            OleDbConnection connection = DbConnDac.GetConnection();
-            OleDbCommand cmd = new OleDbCommand();
+            SqlConnection connection = DbConnDac.GetConnection();
+            SqlCommand cmd = new SqlCommand();
 
             cmd.Connection = connection;
             cmd.CommandText = sqlCmd;
@@ -36,7 +36,7 @@ namespace ContradiccionesDirectorioApi.Model
 
                 connection.Open();
 
-                OleDbDataReader reader = cmd.ExecuteReader();
+                SqlDataReader reader = cmd.ExecuteReader();
 
                 while (reader.Read())
                 {
@@ -50,7 +50,7 @@ namespace ContradiccionesDirectorioApi.Model
                 }
 
             }
-            catch (OleDbException ex)
+            catch (SqlException ex)
             {
                 string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
                 ErrorUtilities.SetNewErrorMessage(ex, methodName + " Exception,OficiosModel", "Contradicciones");
@@ -74,8 +74,8 @@ namespace ContradiccionesDirectorioApi.Model
         /// <param name="admisorio"></param>
         public void SetNewOficio(Oficios oficio,int idContradiccion)
         {
-            OleDbConnection connection = DbConnDac.GetConnection();
-            OleDbDataAdapter dataAdapter;
+            SqlConnection connection = DbConnDac.GetConnection();
+            SqlDataAdapter dataAdapter;
 
             DataSet dataSet = new DataSet();
             DataRow dr;
@@ -86,8 +86,8 @@ namespace ContradiccionesDirectorioApi.Model
 
                 string sqlCadena = "SELECT * FROM Oficios WHERE IdOficio = 0";
 
-                dataAdapter = new OleDbDataAdapter();
-                dataAdapter.SelectCommand = new OleDbCommand(sqlCadena, connection);
+                dataAdapter = new SqlDataAdapter();
+                dataAdapter.SelectCommand = new SqlCommand(sqlCadena, connection);
 
                 dataAdapter.Fill(dataSet, "Oficios");
 
@@ -112,11 +112,11 @@ namespace ContradiccionesDirectorioApi.Model
                 dataAdapter.InsertCommand.CommandText = "INSERT INTO Oficios(IdOficio,IdContradiccion,Oficio,Fecha,FechaInt)" +
                                                         " VALUES(@IdOficio,@IdContradiccion,@Oficio,@Fecha,@FechaInt)";
 
-                dataAdapter.InsertCommand.Parameters.Add("@IdOficio", OleDbType.Numeric, 0, "IdOficio");
-                dataAdapter.InsertCommand.Parameters.Add("@IdContradiccion", OleDbType.Numeric, 0, "IdContradiccion");
-                dataAdapter.InsertCommand.Parameters.Add("@Oficio", OleDbType.VarChar, 0, "Oficio");
-                dataAdapter.InsertCommand.Parameters.Add("@Fecha", OleDbType.Date, 0, "Fecha");
-                dataAdapter.InsertCommand.Parameters.Add("@FechaInt", OleDbType.Numeric, 0, "FechaInt");
+                dataAdapter.InsertCommand.Parameters.Add("@IdOficio", SqlDbType.Int, 0, "IdOficio");
+                dataAdapter.InsertCommand.Parameters.Add("@IdContradiccion", SqlDbType.Int, 0, "IdContradiccion");
+                dataAdapter.InsertCommand.Parameters.Add("@Oficio", SqlDbType.VarChar, 0, "Oficio");
+                dataAdapter.InsertCommand.Parameters.Add("@Fecha", SqlDbType.Date, 0, "Fecha");
+                dataAdapter.InsertCommand.Parameters.Add("@FechaInt", SqlDbType.Int, 0, "FechaInt");
 
                 dataAdapter.Update(dataSet, "Oficios");
 
@@ -124,7 +124,7 @@ namespace ContradiccionesDirectorioApi.Model
                 dataAdapter.Dispose();
 
             }
-            catch (OleDbException ex)
+            catch (SqlException ex)
             {
                 string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
                 ErrorUtilities.SetNewErrorMessage(ex, methodName + " Exception,OficiosModel", "Contradicciones");
@@ -147,8 +147,8 @@ namespace ContradiccionesDirectorioApi.Model
         /// <param name="oficio"></param>
         public void UpdateOficio(Oficios oficio)
         {
-            OleDbConnection connection = DbConnDac.GetConnection();
-            OleDbDataAdapter dataAdapter;
+            SqlConnection connection = DbConnDac.GetConnection();
+            SqlDataAdapter dataAdapter;
 
             DataSet dataSet = new DataSet();
             DataRow dr;
@@ -157,8 +157,8 @@ namespace ContradiccionesDirectorioApi.Model
             {
                 string sqlCadena = "SELECT * FROM Oficios WHERE IdOficio = " + oficio.IdOficio;
 
-                dataAdapter = new OleDbDataAdapter();
-                dataAdapter.SelectCommand = new OleDbCommand(sqlCadena, connection);
+                dataAdapter = new SqlDataAdapter();
+                dataAdapter.SelectCommand = new SqlCommand(sqlCadena, connection);
 
                 dataAdapter.Fill(dataSet, "Oficios");
 
@@ -182,16 +182,16 @@ namespace ContradiccionesDirectorioApi.Model
                                                        "UPDATE Oficios SET Oficio = @Oficio,Fecha = @Fecha,FechaInt = @FechaInt " +
                                                        " WHERE IdOficio = @IdOficio";
 
-                dataAdapter.UpdateCommand.Parameters.Add("@Oficio", OleDbType.VarChar, 0, "Oficio");
-                dataAdapter.UpdateCommand.Parameters.Add("@Fecha", OleDbType.Date, 0, "Fecha");
-                dataAdapter.UpdateCommand.Parameters.Add("@FechaInt", OleDbType.Numeric, 0, "FechaInt");
-                dataAdapter.UpdateCommand.Parameters.Add("@IdOficio", OleDbType.Numeric, 0, "IdOficio");
+                dataAdapter.UpdateCommand.Parameters.Add("@Oficio", SqlDbType.VarChar, 0, "Oficio");
+                dataAdapter.UpdateCommand.Parameters.Add("@Fecha", SqlDbType.Date, 0, "Fecha");
+                dataAdapter.UpdateCommand.Parameters.Add("@FechaInt", SqlDbType.Int, 0, "FechaInt");
+                dataAdapter.UpdateCommand.Parameters.Add("@IdOficio", SqlDbType.Int, 0, "IdOficio");
 
                 dataAdapter.Update(dataSet, "Oficios");
                 dataSet.Dispose();
                 dataAdapter.Dispose();
             }
-            catch (OleDbException ex)
+            catch (SqlException ex)
             {
                 string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
                 ErrorUtilities.SetNewErrorMessage(ex, methodName + " Exception,OficiosModel", "Contradicciones");
@@ -216,8 +216,8 @@ namespace ContradiccionesDirectorioApi.Model
         {
             bool isDeleteComplete = false;
 
-            OleDbConnection connection = DbConnDac.GetConnection();
-            OleDbCommand cmd;
+            SqlConnection connection = DbConnDac.GetConnection();
+            SqlCommand cmd;
 
             cmd = connection.CreateCommand();
             cmd.Connection = connection;
@@ -231,7 +231,7 @@ namespace ContradiccionesDirectorioApi.Model
                 cmd.ExecuteNonQuery();
                 isDeleteComplete = true;
             }
-            catch (OleDbException ex)
+            catch (SqlException ex)
             {
                 string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
                 ErrorUtilities.SetNewErrorMessage(ex, methodName + " Exception,OficiosModel", "Contradicciones");

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Data;
-using System.Data.OleDb;
+using System.Data.SqlClient;
 using System.Linq;
 using ContradiccionesDirectorioApi.Dao;
 using ContradiccionesDirectorioApi.DataAccess;
@@ -19,8 +19,8 @@ namespace ContradiccionesDirectorioApi.Model
         /// <returns></returns>
         public int SetNewTesisPorContradiccion(Tesis tesis)
         {
-            OleDbConnection connection = DbConnDac.GetConnection();
-            OleDbDataAdapter dataAdapter;
+            SqlConnection connection = DbConnDac.GetConnection();
+            SqlDataAdapter dataAdapter;
 
             DataSet dataSet = new DataSet();
             DataRow dr;
@@ -31,8 +31,8 @@ namespace ContradiccionesDirectorioApi.Model
 
                 tesis.IdTesis = DataBaseUtilities.GetNextIdForUse("Tesis", "IdTesis",connection);
 
-                dataAdapter = new OleDbDataAdapter();
-                dataAdapter.SelectCommand = new OleDbCommand(sqlCadena, connection);
+                dataAdapter = new SqlDataAdapter();
+                dataAdapter.SelectCommand = new SqlCommand(sqlCadena, connection);
 
                 dataAdapter.Fill(dataSet, "Tesis");
 
@@ -66,24 +66,24 @@ namespace ContradiccionesDirectorioApi.Model
                                                         "@OficioPPath,@VersionPublica,@VersionPPath,@CopiaCertificada,@CopiaCPath,@Destinatario,@CambioCriterio," +
                                                         "@Responsable,@OficioRespuesta,@OficioRPath,@IUS)";
 
-                dataAdapter.InsertCommand.Parameters.Add("@IdTesis", OleDbType.Numeric, 0, "IdTesis");
-                dataAdapter.InsertCommand.Parameters.Add("@IdContradiccion", OleDbType.Numeric, 0, "IdContradiccion");
-                dataAdapter.InsertCommand.Parameters.Add("@ClaveControl", OleDbType.VarChar, 0, "ClaveControl");
-                dataAdapter.InsertCommand.Parameters.Add("@ClaveIdentificacion", OleDbType.VarChar, 0, "ClaveIdentificacion");
-                dataAdapter.InsertCommand.Parameters.Add("@Rubro", OleDbType.VarChar, 0, "Rubro");
-                dataAdapter.InsertCommand.Parameters.Add("@tatj", OleDbType.Numeric, 0, "tatj");
-                dataAdapter.InsertCommand.Parameters.Add("@OficioPublicacion", OleDbType.VarChar, 0, "OficioPublicacion");
-                dataAdapter.InsertCommand.Parameters.Add("@OficioPPath", OleDbType.VarChar, 0, "OficioPPath");
-                dataAdapter.InsertCommand.Parameters.Add("@VersionPublica", OleDbType.Numeric, 0, "VersionPublica");
-                dataAdapter.InsertCommand.Parameters.Add("@VersionPPath", OleDbType.VarChar, 0, "VersionPPath");
-                dataAdapter.InsertCommand.Parameters.Add("@CopiaCertificada", OleDbType.Numeric, 0, "CopiaCertificada");
-                dataAdapter.InsertCommand.Parameters.Add("@CopiaCPath", OleDbType.VarChar, 0, "CopiaCPath");
-                dataAdapter.InsertCommand.Parameters.Add("@Destinatario", OleDbType.VarChar, 0, "Destinatario");
-                dataAdapter.InsertCommand.Parameters.Add("@CambioCriterio", OleDbType.Numeric, 0, "CambioCriterio");
-                dataAdapter.InsertCommand.Parameters.Add("@Responsable", OleDbType.VarChar, 0, "Responsable");
-                dataAdapter.InsertCommand.Parameters.Add("@OficioRespuesta", OleDbType.VarChar, 0, "OficioRespuesta");
-                dataAdapter.InsertCommand.Parameters.Add("@OficioRPath", OleDbType.VarChar, 0, "OficioRPath");
-                dataAdapter.InsertCommand.Parameters.Add("@IUS", OleDbType.Numeric, 0, "IUS");
+                dataAdapter.InsertCommand.Parameters.Add("@IdTesis", SqlDbType.Int, 0, "IdTesis");
+                dataAdapter.InsertCommand.Parameters.Add("@IdContradiccion", SqlDbType.Int, 0, "IdContradiccion");
+                dataAdapter.InsertCommand.Parameters.Add("@ClaveControl", SqlDbType.VarChar, 0, "ClaveControl");
+                dataAdapter.InsertCommand.Parameters.Add("@ClaveIdentificacion", SqlDbType.VarChar, 0, "ClaveIdentificacion");
+                dataAdapter.InsertCommand.Parameters.Add("@Rubro", SqlDbType.VarChar, 0, "Rubro");
+                dataAdapter.InsertCommand.Parameters.Add("@tatj", SqlDbType.Int, 0, "tatj");
+                dataAdapter.InsertCommand.Parameters.Add("@OficioPublicacion", SqlDbType.VarChar, 0, "OficioPublicacion");
+                dataAdapter.InsertCommand.Parameters.Add("@OficioPPath", SqlDbType.VarChar, 0, "OficioPPath");
+                dataAdapter.InsertCommand.Parameters.Add("@VersionPublica", SqlDbType.Int, 0, "VersionPublica");
+                dataAdapter.InsertCommand.Parameters.Add("@VersionPPath", SqlDbType.VarChar, 0, "VersionPPath");
+                dataAdapter.InsertCommand.Parameters.Add("@CopiaCertificada", SqlDbType.Int, 0, "CopiaCertificada");
+                dataAdapter.InsertCommand.Parameters.Add("@CopiaCPath", SqlDbType.VarChar, 0, "CopiaCPath");
+                dataAdapter.InsertCommand.Parameters.Add("@Destinatario", SqlDbType.VarChar, 0, "Destinatario");
+                dataAdapter.InsertCommand.Parameters.Add("@CambioCriterio", SqlDbType.Int, 0, "CambioCriterio");
+                dataAdapter.InsertCommand.Parameters.Add("@Responsable", SqlDbType.VarChar, 0, "Responsable");
+                dataAdapter.InsertCommand.Parameters.Add("@OficioRespuesta", SqlDbType.VarChar, 0, "OficioRespuesta");
+                dataAdapter.InsertCommand.Parameters.Add("@OficioRPath", SqlDbType.VarChar, 0, "OficioRPath");
+                dataAdapter.InsertCommand.Parameters.Add("@IUS", SqlDbType.Int, 0, "IUS");
 
                 dataAdapter.Update(dataSet, "Tesis");
 
@@ -92,7 +92,7 @@ namespace ContradiccionesDirectorioApi.Model
 
                 //tesis.IdTesis = this.GetInsertedTesisId(tesis);
             }
-            catch (OleDbException ex)
+            catch (SqlException ex)
             {
                 string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
                 ErrorUtilities.SetNewErrorMessage(ex, methodName + " Exception,TesisModel", "Contradicciones");
@@ -119,9 +119,9 @@ namespace ContradiccionesDirectorioApi.Model
         {
             ObservableCollection<Tesis> listaTesis = new ObservableCollection<Tesis>();
 
-            OleDbConnection connection = DbConnDac.GetConnection();
-            OleDbCommand cmd;
-            OleDbDataReader reader;
+            SqlConnection connection = DbConnDac.GetConnection();
+            SqlCommand cmd;
+            SqlDataReader reader;
 
             string oleCadena = "SELECT * FROM Tesis WHERE IdContradiccion = " + idContradiccion;
 
@@ -129,7 +129,7 @@ namespace ContradiccionesDirectorioApi.Model
             {
                 connection.Open();
 
-                cmd = new OleDbCommand(oleCadena, connection);
+                cmd = new SqlCommand(oleCadena, connection);
                 reader = cmd.ExecuteReader();
 
                 while (reader.Read())
@@ -160,7 +160,7 @@ namespace ContradiccionesDirectorioApi.Model
                 reader.Close();
                 cmd.Dispose();
             }
-            catch (OleDbException ex)
+            catch (SqlException ex)
             {
                 string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
                 ErrorUtilities.SetNewErrorMessage(ex, methodName + " Exception,TesisModel", "Contradicciones");
@@ -185,8 +185,8 @@ namespace ContradiccionesDirectorioApi.Model
         /// <param name="tesis"></param>
         public void UpdateTesis(Tesis tesis)
         {
-            OleDbConnection connection = DbConnDac.GetConnection();
-            OleDbDataAdapter dataAdapter;
+            SqlConnection connection = DbConnDac.GetConnection();
+            SqlDataAdapter dataAdapter;
 
             DataSet dataSet = new DataSet();
             DataRow dr;
@@ -195,8 +195,8 @@ namespace ContradiccionesDirectorioApi.Model
             {
                 string sqlCadena = "SELECT * FROM Tesis WHERE IdTesis =" + tesis.IdTesis;
 
-                dataAdapter = new OleDbDataAdapter();
-                dataAdapter.SelectCommand = new OleDbCommand(sqlCadena, connection);
+                dataAdapter = new SqlDataAdapter();
+                dataAdapter.SelectCommand = new SqlCommand(sqlCadena, connection);
 
                 dataAdapter.Fill(dataSet, "Tesis");
 
@@ -229,29 +229,29 @@ namespace ContradiccionesDirectorioApi.Model
                                                        "Responsable = @Responsable,OficioRespuesta = @OficioRespuesta,OficioRPath = @OficioRPath, IUS = @IUS " +
                                                        " WHERE IdTesis = @IdTesis";
 
-                dataAdapter.UpdateCommand.Parameters.Add("@ClaveControl", OleDbType.VarChar, 0, "ClaveControl");
-                dataAdapter.UpdateCommand.Parameters.Add("@ClaveIdentificacion", OleDbType.VarChar, 0, "ClaveIdentificacion");
-                dataAdapter.UpdateCommand.Parameters.Add("@Rubro", OleDbType.VarChar, 0, "Rubro");
-                dataAdapter.UpdateCommand.Parameters.Add("@tatj", OleDbType.Numeric, 0, "tatj");
-                dataAdapter.UpdateCommand.Parameters.Add("@OficioPublicacion", OleDbType.VarChar, 0, "OficioPublicacion");
-                dataAdapter.UpdateCommand.Parameters.Add("@OficioPPath", OleDbType.VarChar, 0, "OficioPPath");
-                dataAdapter.UpdateCommand.Parameters.Add("@VersionPublica", OleDbType.Numeric, 0, "VersionPublica");
-                dataAdapter.UpdateCommand.Parameters.Add("@VersionPPath", OleDbType.VarChar, 0, "VersionPPath");
-                dataAdapter.UpdateCommand.Parameters.Add("@CopiaCertificada", OleDbType.Numeric, 0, "CopiaCertificada");
-                dataAdapter.UpdateCommand.Parameters.Add("@CopiaCPath", OleDbType.VarChar, 0, "CopiaCPath");
-                dataAdapter.UpdateCommand.Parameters.Add("@Destinatario", OleDbType.VarChar, 0, "Destinatario");
-                dataAdapter.UpdateCommand.Parameters.Add("@CambioCriterio", OleDbType.Numeric, 0, "CambioCriterio");
-                dataAdapter.UpdateCommand.Parameters.Add("@Responsable", OleDbType.VarChar, 0, "Responsable");
-                dataAdapter.UpdateCommand.Parameters.Add("@OficioRespuesta", OleDbType.VarChar, 0, "OficioRespuesta");
-                dataAdapter.UpdateCommand.Parameters.Add("@OficioRPath", OleDbType.VarChar, 0, "OficioRPath");
-                dataAdapter.UpdateCommand.Parameters.Add("@IUS", OleDbType.Numeric, 0, "IUS");
-                dataAdapter.UpdateCommand.Parameters.Add("@IdTesis", OleDbType.Numeric, 0, "IdTesis");
+                dataAdapter.UpdateCommand.Parameters.Add("@ClaveControl", SqlDbType.VarChar, 0, "ClaveControl");
+                dataAdapter.UpdateCommand.Parameters.Add("@ClaveIdentificacion", SqlDbType.VarChar, 0, "ClaveIdentificacion");
+                dataAdapter.UpdateCommand.Parameters.Add("@Rubro", SqlDbType.VarChar, 0, "Rubro");
+                dataAdapter.UpdateCommand.Parameters.Add("@tatj", SqlDbType.Int, 0, "tatj");
+                dataAdapter.UpdateCommand.Parameters.Add("@OficioPublicacion", SqlDbType.VarChar, 0, "OficioPublicacion");
+                dataAdapter.UpdateCommand.Parameters.Add("@OficioPPath", SqlDbType.VarChar, 0, "OficioPPath");
+                dataAdapter.UpdateCommand.Parameters.Add("@VersionPublica", SqlDbType.Int, 0, "VersionPublica");
+                dataAdapter.UpdateCommand.Parameters.Add("@VersionPPath", SqlDbType.VarChar, 0, "VersionPPath");
+                dataAdapter.UpdateCommand.Parameters.Add("@CopiaCertificada", SqlDbType.Int, 0, "CopiaCertificada");
+                dataAdapter.UpdateCommand.Parameters.Add("@CopiaCPath", SqlDbType.VarChar, 0, "CopiaCPath");
+                dataAdapter.UpdateCommand.Parameters.Add("@Destinatario", SqlDbType.VarChar, 0, "Destinatario");
+                dataAdapter.UpdateCommand.Parameters.Add("@CambioCriterio", SqlDbType.Int, 0, "CambioCriterio");
+                dataAdapter.UpdateCommand.Parameters.Add("@Responsable", SqlDbType.VarChar, 0, "Responsable");
+                dataAdapter.UpdateCommand.Parameters.Add("@OficioRespuesta", SqlDbType.VarChar, 0, "OficioRespuesta");
+                dataAdapter.UpdateCommand.Parameters.Add("@OficioRPath", SqlDbType.VarChar, 0, "OficioRPath");
+                dataAdapter.UpdateCommand.Parameters.Add("@IUS", SqlDbType.Int, 0, "IUS");
+                dataAdapter.UpdateCommand.Parameters.Add("@IdTesis", SqlDbType.Int, 0, "IdTesis");
 
                 dataAdapter.Update(dataSet, "Tesis");
                 dataSet.Dispose();
                 dataAdapter.Dispose();
             }
-            catch (OleDbException ex)
+            catch (SqlException ex)
             {
                 string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
                 ErrorUtilities.SetNewErrorMessage(ex, methodName + " Exception,TesisModel", "Contradicciones");
@@ -275,8 +275,8 @@ namespace ContradiccionesDirectorioApi.Model
         public bool DeleteTesis(Tesis tesis)
         {
             bool isDeleteComplete = false;
-            OleDbConnection connection = DbConnDac.GetConnection();
-            OleDbCommand cmd;
+            SqlConnection connection = DbConnDac.GetConnection();
+            SqlCommand cmd;
 
             cmd = connection.CreateCommand();
             cmd.Connection = connection;
@@ -290,7 +290,7 @@ namespace ContradiccionesDirectorioApi.Model
                 cmd.ExecuteNonQuery();
                 isDeleteComplete = true;
             }
-            catch (OleDbException ex)
+            catch (SqlException ex)
             {
                 string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
                 ErrorUtilities.SetNewErrorMessage(ex, methodName + " Exception,TesisModel", "Contradicciones");
