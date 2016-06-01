@@ -8,6 +8,7 @@ using System.Linq;
 using ContradiccionesDirectorioApi.Dao;
 using ContradiccionesDirectorioApi.DataAccess;
 using ScjnUtilities;
+using System.Data.OleDb;
 
 namespace ContradiccionesDirectorioApi.Model
 {
@@ -24,9 +25,9 @@ namespace ContradiccionesDirectorioApi.Model
         {
             List<Organismos> organismos = new List<Organismos>();
 
-            SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["Directorio"].ToString());
-            SqlCommand cmd = null;
-            SqlDataReader reader = null;
+            OleDbConnection connection = new OleDbConnection(ConfigurationManager.ConnectionStrings["Directorio"].ToString());
+            OleDbCommand cmd = null;
+            OleDbDataReader reader = null;
 
             String sqlCadena = "SELECT O.*, C.Ciudad, E.Abrev " +
                                "FROM Organismos O INNER JOIN (Ciudades C INNER JOIN Estados E ON C.IdEstado = E.IdEstado) " + 
@@ -36,7 +37,7 @@ namespace ContradiccionesDirectorioApi.Model
             {
                 connection.Open();
 
-                cmd = new SqlCommand(sqlCadena, connection);
+                cmd = new OleDbCommand(sqlCadena, connection);
                 cmd.Parameters.AddWithValue("@TipoOrg", tipoOrganismo);
                 reader = cmd.ExecuteReader();
 
@@ -65,7 +66,7 @@ namespace ContradiccionesDirectorioApi.Model
                 cmd.Dispose();
                 reader.Close();
             }
-            catch (SqlException ex)
+            catch (OleDbException ex)
             {
                 string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
                 ErrorUtilities.SetNewErrorMessage(ex, methodName + " Exception,OrganismosModel", "Contradicciones");
@@ -96,7 +97,7 @@ namespace ContradiccionesDirectorioApi.Model
             {
                 connection.Open();
 
-                cmd = new SqlCommand("SELECT * FROM PlenoC Order By OrdenImpr", connection);
+                cmd = new SqlCommand("SELECT * FROM cPlenoC Order By OrdenImpr", connection);
                 reader = cmd.ExecuteReader();
 
                 if (reader.HasRows)
@@ -143,27 +144,27 @@ namespace ContradiccionesDirectorioApi.Model
 
             try
             {
-                organismo.IdOrganismo = DataBaseUtilities.GetNextIdForUse("PlenoC", "IdPleno", connection);
+                organismo.IdOrganismo = DataBaseUtilities.GetNextIdForUse("cPlenoC", "IdPleno", connection);
 
                 dataAdapter = new SqlDataAdapter();
-                dataAdapter.SelectCommand = new SqlCommand("SELECT * FROM PlenoC WHERE IdPleno = 0", connection);
+                dataAdapter.SelectCommand = new SqlCommand("SELECT * FROM cPlenoC WHERE IdPleno = 0", connection);
 
-                dataAdapter.Fill(dataSet, "PlenoC");
+                dataAdapter.Fill(dataSet, "cPlenoC");
 
-                dr = dataSet.Tables["PlenoC"].NewRow();
+                dr = dataSet.Tables["cPlenoC"].NewRow();
                 dr["Descripcion"] = organismo.Organismo;
                 dr["Especializacion"] = organismo.Especialidad;
 
-                dataSet.Tables["PlenoC"].Rows.Add(dr);
+                dataSet.Tables["cPlenoC"].Rows.Add(dr);
 
                 dataAdapter.InsertCommand = connection.CreateCommand();
-                dataAdapter.InsertCommand.CommandText = "INSERT INTO PlenoC(Descripcion,Especializacion)" +
+                dataAdapter.InsertCommand.CommandText = "INSERT INTO cPlenoC(Descripcion,Especializacion)" +
                                                         " VALUES(@Descripcion,@Especializacion)";
 
                 dataAdapter.InsertCommand.Parameters.Add("@Descripcion", SqlDbType.VarChar, 0, "Descripcion");
                 dataAdapter.InsertCommand.Parameters.Add("@Especializacion", SqlDbType.VarChar, 0, "Especializacion");
 
-                dataAdapter.Update(dataSet, "PlenoC");
+                dataAdapter.Update(dataSet, "cPlenoC");
 
                 dataSet.Dispose();
                 dataAdapter.Dispose();
@@ -196,27 +197,27 @@ namespace ContradiccionesDirectorioApi.Model
             try
             {
 
-                string sqlCadena = "SELECT * FROM PlenoC WHERE IdPleno = " + organismo.IdOrganismo;
+                string sqlCadena = "SELECT * FROM cPlenoC WHERE IdPleno = " + organismo.IdOrganismo;
 
                 dataAdapter = new SqlDataAdapter();
                 dataAdapter.SelectCommand = new SqlCommand(sqlCadena, connection);
 
-                dataAdapter.Fill(dataSet, "PlenoC");
+                dataAdapter.Fill(dataSet, "cPlenoC");
 
-                dr = dataSet.Tables["PlenoC"].Rows[0];
+                dr = dataSet.Tables["cPlenoC"].Rows[0];
                 dr.BeginEdit();
                 dr["Descripcion"] = organismo.Organismo;
                 dr["Especializacion"] = organismo.Especialidad;
                 dr.EndEdit();
 
                 dataAdapter.UpdateCommand = connection.CreateCommand();
-                dataAdapter.UpdateCommand.CommandText = "UPDATE PlenoC SET Descripcion = @Descripcion, Especializacion = @Especializacion WHERE IdPleno = @IdPleno";
+                dataAdapter.UpdateCommand.CommandText = "UPDATE cPlenoC SET Descripcion = @Descripcion, Especializacion = @Especializacion WHERE IdPleno = @IdPleno";
 
                 dataAdapter.UpdateCommand.Parameters.Add("@Descripcion", SqlDbType.VarChar, 0, "Descripcion");
                 dataAdapter.UpdateCommand.Parameters.Add("@Especializacion", SqlDbType.VarChar, 0, "Especializacion");
                 dataAdapter.UpdateCommand.Parameters.Add("@IdPleno", SqlDbType.Int, 0, "IdPleno");
 
-                dataAdapter.Update(dataSet, "PlenoC");
+                dataAdapter.Update(dataSet, "cPlenoC");
 
                 dataSet.Dispose();
                 dataAdapter.Dispose();

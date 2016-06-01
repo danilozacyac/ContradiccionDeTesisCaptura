@@ -5,6 +5,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using ContradiccionesDirectorioApi.Dao;
 using ScjnUtilities;
+using System.Data.OleDb;
 
 namespace ContradiccionesDirectorioApi.Model
 {
@@ -20,9 +21,9 @@ namespace ContradiccionesDirectorioApi.Model
         {
             ObservableCollection<Funcionarios> funcionarios = new ObservableCollection<Funcionarios>();
 
-            SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["Directorio"].ToString());
-            SqlCommand cmd = null;
-            SqlDataReader reader = null;
+            OleDbConnection connection = new OleDbConnection(ConfigurationManager.ConnectionStrings["Directorio"].ToString());
+            OleDbCommand cmd = null;
+            OleDbDataReader reader = null;
 
             String sqlCadena = "SELECT F.*, R.IdOrg FROM Funcionarios F LEFT JOIN Rel_Org_Func R ON F.IdFunc = R.IdFunc  ORDER BY Apellidos";
 
@@ -37,7 +38,7 @@ namespace ContradiccionesDirectorioApi.Model
             {
                 connection.Open();
 
-                cmd = new SqlCommand(sqlCadena, connection);
+                cmd = new OleDbCommand(sqlCadena, connection);
                 reader = cmd.ExecuteReader();
 
                 if (reader.HasRows)

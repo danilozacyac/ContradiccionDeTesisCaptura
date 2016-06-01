@@ -27,7 +27,7 @@ namespace ContradiccionesDirectorioApi.Model
             {
                 connection.Open();
 
-                cmd = new SqlCommand("SELECT * FROM TipoAsunto", connection);
+                cmd = new SqlCommand("SELECT * FROM cTipoAsunto", connection);
                 reader = cmd.ExecuteReader();
 
                 if (reader.HasRows)

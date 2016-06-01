@@ -35,6 +35,8 @@ namespace ContradiccionDeTesisCaptura
             CbxPlenos.DataContext = OrganismosSingleton.Plenos;
             CbxPresidente.DataContext = FuncionariosSingleton.FuncionariosCollection;
             CbxPonente.DataContext = FuncionariosSingleton.FuncionariosCollection;
+
+            
         }
 
         private void BtnAddCriterio_Click(object sender, RoutedEventArgs e)
@@ -105,6 +107,8 @@ namespace ContradiccionDeTesisCaptura
             Observaciones obsr = new Observaciones(contradiccion);
             obsr.ShowDialog();
         }
+
+        
 
         
 

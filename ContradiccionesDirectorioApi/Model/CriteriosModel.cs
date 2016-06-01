@@ -457,13 +457,14 @@ namespace ContradiccionesDirectorioApi.Model
             SqlCommand cmd;
             SqlDataReader reader;
 
-            string oleCadena = "SELECT * FROM Criterios WHERE idContradiccion = " + idContradiccion;
+            const string SqlQuery = "SELECT * FROM Criterios WHERE idContradiccion = @IdContradiccion";
 
             try
             {
                 connection.Open();
 
-                cmd = new SqlCommand(oleCadena, connection);
+                cmd = new SqlCommand(SqlQuery, connection);
+                cmd.Parameters.AddWithValue("@IdContradiccion", idContradiccion);
                 reader = cmd.ExecuteReader();
 
                 while (reader.Read())

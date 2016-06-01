@@ -52,6 +52,7 @@ namespace ContradiccionDeTesisCaptura
             if (RGridContradicciones.SelectedItem != null)
             {
                 Contradicciones contradiccion = (Contradicciones)RGridContradicciones.SelectedItem;
+                new ContradiccionesModel().GetContradiccionComplementInfo(ref contradiccion);
                 contradiccion.IsUpdating = true;
                 ContradiccionesWin contra = new ContradiccionesWin(contradiccion, true);
                 contra.ShowDialog();

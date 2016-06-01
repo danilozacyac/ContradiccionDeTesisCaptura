@@ -803,12 +803,21 @@
         </TabControl>
         <telerik:RadButton Name="BtnSalvar"
                            Grid.Row="2"
-                           Width="130"
-                           Height="23"
-                           Margin="0,15,12,0"
+                           Width="70"
+                           Height="25"
+                           Margin="0,17,106,0"
                            HorizontalAlignment="Right"
                            VerticalAlignment="Top"
                            Click="BtnSalvar_Click"
-                           Content="Salvar y Salir" />
+                           Content="Salvar" />
+        <telerik:RadButton x:Name="BtnSalir"
+                           Grid.Row="2"
+                           Width="70"
+                           Height="25"
+                           Margin="788,17,0,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Top"
+                           Click="BtnSalvar_Click"
+                           Content="Salir" />
     </Grid>
 </telerik:RadWindow>

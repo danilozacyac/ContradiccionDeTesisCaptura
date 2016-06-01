@@ -36,6 +36,9 @@ namespace ContradiccionDeTesisCaptura
             contradiccion.MiEjecutoria = (contradiccion.MiEjecutoria == null) ? new Ejecutoria() : contradiccion.MiEjecutoria;
             contradiccion.Returnos = (contradiccion.Returnos == null) ? new ObservableCollection<ReturnosClass>() : contradiccion.Returnos;
             contradiccion.Resolutivo = (contradiccion.Resolutivo == null) ? new Resolutivos() : contradiccion.Resolutivo;
+
+            if (!isUpdating)
+                BtnSalir.Visibility = Visibility.Collapsed;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -395,6 +398,11 @@ namespace ContradiccionDeTesisCaptura
             {
                 MessageBox.Show("Selecciona la tesis que deseas eliminar");
             }
+        }
+
+        private void BtnSalir_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
         }
     }
 }
