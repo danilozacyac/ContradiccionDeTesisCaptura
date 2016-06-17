@@ -792,6 +792,8 @@
                            VerticalAlignment="Top"
                            Content="Razones no resolución:" />
                     <TextBox Name="TxtRazones"
+                             AcceptsReturn="True"
+                             TextWrapping="Wrap"
                              Width="300"
                              Height="200"
                              Margin="40,220,0,0"
