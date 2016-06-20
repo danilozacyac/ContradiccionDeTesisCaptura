@@ -31,6 +31,8 @@ namespace ContradiccionesDirectorioApi.Model
             {
                 foreach (Criterios criterio in contradiccion.Criterios)
                 {
+                    criterio.IdCriterio = DataBaseUtilities.GetNextIdForUse("Criterios", "IdCriterio", connection);
+
                     dataAdapter = new SqlDataAdapter();
                     dataAdapter.SelectCommand = new SqlCommand("SELECT * FROM Criterios WHERE IdCriterio = 0", connection);
                     criterio.Orden = currentOrder;
@@ -38,6 +40,7 @@ namespace ContradiccionesDirectorioApi.Model
                     dataAdapter.Fill(dataSet, "Criterios");
 
                     dr = dataSet.Tables["Criterios"].NewRow();
+                    dr["IdCriterio"] = criterio.IdCriterio;
                     dr["IdContradiccion"] = contradiccion.IdContradiccion;
                     dr["Orden"] = currentOrder;
                     dr["Criterio"] = criterio.Criterio;
@@ -47,9 +50,10 @@ namespace ContradiccionesDirectorioApi.Model
                     dataSet.Tables["Criterios"].Rows.Add(dr);
 
                     dataAdapter.InsertCommand = connection.CreateCommand();
-                    dataAdapter.InsertCommand.CommandText = "INSERT INTO Criterios(IdContradiccion,Orden,Criterio,IdOrgano,Observaciones)" +
-                                                            " VALUES(@IdContradiccion,@Orden,@Criterio,@IdOrgano,@Observaciones)";
+                    dataAdapter.InsertCommand.CommandText = "INSERT INTO Criterios(IdCriterio,IdContradiccion,Orden,Criterio,IdOrgano,Observaciones)" +
+                                                            " VALUES(@IdCriterio,@IdContradiccion,@Orden,@Criterio,@IdOrgano,@Observaciones)";
 
+                    dataAdapter.InsertCommand.Parameters.Add("@IdCriterio", SqlDbType.Int, 0, "IdCriterio");
                     dataAdapter.InsertCommand.Parameters.Add("@IdContradiccion", SqlDbType.Int, 0, "IdContradiccion");
                     dataAdapter.InsertCommand.Parameters.Add("@Orden", SqlDbType.Int, 0, "Orden");
                     dataAdapter.InsertCommand.Parameters.Add("@Criterio", SqlDbType.VarChar, 0, "Criterio");
@@ -60,8 +64,6 @@ namespace ContradiccionesDirectorioApi.Model
 
                     dataSet.Dispose();
                     dataAdapter.Dispose();
-
-                    criterio.IdCriterio = this.GetLastCriterioId(contradiccion.IdContradiccion, currentOrder);
 
                     this.SetNewCriteriosTesis(criterio);
                     currentOrder++;
@@ -98,6 +100,8 @@ namespace ContradiccionesDirectorioApi.Model
 
             try
             {
+                criterio.IdCriterio = DataBaseUtilities.GetNextIdForUse("Criterios", "IdCriterio", connection);
+
                 criterio.Orden = this.GetMaxOrderCriterio(idContradiccion);
 
                 dataAdapter = new SqlDataAdapter();
@@ -106,6 +110,7 @@ namespace ContradiccionesDirectorioApi.Model
                 dataAdapter.Fill(dataSet, "Criterios");
 
                 dr = dataSet.Tables["Criterios"].NewRow();
+                dr["IdCriterio"] = criterio.IdCriterio;
                 dr["IdContradiccion"] = idContradiccion;
                 dr["Orden"] = criterio.Orden;
                 dr["Criterio"] = criterio.Criterio;
@@ -115,9 +120,10 @@ namespace ContradiccionesDirectorioApi.Model
                 dataSet.Tables["Criterios"].Rows.Add(dr);
 
                 dataAdapter.InsertCommand = connection.CreateCommand();
-                dataAdapter.InsertCommand.CommandText = "INSERT INTO Criterios(IdContradiccion,Orden,Criterio,IdOrgano,Observaciones)" +
-                                                        " VALUES(@IdContradiccion,@Orden,@Criterio,@IdOrgano,@Observaciones)";
+                dataAdapter.InsertCommand.CommandText = "INSERT INTO Criterios(IdCriterio,IdContradiccion,Orden,Criterio,IdOrgano,Observaciones)" +
+                                                        " VALUES(@IdCriterio,@IdContradiccion,@Orden,@Criterio,@IdOrgano,@Observaciones)";
 
+                dataAdapter.InsertCommand.Parameters.Add("@IdCriterio", SqlDbType.Int, 0, "IdCriterio");
                 dataAdapter.InsertCommand.Parameters.Add("@IdContradiccion", SqlDbType.Int, 0, "IdContradiccion");
                 dataAdapter.InsertCommand.Parameters.Add("@Orden", SqlDbType.Int, 0, "Orden");
                 dataAdapter.InsertCommand.Parameters.Add("@Criterio", SqlDbType.VarChar, 0, "Criterio");
@@ -128,8 +134,6 @@ namespace ContradiccionesDirectorioApi.Model
 
                 dataSet.Dispose();
                 dataAdapter.Dispose();
-
-                criterio.IdCriterio = this.GetLastCriterioId(idContradiccion, criterio.Orden);
 
                 this.SetNewCriteriosTesis(criterio);
                 //currentOrder++;

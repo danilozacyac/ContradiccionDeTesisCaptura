@@ -38,7 +38,7 @@ namespace ContradiccionDeTesisCaptura
             contradiccion.Resolutivo = (contradiccion.Resolutivo == null) ? new Resolutivos() : contradiccion.Resolutivo;
 
             if (!isUpdating)
-                BtnSalir.Visibility = Visibility.Collapsed;
+                BtnSalvar.Visibility = Visibility.Collapsed;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)

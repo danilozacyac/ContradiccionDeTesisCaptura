@@ -792,14 +792,14 @@
                            VerticalAlignment="Top"
                            Content="Razones no resolución:" />
                     <TextBox Name="TxtRazones"
-                             AcceptsReturn="True"
-                             TextWrapping="Wrap"
                              Width="300"
                              Height="200"
                              Margin="40,220,0,0"
                              HorizontalAlignment="Left"
                              VerticalAlignment="Top"
-                             Text="{Binding Razones}" />
+                             AcceptsReturn="True"
+                             Text="{Binding Razones}"
+                             TextWrapping="Wrap" />
                 </Grid>
             </TabItem>
         </TabControl>
@@ -807,11 +807,11 @@
                            Grid.Row="2"
                            Width="70"
                            Height="25"
-                           Margin="0,17,106,0"
+                           Margin="0,17,118,0"
                            HorizontalAlignment="Right"
                            VerticalAlignment="Top"
                            Click="BtnSalvar_Click"
-                           Content="Salvar" />
+                           Content="Guardar" />
         <telerik:RadButton x:Name="BtnSalir"
                            Grid.Row="2"
                            Width="70"

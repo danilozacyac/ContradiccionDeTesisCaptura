@@ -6,6 +6,9 @@ using System.Linq;
 using System.Windows;
 using ContradiccionesDirectorioApi.Model;
 using Telerik.Windows.Controls;
+using ContradiccionesDirectorioApi.Dao;
+using System.Collections.ObjectModel;
+using ContradiccionDeTesisCaptura.ConsultaViewa;
 
 namespace ContradiccionDeTesisCaptura
 {
@@ -15,6 +18,7 @@ namespace ContradiccionDeTesisCaptura
     public partial class Launcher : Window
     {
         private ListadoDeContradicciones contradicciones;
+        private ObservableCollection<Consulta> listaConsulta;
 
         public Launcher()
         {
@@ -39,15 +43,22 @@ namespace ContradiccionDeTesisCaptura
         }
 
 
-
+        int tipoUsuario = 2;
         #region Background Worker
 
         private BackgroundWorker worker = new BackgroundWorker();
         private void WorkerDoWork(object sender, DoWorkEventArgs e)
         {
-            contradicciones = new ListadoDeContradicciones();
-            ContradiccionesModel conModel = new ContradiccionesModel();
-            contradicciones.Listado = conModel.GetContradicciones();
+            tipoUsuario = new AccesoModel().ObtenerTipoUsuario();
+
+            if (tipoUsuario == 1)
+            {
+                contradicciones = new ListadoDeContradicciones();
+                ContradiccionesModel conModel = new ContradiccionesModel();
+                contradicciones.Listado = conModel.GetContradicciones();
+            }
+            else
+                listaConsulta = new ConsultaModel().GetContradicciones();
             
         }
 
@@ -55,9 +66,20 @@ namespace ContradiccionDeTesisCaptura
         {
             //Dispatcher.BeginInvoke(new Action<ObservableCollection<Organismos>>(this.UpdateGridDataSource), e.Result);
             this.BusyIndicator.IsBusy = false;
-            MainWindow diccionario = new MainWindow(contradicciones);
-            diccionario.Show();
+
+            if (tipoUsuario == 1)
+            {
+                MainWindow diccionario = new MainWindow(contradicciones);
+                diccionario.Show();
+            }
+            else
+            {
+                VistaConsulta vista = new VistaConsulta(listaConsulta);
+                vista.Show();
+            }
             this.Close();
+
+            
         }
 
         private void LaunchBusyIndicator()

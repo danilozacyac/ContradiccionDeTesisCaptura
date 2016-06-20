@@ -139,6 +139,9 @@
     <Compile Include="CapturaTesis.xaml.cs">
       <DependentUpon>CapturaTesis.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ConsultaViewa\VistaConsulta.xaml.cs">
+      <DependentUpon>VistaConsulta.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ContraInfoGral.xaml.cs">
       <DependentUpon>ContraInfoGral.xaml</DependentUpon>
     </Compile>
@@ -170,6 +173,10 @@
     <Page Include="CapturaTesis.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ConsultaViewa\VistaConsulta.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="ContradiccionesWin.xaml">
       <SubType>Designer</SubType>
@@ -385,6 +392,15 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\check.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\pdf.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\escoba.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Excel.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

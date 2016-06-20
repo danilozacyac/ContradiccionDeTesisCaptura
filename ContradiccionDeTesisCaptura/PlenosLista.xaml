@@ -6,8 +6,9 @@
                    Width="350"
                    Height="500"
                    Header="PlenosLista"
+                   Loaded="RadWindow_Loaded"
                    ResizeMode="NoResize"
-                   WindowStartupLocation="CenterScreen" Loaded="RadWindow_Loaded">
+                   WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="25" />
@@ -19,26 +20,30 @@
                                   LabelText="Buscar Pleno de Circuito"
                                   TextWrapping="Wrap" />
 
-        <telerik:RadListBox x:Name="RLstPlenos" Grid.Row="1"
+        <telerik:RadListBox x:Name="RLstPlenos"
+                            Grid.Row="1"
                             HorizontalAlignment="Stretch"
                             VerticalAlignment="Stretch"
                             DisplayMemberPath="Organismo"
                             ItemsSource="{Binding}"
-                            SelectedValuePath="IdOrganismo" SelectionChanged="RLstPlenos_SelectionChanged" />
+                            SelectedValuePath="IdOrganismo"
+                            SelectionChanged="RLstPlenos_SelectionChanged" />
         <telerik:RadButton x:Name="RBtnUpdate"
                            Grid.Row="2"
                            Width="75"
                            Margin="10,10,0,0"
                            HorizontalAlignment="Left"
                            VerticalAlignment="Top"
-                           Content="Actualizar" Click="RBtnUpdate_Click" />
+                           Click="RBtnUpdate_Click"
+                           Content="Actualizar" />
         <telerik:RadButton x:Name="RBtnAgregar"
                            Grid.Row="2"
                            Width="75"
                            Margin="95,10,0,0"
                            HorizontalAlignment="Left"
                            VerticalAlignment="Top"
-                           Content="Agregar" Click="RBtnAgregar_Click" />
+                           Click="RBtnAgregar_Click"
+                           Content="Agregar" />
 
         <telerik:RadButton x:Name="RBtnSalir"
                            Grid.Row="2"
@@ -46,7 +51,8 @@
                            Margin="0,10,10,0"
                            HorizontalAlignment="Right"
                            VerticalAlignment="Top"
-                           Content="Salir" Click="RBtnSalir_Click" />
+                           Click="RBtnSalir_Click"
+                           Content="Salir" />
 
     </Grid>
 </telerik:RadWindow>

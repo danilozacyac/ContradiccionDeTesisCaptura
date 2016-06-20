@@ -52,6 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Dao\Admisorio.cs" />
+    <Compile Include="Dao\Consulta.cs" />
     <Compile Include="Dao\Contradicciones.cs" />
     <Compile Include="Dao\Criterios.cs" />
     <Compile Include="Dao\Ejecutoria.cs" />
@@ -63,7 +64,9 @@
     <Compile Include="Dao\Tesis.cs" />
     <Compile Include="Dao\Tipos.cs" />
     <Compile Include="DataAccess\DbConnDac.cs" />
+    <Compile Include="Model\AccesoModel.cs" />
     <Compile Include="Model\AdmisorioModel.cs" />
+    <Compile Include="Model\ConsultaModel.cs" />
     <Compile Include="Model\ContradiccionesModel.cs" />
     <Compile Include="Model\CriteriosModel.cs" />
     <Compile Include="Model\EjecutoriasModel.cs" />

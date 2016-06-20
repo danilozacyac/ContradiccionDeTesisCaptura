@@ -24,7 +24,8 @@
                  AcceptsReturn="True"
                  Text="{Binding Criterio,
                                 Mode=TwoWay}"
-                 TextWrapping="Wrap" TextChanged="TxtCriterio_TextChanged" />
+                 TextChanged="TxtCriterio_TextChanged"
+                 TextWrapping="Wrap" />
         <Label Name="label2"
                Height="28"
                Margin="28,12,0,0"
@@ -76,7 +77,8 @@
                            HorizontalAlignment="Left"
                            VerticalAlignment="Top"
                            Click="BtnAgregar_Click"
-                           Content="&lt;&lt; Agregar" IsEnabled="False" />
+                           Content="&lt;&lt; Agregar"
+                           IsEnabled="False" />
         <telerik:RadButton Name="BtnQuitar"
                            Width="91"
                            Height="23"

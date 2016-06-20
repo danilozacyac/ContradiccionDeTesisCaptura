@@ -1,0 +1,125 @@
+﻿<telerik:RadWindow x:Class="ContradiccionDeTesisCaptura.ConsultaViewa.VistaConsulta"
+                   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                   xmlns:UIControls="clr-namespace:UIControls;assembly=UIControls"
+                   xmlns:converter="clr-namespace:ContradiccionDeTesisCaptura.Converters"
+                   xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
+                   Width="800"
+                   Height="500"
+                   Header=""
+                   Loaded="RadWindow_Loaded"
+                   WindowStartupLocation="CenterScreen"
+                   WindowState="Maximized">
+    <telerik:RadWindow.Resources>
+        <converter:StatusConverter x:Key="statusConverter" />
+    </telerik:RadWindow.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="50" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <telerik:RadRibbonView ApplicationButtonVisibility="Collapsed" ApplicationName="Consulta de la información relativa a las contradicciones de tesis">
+            <telerik:RadRibbonTab Header="General">
+                <telerik:RadRibbonGroup Header="Consulta">
+                    <telerik:RadRibbonButton x:Name="RBtnVerDetalle"
+                                             Content="Ver detalle"
+                                             LargeImage="/ContradiccionDeTesisCaptura;component/Resources/1425495863_notes.png"
+                                             Size="Large" />
+                    <telerik:RadRibbonButton x:Name="RbtnLimpiarF"
+                                             Content="Limpiar filtros"
+                                             LargeImage="/ContradiccionDeTesisCaptura;component/Resources/escoba.png"
+                                             Size="Large" />
+                </telerik:RadRibbonGroup>
+                <telerik:RadRibbonGroup Header="Exportar">
+                    <telerik:RadRibbonButton x:Name="RBtnExportaExcel"
+                                             Content="Excel"
+                                             LargeImage="/ContradiccionDeTesisCaptura;component/Resources/Excel.png"
+                                             Size="Large" />
+                    <telerik:RadRibbonButton x:Name="RBtnExportaPdf"
+                                             Content="PDF"
+                                             LargeImage="/ContradiccionDeTesisCaptura;component/Resources/pdf_128.png"
+                                             Size="Large" />
+                </telerik:RadRibbonGroup>
+            </telerik:RadRibbonTab>
+        </telerik:RadRibbonView>
+
+        <Label Grid.Row="1"
+               Margin="10,10,0,0"
+               HorizontalAlignment="Left"
+               VerticalAlignment="Top"
+               Content="Buscar:"
+               FontSize="16"
+               FontWeight="Bold" />
+
+        <UIControls:SearchTextBox Grid.Row="1"
+                                  Width="350"
+                                  Margin="79,15,0,0"
+                                  HorizontalAlignment="Left"
+                                  VerticalAlignment="Top"
+                                  LabelText="Buscar por expediente, pleno de circuito o tema..."
+                                  TextWrapping="NoWrap" />
+
+
+
+        <telerik:RadGridView x:Name="RGridContradicciones"
+                             Grid.Row="2"
+                             Margin="0"
+                             HorizontalAlignment="Stretch"
+                             VerticalAlignment="Stretch"
+                             AutoGenerateColumns="False"
+                             CanUserDeleteRows="False"
+                             CanUserInsertRows="False"
+                             IsReadOnly="False"
+                             ItemsSource="{Binding}"
+                             RowIndicatorVisibility="Collapsed"
+                             ShowGroupPanel="False">
+            <telerik:RadGridView.Columns>
+                <!--<CustomColumn:MyColumnNumber Width="30"
+                                             CellStyle="{StaticResource ColumnaNumerica}"
+                                             Header="#" />-->
+                <!--<telerik:GridViewCheckBoxColumn Width="40"
+                                                DataMemberBinding="{Binding IsComplete}"
+                                                Header="¿Cerrada?"
+                                                IsFilterable="True" />-->
+                <telerik:GridViewDataColumn Width="40"
+                                            DataMemberBinding="{Binding IdContradiccion}"
+                                            Header="Id"
+                                            IsFilterable="False"
+                                            IsVisible="False" />
+                <telerik:GridViewDataColumn Width="80"
+                                            DataMemberBinding="{Binding Expediente}"
+                                            Header="Expediente"
+                                            IsFilterable="False"
+                                            IsVisible="True" />
+                <telerik:GridViewDataColumn Width="250"
+                                            DataMemberBinding="{Binding Pleno}"
+                                            Header="Pleno de Circuito"
+                                            IsFilterable="True"
+                                            ShowFieldFilters="False" />
+
+                <telerik:GridViewDataColumn Width="*"
+                                            DataMemberBinding="{Binding Tema}"
+                                            Header="Tema"
+                                            IsFilterable="False" />
+                <telerik:GridViewDataColumn Width="90"
+                                            DataMemberBinding="{Binding Estado,
+                                                                        Converter={StaticResource statusConverter}}"
+                                            Header="Estado" />
+
+                <telerik:GridViewDataColumn Width="150"
+                                            DataFormatString="{} {0:dd/MM/yyyy}"
+                                            DataMemberBinding="{Binding FechaResolucion}"
+                                            Header="Fecha de resolución"
+                                            IsFilterable="True"
+                                            ShowDistinctFilters="False" />
+
+
+            </telerik:RadGridView.Columns>
+
+        </telerik:RadGridView>
+
+    </Grid>
+</telerik:RadWindow>
