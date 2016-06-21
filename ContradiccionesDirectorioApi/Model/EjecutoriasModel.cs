@@ -103,6 +103,13 @@ namespace ContradiccionesDirectorioApi.Model
 
         }
 
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="ius"></param>
+        /// <param name="idContradiccion"></param>
+        /// <param name="tipoRelacion">1. Ejecutoria-Tesis   2. Ejecutoria-Ejecutoria   3. Ejecutoria-Voto</param>
         public void SetRelacionesEjecutorias(int ius,int idContradiccion, int tipoRelacion)
         {
             SqlConnection connection = DbConnDac.GetConnection();
@@ -157,7 +164,12 @@ namespace ContradiccionesDirectorioApi.Model
 
 
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="ius"></param>
+        /// <param name="idContradiccion"></param>
+        /// <param name="tipoRelacion">1. Ejecutoria-Tesis   2. Ejecutoria-Ejecutoria   3. Ejecutoria-Voto</param>
         public void DeleteRelacionesEjecutorias(int ius, int idContradiccion, int tipoRelacion)
         {
             SqlConnection connection = DbConnDac.GetConnection();

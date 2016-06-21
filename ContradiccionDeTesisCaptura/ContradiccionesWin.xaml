@@ -735,7 +735,8 @@
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
                                      ItemsSource="{Binding MiEjecutoria.VotosRelacionados,
-                                                           Mode=TwoWay}" />
+                                                           Mode=TwoWay}"
+                                     SelectionChanged="LstVotosRelacionados_SelectionChanged" />
                             <TextBox Name="TxtRelVotos"
                                      Width="120"
                                      Height="23"
@@ -757,6 +758,7 @@
                                     Margin="171,74,0,0"
                                     HorizontalAlignment="Left"
                                     VerticalAlignment="Top"
+                                    Click="BtnEliminarVoto_Click"
                                     Content="Eliminar &gt;&gt;" />
                         </Grid>
                     </GroupBox>
@@ -848,7 +850,7 @@
                 Grid.Row="2"
                 Width="80"
                 Height="25"
-                Margin="0,17,105,0"
+                Margin="0,17,114,0"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Top"
                 Click="BtnSalvar_Click"

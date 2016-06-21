@@ -90,6 +90,9 @@ namespace ContradiccionDeTesisCaptura
                 resol.SetNewResolucion(contradiccion);
             }
 
+            contradiccion.MiEjecutoria.Razones = TxtRazones.Text;
+            contradiccion.MiEjecutoria.FileEjecPath = TxtFileEjecPath.Text;
+
             //Actualiza Info ejecutoria
             EjecutoriasModel eje = new EjecutoriasModel();
 
@@ -163,27 +166,7 @@ namespace ContradiccionDeTesisCaptura
         }
 
 
-        private void BtnAgregarVoto_Click(object sender, RoutedEventArgs e)
-        {
-            if (contradiccion.MiEjecutoria.VotosRelacionados == null)
-                contradiccion.MiEjecutoria.VotosRelacionados = new ObservableCollection<int>();
-
-            NumIusModel numIusModel = new NumIusModel();
-
-            TesisDto tesis = numIusModel.BuscaVoto(Convert.ToInt32(TxtRelVotos.Text));
-
-            if (tesis != null)
-            {
-                EjecutoriasModel model = new EjecutoriasModel();
-                model.SetRelacionesEjecutorias(tesis.Ius, contradiccion.IdContradiccion, 3);
-                TxtRelVotos.Text = String.Empty;
-                contradiccion.MiEjecutoria.VotosRelacionados.Add(tesis.Ius);
-            }
-            else
-            {
-                MessageBox.Show("Ingrese un número de registro IUS válido");
-            }
-        }
+        
 
         
 
@@ -279,9 +262,9 @@ namespace ContradiccionDeTesisCaptura
         }
 
 
-        
 
-        private void BtnSalir_Click(object sender, RoutedEventArgs e)
+
+        private void BtnSalir_Click_1(object sender, RoutedEventArgs e)
         {
             this.Close();
         }
@@ -558,12 +541,63 @@ namespace ContradiccionDeTesisCaptura
 
         #endregion
 
-        private void BtnSalir_Click_1(object sender, RoutedEventArgs e)
+       
+
+
+        #region Ejecutorias
+
+        private int selectedVoto;
+
+
+        private void LstVotosRelacionados_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
-            this.Close();
+            selectedVoto = Convert.ToInt32(LstVotosRelacionados.SelectedItem);
         }
 
-       
+
+
+        private void BtnAgregarVoto_Click(object sender, RoutedEventArgs e)
+        {
+            if (contradiccion.MiEjecutoria.VotosRelacionados == null)
+                contradiccion.MiEjecutoria.VotosRelacionados = new ObservableCollection<int>();
+
+            NumIusModel numIusModel = new NumIusModel();
+
+            TesisDto tesis = numIusModel.BuscaVoto(Convert.ToInt32(TxtRelVotos.Text));
+
+            if (tesis != null)
+            {
+                EjecutoriasModel model = new EjecutoriasModel();
+                model.SetRelacionesEjecutorias(tesis.Ius, contradiccion.IdContradiccion, 3);
+                TxtRelVotos.Text = String.Empty;
+                contradiccion.MiEjecutoria.VotosRelacionados.Add(tesis.Ius);
+            }
+            else
+            {
+                MessageBox.Show("Ingrese un número de registro IUS válido");
+            }
+
+
+        }
+
+        private void BtnEliminarVoto_Click(object sender, RoutedEventArgs e)
+        {
+            if (selectedVoto == 0)
+            {
+                MessageBox.Show("Selecciona el voto del cual quieres eliminar la relación");
+                return;
+            }
+
+            EjecutoriasModel model = new EjecutoriasModel();
+            model.DeleteRelacionesEjecutorias(selectedVoto, contradiccion.IdContradiccion, 3);
+
+            contradiccion.MiEjecutoria.VotosRelacionados.Remove(selectedVoto);
+        }
+        #endregion
+
+        
+
+
 
 
 
