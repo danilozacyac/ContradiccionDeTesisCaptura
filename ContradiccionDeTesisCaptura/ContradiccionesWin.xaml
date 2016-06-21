@@ -194,7 +194,7 @@
                                Margin="6,102,0,0"
                                HorizontalAlignment="Left"
                                VerticalAlignment="Top"
-                               Content="Presidente:" />
+                               Content="Magistrado decano:" />
                         <telerik:RadComboBox Name="CbxPresidente"
                                              Grid.Column="1"
                                              Width="279"

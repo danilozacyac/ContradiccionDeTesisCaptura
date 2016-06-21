@@ -125,6 +125,8 @@ namespace ContradiccionesDirectorioApi.Model
 
             try
             {
+
+
                 dataAdapter = new SqlDataAdapter();
                 dataAdapter.SelectCommand = new SqlCommand("SELECT * FROM Resolucion WHERE IdContradiccion = 0", connection);
 
@@ -135,18 +137,19 @@ namespace ContradiccionesDirectorioApi.Model
                 dr["RegEjecutoria"] = contradiccion.Resolutivo.RegEjecutoria;
                 dr["RegTesis"] = contradiccion.Resolutivo.RegTesis;
                 dr["RubroTesis"] = contradiccion.Resolutivo.RubroTesis;
-                
+                dr["IdResolucion"] = DataBaseUtilities.GetNextIdForUse("Resolucion", "IdResolucion", connection);
 
                 dataSet.Tables["Resolucion"].Rows.Add(dr);
 
                 dataAdapter.InsertCommand = connection.CreateCommand();
-                dataAdapter.InsertCommand.CommandText = "INSERT INTO Resolucion(IdContradiccion,RegEjecutoria,RegTesis,RubroTesis)" +
-                                                        " VALUES(@IdContradiccion,@RegEjecutoria,@RegTesis,@RubroTesis)";
+                dataAdapter.InsertCommand.CommandText = "INSERT INTO Resolucion(IdContradiccion,RegEjecutoria,RegTesis,RubroTesis,IdResolucion)" +
+                                                        " VALUES(@IdContradiccion,@RegEjecutoria,@RegTesis,@RubroTesis,@IdResolucion)";
 
                 dataAdapter.InsertCommand.Parameters.Add("@IdContradiccion", SqlDbType.Int, 0, "IdContradiccion");
                 dataAdapter.InsertCommand.Parameters.Add("@RegEjecutoria", SqlDbType.Int, 0, "RegEjecutoria");
                 dataAdapter.InsertCommand.Parameters.Add("@RegTesis", SqlDbType.Int, 0, "RegTesis");
                 dataAdapter.InsertCommand.Parameters.Add("@RubroTesis", SqlDbType.VarChar, 0, "RubroTesis");
+                dataAdapter.InsertCommand.Parameters.Add("@IdResolucion", SqlDbType.Int, 0, "IdResolucion");
 
                 dataAdapter.Update(dataSet, "Resolucion");
 

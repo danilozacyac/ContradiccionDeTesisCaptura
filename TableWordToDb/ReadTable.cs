@@ -13,7 +13,7 @@ namespace TableWordToDb
 
             // Open a doc file.
             Application application = new Application();
-            Document document = application.Documents.Open(@"C:\Users\lavega\Documents\Visual Studio 2010\Projects\ContradiccionDeTesisCaptura\ContradiccionDeTesisCaptura\bin\Debug\CT.docx");
+            Document document = application.Documents.Open(@"C:\Users\lavega\Documents\CT.docx");
 
             document.ActiveWindow.View.ShowFormatChanges = false;
             document.ActiveWindow.View.ShowRevisionsAndComments = false;
