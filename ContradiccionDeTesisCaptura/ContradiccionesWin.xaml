@@ -78,7 +78,7 @@
                                          SelectedValuePath="IdTipo" />
 
                     <Label Name="label7"
-                           Width="83"
+                           Width="110"
                            Height="28"
                            Margin="47,59,0,0"
                            HorizontalAlignment="Left"
@@ -268,6 +268,7 @@
                                          IsReadOnly="True"
                                          ItemsSource="{Binding Criterios,
                                                                Mode=TwoWay}"
+                                         SelectionChanged="RGridCriterios_SelectionChanged"
                                          ShowGroupPanel="False">
                         <telerik:RadGridView.Columns>
 
@@ -299,6 +300,15 @@
                                        VerticalAlignment="Bottom"
                                        Click="BtnDelCriterio_Click"
                                        Content="Eliminar Criterio" />
+                    <telerik:RadButton x:Name="BtnVerCriterio"
+                                       Grid.Row="2"
+                                       Width="96"
+                                       Height="Auto"
+                                       Margin="25,234,0,0"
+                                       HorizontalAlignment="Left"
+                                       VerticalAlignment="Top"
+                                       Click="BtnVerCriterio_Click"
+                                       Content="Ver criterio" />
                 </Grid>
             </TabItem>
 
@@ -377,6 +387,7 @@
                                          IsReadOnly="True"
                                          ItemsSource="{Binding Resolutivo.PuntosResolutivos,
                                                                Mode=TwoWay}"
+                                         SelectionChanged="RGridResolutivos_SelectionChanged"
                                          ShowGroupPanel="False">
                         <telerik:RadGridView.Columns>
 
@@ -434,6 +445,14 @@
                                        VerticalAlignment="Bottom"
                                        Click="BtnDltResolutivo_Click"
                                        Content="Eliminar Resolutivo" />
+                    <telerik:RadButton x:Name="BtnVerResolutivo"
+                                       Width="106"
+                                       Height="23"
+                                       Margin="35,0,0,29"
+                                       HorizontalAlignment="Left"
+                                       VerticalAlignment="Bottom"
+                                       Click="BtnVerResolutivo_Click"
+                                       Content="Ver Resolutivo" />
                     <Grid Grid.Row="1">
                         <Label x:Name="label36"
                                Height="30"
@@ -467,6 +486,16 @@
                                            VerticalAlignment="Bottom"
                                            Click="BtnEliminaReturno_Click"
                                            Content="Eliminar Returno" />
+
+                        <telerik:RadButton x:Name="BtnVerReturno"
+                                           Width="106"
+                                           Height="24"
+                                           Margin="37,0,0,12"
+                                           HorizontalAlignment="Left"
+                                           VerticalAlignment="Bottom"
+                                           Click="BtnVerReturno_Click"
+                                           Content="Ver Returno" />
+
                         <telerik:RadGridView x:Name="RGridReturnos"
                                              Margin="35,45,35,73"
                                              HorizontalAlignment="Stretch"
@@ -477,6 +506,7 @@
                                              IsReadOnly="True"
                                              ItemsSource="{Binding Returnos,
                                                                    Mode=TwoWay}"
+                                             SelectionChanged="RGridReturnos_SelectionChanged"
                                              ShowGroupPanel="False">
                             <telerik:RadGridView.Columns>
 
@@ -524,6 +554,7 @@
                                        VerticalAlignment="Bottom"
                                        Click="BtnEliminar_Click"
                                        Content="Eliminar Tesis" />
+
                     <telerik:RadButton Name="BtnAddTesis"
                                        Width="107"
                                        Height="23"
@@ -532,6 +563,16 @@
                                        VerticalAlignment="Bottom"
                                        Click="BtnAddTesis_Click"
                                        Content="Agregar Tesis" />
+
+                    <telerik:RadButton Name="BtnVerTesis"
+                                       Width="107"
+                                       Height="23"
+                                       Margin="40,0,0,12"
+                                       HorizontalAlignment="Left"
+                                       VerticalAlignment="Bottom"
+                                       Click="BtnVerTesis_Click"
+                                       Content="Ver Tesis" />
+
                     <telerik:RadGridView Name="GTesisContra"
                                          Grid.Row="0"
                                          Margin="40,30,30,45"
@@ -803,23 +844,24 @@
                 </Grid>
             </TabItem>
         </TabControl>
-        <telerik:RadButton Name="BtnSalvar"
-                           Grid.Row="2"
-                           Width="70"
-                           Height="25"
-                           Margin="0,17,118,0"
-                           HorizontalAlignment="Right"
-                           VerticalAlignment="Top"
-                           Click="BtnSalvar_Click"
-                           Content="Guardar" />
-        <telerik:RadButton x:Name="BtnSalir"
-                           Grid.Row="2"
-                           Width="70"
-                           Height="25"
-                           Margin="788,17,0,0"
-                           HorizontalAlignment="Left"
-                           VerticalAlignment="Top"
-                           Click="BtnSalvar_Click"
-                           Content="Salir" />
+        <Button Name="BtnSalvar"
+                Grid.Row="2"
+                Width="80"
+                Height="25"
+                Margin="0,17,105,0"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Top"
+                Click="BtnSalvar_Click"
+                Content="Guardar"
+                Style="{StaticResource BlueButton}" />
+        <Button x:Name="BtnSalir"
+                Grid.Row="2"
+                Width="80"
+                Height="25"
+                Margin="799,17,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Content="Salir"
+                Style="{StaticResource BlueButton}" Click="BtnSalir_Click_1" />
     </Grid>
 </telerik:RadWindow>

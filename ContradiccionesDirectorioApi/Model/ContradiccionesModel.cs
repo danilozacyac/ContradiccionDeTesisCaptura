@@ -212,6 +212,69 @@ namespace ContradiccionesDirectorioApi.Model
             return contradicciones;
         }
 
+        public Contradicciones GetContradicciones(int idContradiccion)
+        {
+            Contradicciones contradiccion = null;
+
+            SqlConnection connection = DbConnDac.GetConnection();
+            SqlCommand cmd;
+            SqlDataReader reader;
+
+
+            try
+            {
+                connection.Open();
+
+                cmd = new SqlCommand("SELECT * FROM Contradicciones WHERE IdContradiccion = @IdContradiccion ORDER By ExpedienteAnio,ExpedienteNumero", connection);
+                cmd.Parameters.AddWithValue("@IdContradiccion", idContradiccion);
+                reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    contradiccion = new Contradicciones()
+                    {
+                        IdContradiccion = (Int32)reader["IdContradiccion"],
+                        ExpedienteNumero = Convert.ToInt32(reader["ExpedienteNumero"]),
+                        ExpedienteAnio = Convert.ToInt32(reader["ExpedienteAnio"]),
+                        IdTipoAsunto = Convert.ToInt32(reader["IdTipoAsunto"]),
+                        Tema = reader["Tema"].ToString(),
+                        Status = Convert.ToInt32(reader["Status"]),
+                        FechaTurno = DateTimeUtilities.GetDateFromReader(reader, "FechaTurno"),
+                        Observaciones = reader["Observaciones"].ToString(),
+                        Denunciantes = reader["Denunciantes"].ToString(),
+                        IdPlenoCircuito = Convert.ToInt32(reader["IdPlenoCircuito"]),
+                        IdPresidentePleno = Convert.ToInt32(reader["IdPresidentePleno"]),
+                        IdPonentePleno = Convert.ToInt32(reader["IdPonentePleno"]),
+                        IsComplete = Convert.ToBoolean(reader["Completa"] as Int16? ?? 0),
+                        ExpProvisional = reader["ExpedienteProvisional"].ToString()
+                    };
+
+
+                }
+
+                reader.Close();
+                cmd.Dispose();
+
+                this.GetContradiccionComplementInfo(ref contradiccion);
+            }
+            catch (SqlException ex)
+            {
+                string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
+                ErrorUtilities.SetNewErrorMessage(ex, methodName + " Exception,ContradiccionesModel", "Contradicciones");
+            }
+            catch (Exception ex)
+            {
+                string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
+                ErrorUtilities.SetNewErrorMessage(ex, methodName + " Exception,ContradiccionesModel", "Contradicciones");
+            }
+            finally
+            {
+                connection.Close();
+            }
+
+            return contradiccion;
+        }
+
         public void GetContradiccionComplementInfo(ref Contradicciones contradiccion)
         {
             contradiccion.Criterios = new CriteriosModel().GetCriterios(contradiccion.IdContradiccion);

@@ -7,6 +7,7 @@ namespace ContradiccionesDirectorioApi.Dao
 {
     public class Criterios : INotifyPropertyChanged
     {
+        private bool isEnable;
         private int idCriterio;
         private int idContradiccion;
         private int orden;
@@ -18,6 +19,18 @@ namespace ContradiccionesDirectorioApi.Dao
         private string observaciones;
 
        
+        public bool IsEnable
+        {
+            get
+            {
+                return this.isEnable;
+            }
+            set
+            {
+                this.isEnable = value;
+            }
+        }
+
         public int IdCriterio
         {
             get

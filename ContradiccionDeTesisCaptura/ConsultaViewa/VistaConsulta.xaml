@@ -4,6 +4,7 @@
                    xmlns:UIControls="clr-namespace:UIControls;assembly=UIControls"
                    xmlns:converter="clr-namespace:ContradiccionDeTesisCaptura.Converters"
                    xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
+                   xmlns:CustomColumn="clr-namespace:ContradiccionDeTesisCaptura"
                    Width="800"
                    Height="500"
                    Header=""
@@ -27,7 +28,7 @@
                     <telerik:RadRibbonButton x:Name="RBtnVerDetalle"
                                              Content="Ver detalle"
                                              LargeImage="/ContradiccionDeTesisCaptura;component/Resources/1425495863_notes.png"
-                                             Size="Large" />
+                                             Size="Large" Click="RBtnVerDetalle_Click" />
                     <telerik:RadRibbonButton x:Name="RbtnLimpiarF"
                                              Content="Limpiar filtros"
                                              LargeImage="/ContradiccionDeTesisCaptura;component/Resources/escoba.png"
@@ -75,11 +76,11 @@
                              IsReadOnly="False"
                              ItemsSource="{Binding}"
                              RowIndicatorVisibility="Collapsed"
-                             ShowGroupPanel="False">
+                             ShowGroupPanel="False" SelectionChanged="RGridContradicciones_SelectionChanged">
             <telerik:RadGridView.Columns>
-                <!--<CustomColumn:MyColumnNumber Width="30"
+                <CustomColumn:MyColumnNumber Width="30"
                                              CellStyle="{StaticResource ColumnaNumerica}"
-                                             Header="#" />-->
+                                             Header="#" />
                 <!--<telerik:GridViewCheckBoxColumn Width="40"
                                                 DataMemberBinding="{Binding IsComplete}"
                                                 Header="¿Cerrada?"

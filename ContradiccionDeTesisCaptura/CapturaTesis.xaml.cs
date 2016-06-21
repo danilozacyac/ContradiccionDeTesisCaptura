@@ -23,11 +23,18 @@ namespace ContradiccionDeTesisCaptura
             InitializeComponent();
         }
 
-        public CapturaTesis(Tesis tesis)
+        public CapturaTesis(Tesis tesis, bool isUpdating)
         {
             InitializeComponent();
             this.tesis = tesis;
-            isUpdating = true;
+            this.isUpdating = isUpdating;
+
+            if (!isUpdating)
+            {
+                TxtRubro.IsReadOnly = true;
+                GSuperior.IsEnabled = false;
+                GInferior.IsEnabled = false;
+            }
         }
 
         public CapturaTesis(ObservableCollection<Tesis> listaTesis,int idContradiccion)

@@ -2,8 +2,8 @@
                    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                    xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
-                   Width="583"
-                   Height="428"
+                   Width="573"
+                   Height="432"
                    Header="Returnos"
                    Loaded="Window_Loaded"
                    ResizeMode="NoResize"
@@ -21,7 +21,7 @@
                                HorizontalAlignment="Left"
                                VerticalAlignment="Top"
                                SelectedValue="{Binding Fecha}" />
-        <GroupBox Name="groupBox1"
+        <GroupBox x:Name="GpOrigen"
                   Width="503"
                   Height="134"
                   Margin="31,59,0,0"
@@ -59,7 +59,7 @@
                          Text="{Binding ExpOrigen}" />
             </Grid>
         </GroupBox>
-        <GroupBox Name="groupBox2"
+        <GroupBox x:Name="GpDestino"
                   Width="503"
                   Height="134"
                   Margin="31,210,0,0"
@@ -98,17 +98,19 @@
             </Grid>
         </GroupBox>
         <telerik:RadButton Name="BtnAceptar"
-                           Width="75"
+                           Style="{StaticResource BlueButton}"
+                           Width="80"
                            Height="23"
-                           Margin="0,353,109,0"
+                           Margin="0,357,110,0"
                            HorizontalAlignment="Right"
                            VerticalAlignment="Top"
                            Click="BtnAceptar_Click"
-                           Content="Aceptar" />
+                           Content="Guardar" />
         <telerik:RadButton Name="BtnCancelar"
-                           Width="75"
+                           Style="{StaticResource BlueButton}"
+                           Width="80"
                            Height="23"
-                           Margin="459,353,0,0"
+                           Margin="454,357,0,0"
                            HorizontalAlignment="Left"
                            VerticalAlignment="Top"
                            Click="BtnCancelar_Click"

@@ -32,6 +32,19 @@ namespace ContradiccionDeTesisCaptura
             this.isUpdatingReturno = isUpdatingReturno;
         }
 
+        public Returnos(ReturnosClass returno)
+        {
+            InitializeComponent();
+            this.returno = returno;
+            this.isUpdatingReturno = false;
+
+            RDateReturno.IsEnabled = false;
+            GpOrigen.IsEnabled = false;
+            GpDestino.IsEnabled = false;
+
+            BtnAceptar.Visibility = Visibility.Collapsed;
+            BtnCancelar.Content = "Salir";
+        }
         
 
         private void Window_Loaded(object sender, RoutedEventArgs e)

@@ -1,4 +1,5 @@
 ﻿using ContradiccionesDirectorioApi.Dao;
+using ContradiccionesDirectorioApi.Model;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -22,6 +23,8 @@ namespace ContradiccionDeTesisCaptura.ConsultaViewa
     public partial class VistaConsulta
     {
         private ObservableCollection<Consulta> contradicciones;
+        private Consulta selectedConsulta;
+        private Contradicciones selectedContradiccion;
 
         public VistaConsulta(ObservableCollection<Consulta> contradicciones)
         {
@@ -33,5 +36,21 @@ namespace ContradiccionDeTesisCaptura.ConsultaViewa
         {
             RGridContradicciones.DataContext = contradicciones;
         }
+
+        private void RGridContradicciones_SelectionChanged(object sender, SelectionChangeEventArgs e)
+        {
+            selectedConsulta = RGridContradicciones.SelectedItem as Consulta;
+
+            selectedContradiccion = new ContradiccionesModel().GetContradicciones(selectedConsulta.Id);
+        }
+
+        private void RBtnVerDetalle_Click(object sender, RoutedEventArgs e)
+        {
+            ContradiccionesWin win = new ContradiccionesWin(selectedContradiccion, false);
+            win.Owner = this;
+            win.ShowDialog();
+        }
+
+       
     }
 }

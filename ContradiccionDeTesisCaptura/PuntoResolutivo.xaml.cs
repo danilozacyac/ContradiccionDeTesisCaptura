@@ -28,6 +28,16 @@ namespace ContradiccionDeTesisCaptura
             this.contradiccion = contradiccion;
         }
 
+        public PuntoResolutivo(PResolutivos resolutivo)
+        {
+            InitializeComponent();
+            this.resolutivo = resolutivo;
+            
+            BtnAceptar.Visibility = Visibility.Collapsed;
+            BtnCancelar.Content = "Salir";
+            TxtResolutivo.IsReadOnly = true;
+        }
+
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             this.DataContext = resolutivo;

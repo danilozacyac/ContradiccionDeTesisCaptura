@@ -21,6 +21,25 @@ namespace ContradiccionDeTesisCaptura
         private Criterios criterios;
         private readonly bool isUpdatingCriterio;
 
+
+        public CriteriosWin(Criterios criterios, bool isUpdatingCriterio)
+        {
+            InitializeComponent();
+            this.isUpdatingCriterio = isUpdatingCriterio;
+
+            this.criterios = criterios;
+
+            BtnAceptar.Visibility = Visibility.Collapsed;
+            BtnCancelar.Content = "Salir";
+            BtnQuitar.Visibility = Visibility.Collapsed;
+            BtnAgregar.Visibility = Visibility.Collapsed;
+            CbxOrganismos.IsEnabled = false;
+            TxtCriterio.IsReadOnly = true;
+            TxtObservacionesCriterios.IsReadOnly = true;
+
+            criterios.IsEnable = isUpdatingCriterio;
+        }
+
         public CriteriosWin(Contradicciones contradiccion, Criterios criterios, bool isUpdatingCriterio)
         {
             InitializeComponent();
@@ -34,6 +53,7 @@ namespace ContradiccionDeTesisCaptura
                 this.criterios = new Criterios();
                 this.criterios.TesisContendientes = new ObservableCollection<int>();
             }
+           
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)

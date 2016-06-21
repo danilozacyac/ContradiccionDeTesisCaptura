@@ -55,13 +55,10 @@ namespace ContradiccionDeTesisCaptura
             CbxPonente.SelectedValue = contradiccion.IdPonentePleno;
 
             this.LoadNoBindings();
+            this.UpdateVisibility();
         }
 
-        private void BtnAddCriterio_Click(object sender, RoutedEventArgs e)
-        {
-            CriteriosWin criterios = new CriteriosWin(contradiccion,null,false);
-            criterios.ShowDialog();
-        }
+        
 
         private void BtnSalvar_Click(object sender, RoutedEventArgs e)
         {
@@ -165,27 +162,6 @@ namespace ContradiccionDeTesisCaptura
             e.Handled = StringUtilities.IsTextAllowed(e.Text);
         }
 
-        //private void BtnAgregarTesis_Click(object sender, RoutedEventArgs e)
-        //{
-        //    if (contradiccion.MiEjecutoria.TesisRelacionadas == null)
-        //        contradiccion.MiEjecutoria.TesisRelacionadas = new ObservableCollection<int>();
-
-        //    NumIusModel numIusModel = new NumIusModel();
-
-        //    TesisDto tesis = numIusModel.BuscaTesis(Convert.ToInt32(TxtRelTesis.Text));
-
-        //    if (tesis != null)
-        //    {
-        //        EjecutoriasModel model = new EjecutoriasModel();
-        //        model.SetRelacionesEjecutorias(tesis.Ius, contradiccion.IdContradiccion, 1);
-        //        TxtRelTesis.Text = String.Empty;
-        //        contradiccion.MiEjecutoria.TesisRelacionadas.Add(tesis.Ius);
-        //    }
-        //    else
-        //    {
-        //        MessageBox.Show("Ingrese un número de registro IUS válido");
-        //    }
-        //}
 
         private void BtnAgregarVoto_Click(object sender, RoutedEventArgs e)
         {
@@ -209,11 +185,7 @@ namespace ContradiccionDeTesisCaptura
             }
         }
 
-        private void BtnAgregaReturno_Click(object sender, RoutedEventArgs e)
-        {
-            Returnos returno = new Returnos(contradiccion);
-            returno.Show();
-        }
+        
 
         private void LoadNoBindings()
         {
@@ -226,126 +198,46 @@ namespace ContradiccionDeTesisCaptura
             CbxPlenos.SelectedValue = contradiccion.IdPlenoCircuito;
         }
 
-        private void BtnEditCriterios_Click(object sender, RoutedEventArgs e)
-        {
-            Criterios editCriterio = (Criterios)RGridCriterios.SelectedItem;
 
-            if (editCriterio != null)
+        private void UpdateVisibility()
+        {
+            if (isUpdating)
             {
-                CriteriosWin criterios = new CriteriosWin(contradiccion, editCriterio, true);
-                criterios.ShowDialog();
+                BtnVerCriterio.Visibility = Visibility.Collapsed;
+                BtnVerResolutivo.Visibility = Visibility.Collapsed;
+                BtnVerReturno.Visibility = Visibility.Collapsed;
+                BtnVerTesis.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                BtnAddCriterio.Visibility = Visibility.Collapsed;
+                BtnEditCriterios.Visibility = Visibility.Collapsed;
+                BtnDelCriterio.Visibility = Visibility.Collapsed;
+                GOficios.IsReadOnly = true;
+
+                BtnAddResolutivo.Visibility = Visibility.Collapsed;
+                BtnEditResolutivo.Visibility = Visibility.Collapsed;
+                BtnDltResolutivo.Visibility = Visibility.Collapsed;
+
+                BtnAgregaReturno.Visibility = Visibility.Collapsed;
+                BtnEditaReturno.Visibility = Visibility.Collapsed;
+                BtnEliminaReturno.Visibility = Visibility.Collapsed;
+
+                BtnAddTesis.Visibility = Visibility.Collapsed;
+                BtnEditar.Visibility = Visibility.Collapsed;
+                BtnEliminar.Visibility = Visibility.Collapsed;
             }
         }
-
-        private void BtnDelCriterio_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBoxResult result = MessageBox.Show("¿Deseas eliminar el criterio seleccionado?", "Atención:", MessageBoxButton.YesNo, MessageBoxImage.Question);
-
-            if (result == MessageBoxResult.Yes)
-            {
-                Criterios criterio = (Criterios)RGridCriterios.SelectedItem;
-                CriteriosModel model = new CriteriosModel();
-                model.DeleteCriterio(criterio);
-
-                contradiccion.Criterios.Remove(criterio);
-            }
-        }
-
-        private void BtnAddResolutivo_Click(object sender, RoutedEventArgs e)
-        {
-            PuntoResolutivo punto = new PuntoResolutivo(contradiccion);
-            punto.ShowDialog();
-        }
-
-        private void BtnEditResolutivo_Click(object sender, RoutedEventArgs e)
-        {
-            PResolutivos resolutivo = (PResolutivos)RGridResolutivos.SelectedItem;
-
-            PuntoResolutivo punto = new PuntoResolutivo(contradiccion,resolutivo);
-            punto.ShowDialog();
-        }
-
-        private void BtnDltResolutivo_Click(object sender, RoutedEventArgs e)
-        {
-            PResolutivos resolutivo = (PResolutivos)RGridResolutivos.SelectedItem;
-
-            ResolucionModel model = new ResolucionModel();
-            model.DeleteResolutivo(resolutivo.IdResolutivo);
-
-            contradiccion.Resolutivo.PuntosResolutivos.Remove(resolutivo);
-        }
-
-        private void BtnEditaReturno_Click(object sender, RoutedEventArgs e)
-        {
-            ReturnosClass returno = (ReturnosClass)RGridReturnos.SelectedItem;
-
-            Returnos retWin = new Returnos(contradiccion, returno, true);
-            retWin.ShowDialog();
-        }
-
-        private void BtnEliminaReturno_Click(object sender, RoutedEventArgs e)
-        {
-            ReturnosClass returno = (ReturnosClass)RGridReturnos.SelectedItem;
-            ReturnosModel model = new ReturnosModel();
-            model.DeleteReturno(returno.IdReturno);
-
-            contradiccion.Returnos.Remove(returno);
-        }
+       
 
         private void BtnObservaciones_Click(object sender, RoutedEventArgs e)
         {
             Observaciones observ = new Observaciones(contradiccion);
+            observ.Owner = this;
             observ.ShowDialog();
         }
 
-        private void BtnAddTesis_Click(object sender, RoutedEventArgs e)
-        {
-            CapturaTesis captura = new CapturaTesis(contradiccion.MiTesis,contradiccion.IdContradiccion);
-            captura.Show();
-        }
-
-        private Tesis selectedTesis;
-
-        private void GTesisContra_SelectionChanged(object sender, Telerik.Windows.Controls.SelectionChangeEventArgs e)
-        {
-            selectedTesis = GTesisContra.SelectedItem as Tesis;
-
-            if (selectedTesis != null)
-            {
-                TxtCControl.Text = selectedTesis.ClaveControl;
-                TxtClaveIdent.Text = selectedTesis.ClaveIdentificacion;
-                TxtRubro.Text = selectedTesis.Rubro;
-
-                if (selectedTesis.Tatj == 1)
-                    RadJuris.IsChecked = true;
-                else if (selectedTesis.Tatj == 0)
-                    RadAislada.IsChecked = true;
-                else
-                    RadImprocedente.IsChecked = true;
-            }
-            else
-            {
-                TxtCControl.Text = String.Empty;
-                TxtClaveIdent.Text = String.Empty;
-                TxtRubro.Text = String.Empty;
-                RadJuris.IsChecked = false;
-                RadAislada.IsChecked = false;
-                RadImprocedente.IsChecked = false;
-            }
-        }
-
-        private void BtnEditar_Click(object sender, RoutedEventArgs e)
-        {
-            if (selectedTesis != null)
-            {
-                CapturaTesis captura = new CapturaTesis(selectedTesis);
-                captura.ShowDialog();
-            }
-            else
-            {
-                MessageBox.Show("Debes de seleccionar la tesis que quieres seleccionar");
-            }
-        }
+        
 
         private void GOficios_AddingNewDataItem(object sender, GridViewAddingNewEventArgs e)
         {
@@ -387,6 +279,256 @@ namespace ContradiccionDeTesisCaptura
         }
 
 
+        
+
+        private void BtnSalir_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+
+
+
+       
+
+
+        #region Criterios
+
+        private Criterios selectedCriterio;
+
+        private void RGridCriterios_SelectionChanged(object sender, Telerik.Windows.Controls.SelectionChangeEventArgs e)
+        {
+            selectedCriterio = RGridCriterios.SelectedItem as Criterios;
+        }
+
+        private void BtnAddCriterio_Click(object sender, RoutedEventArgs e)
+        {
+            CriteriosWin criterios = new CriteriosWin(contradiccion, null, false);
+            criterios.ShowDialog();
+        }
+
+        private void BtnEditCriterios_Click(object sender, RoutedEventArgs e)
+        {
+            if (selectedCriterio == null)
+            {
+                MessageBox.Show("Antes de continuar debes de seleccionar el criterio que deseas modificar");
+                return;
+            }
+
+            CriteriosWin criterios = new CriteriosWin(contradiccion, selectedCriterio, true);
+            criterios.ShowDialog();
+        }
+
+        private void BtnDelCriterio_Click(object sender, RoutedEventArgs e)
+        {
+            if (selectedCriterio == null)
+            {
+                MessageBox.Show("Para eliminar un criterio primero debes de seleccionarlo");
+                return;
+            }
+
+            MessageBoxResult result = MessageBox.Show("¿Deseas eliminar el criterio seleccionado?", "Atención:", MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+            if (result == MessageBoxResult.Yes)
+            {
+                CriteriosModel model = new CriteriosModel();
+                model.DeleteCriterio(selectedCriterio);
+
+                contradiccion.Criterios.Remove(selectedCriterio);
+            }
+        }
+
+        private void BtnVerCriterio_Click(object sender, RoutedEventArgs e)
+        {
+            if (selectedCriterio == null)
+            {
+                MessageBox.Show("Para visualizar la información de un criterio primero debes de seleccionarlo");
+                return;
+            }
+
+            CriteriosWin criterios = new CriteriosWin(selectedCriterio, false);
+            criterios.ShowDialog();
+        }
+
+        #endregion
+
+
+        #region Resolutivos
+
+        PResolutivos selectedResolutivo;
+
+        private void RGridResolutivos_SelectionChanged(object sender, Telerik.Windows.Controls.SelectionChangeEventArgs e)
+        {
+            selectedResolutivo = RGridResolutivos.SelectedItem as PResolutivos;
+        }
+
+
+        private void BtnAddResolutivo_Click(object sender, RoutedEventArgs e)
+        {
+            PuntoResolutivo punto = new PuntoResolutivo(contradiccion);
+            punto.Owner = this;
+            punto.ShowDialog();
+        }
+
+        private void BtnEditResolutivo_Click(object sender, RoutedEventArgs e)
+        {
+            if (selectedResolutivo == null)
+            {
+                MessageBox.Show("Para editar la información de un resolutivo, primero debes seleccionarlo");
+                return;
+            }
+
+            PuntoResolutivo punto = new PuntoResolutivo(contradiccion, selectedResolutivo);
+            punto.Owner = this;
+            punto.ShowDialog();
+        }
+
+        private void BtnDltResolutivo_Click(object sender, RoutedEventArgs e)
+        {
+            if (selectedResolutivo == null)
+            {
+                MessageBox.Show("Para eliminar un resolutivo, primero debes seleccionarlo");
+                return;
+            }
+
+            ResolucionModel model = new ResolucionModel();
+            model.DeleteResolutivo(selectedResolutivo.IdResolutivo);
+
+            contradiccion.Resolutivo.PuntosResolutivos.Remove(selectedResolutivo);
+        }
+
+
+        private void BtnVerResolutivo_Click(object sender, RoutedEventArgs e)
+        {
+            if (selectedResolutivo == null)
+            {
+                MessageBox.Show("Para visualizar la información de un resolutivo, primero debes seleccionarlo");
+                return;
+            }
+
+            PuntoResolutivo punto = new PuntoResolutivo(selectedResolutivo);
+            punto.Owner = this;
+            punto.ShowDialog();
+        }
+
+
+        #endregion
+
+
+        #region Returnos
+
+        ReturnosClass selectedReturno;
+
+        private void RGridReturnos_SelectionChanged(object sender, Telerik.Windows.Controls.SelectionChangeEventArgs e)
+        {
+            selectedReturno = RGridReturnos.SelectedItem as ReturnosClass;
+        }
+
+
+        private void BtnAgregaReturno_Click(object sender, RoutedEventArgs e)
+        {
+            Returnos returno = new Returnos(contradiccion);
+            this.Owner = this;
+            returno.Show();
+        }
+
+
+        private void BtnEditaReturno_Click(object sender, RoutedEventArgs e)
+        {
+            if (selectedReturno == null)
+            {
+                MessageBox.Show("Para editar la información de un returno, primero debes seleccionarlo");
+                return;
+            }
+
+            Returnos retWin = new Returnos(contradiccion, selectedReturno, true);
+            this.Owner = this;
+            retWin.ShowDialog();
+        }
+
+        private void BtnEliminaReturno_Click(object sender, RoutedEventArgs e)
+        {
+            if (selectedReturno == null)
+            {
+                MessageBox.Show("Para eliminar un returno primero debes seleccionarlo");
+                return;
+            }
+
+            ReturnosModel model = new ReturnosModel();
+            model.DeleteReturno(selectedReturno.IdReturno);
+
+            contradiccion.Returnos.Remove(selectedReturno);
+        }
+
+        private void BtnVerReturno_Click(object sender, RoutedEventArgs e)
+        {
+            if (selectedReturno == null)
+            {
+                MessageBox.Show("Para visualizar la información de un returno primero debes seleccionarlo");
+                return;
+            }
+
+            Returnos returnoWin = new Returnos(selectedReturno);
+            returnoWin.Owner = this;
+            returnoWin.ShowDialog();
+        }
+
+        #endregion
+
+
+        #region Tesis
+
+       private Tesis selectedTesis;
+
+        private void GTesisContra_SelectionChanged(object sender, Telerik.Windows.Controls.SelectionChangeEventArgs e)
+        {
+            selectedTesis = GTesisContra.SelectedItem as Tesis;
+
+            if (selectedTesis != null)
+            {
+                TxtCControl.Text = selectedTesis.ClaveControl;
+                TxtClaveIdent.Text = selectedTesis.ClaveIdentificacion;
+                TxtRubro.Text = selectedTesis.Rubro;
+
+                if (selectedTesis.Tatj == 1)
+                    RadJuris.IsChecked = true;
+                else if (selectedTesis.Tatj == 0)
+                    RadAislada.IsChecked = true;
+                else
+                    RadImprocedente.IsChecked = true;
+            }
+            else
+            {
+                TxtCControl.Text = String.Empty;
+                TxtClaveIdent.Text = String.Empty;
+                TxtRubro.Text = String.Empty;
+                RadJuris.IsChecked = false;
+                RadAislada.IsChecked = false;
+                RadImprocedente.IsChecked = false;
+            }
+        }
+
+        private void BtnAddTesis_Click(object sender, RoutedEventArgs e)
+        {
+            CapturaTesis captura = new CapturaTesis(contradiccion.MiTesis, contradiccion.IdContradiccion);
+            captura.Owner = this;
+            captura.Show();
+        }
+
+
+        private void BtnEditar_Click(object sender, RoutedEventArgs e)
+        {
+            if (selectedTesis != null)
+            {
+                CapturaTesis captura = new CapturaTesis(selectedTesis,true);
+                captura.ShowDialog();
+            }
+            else
+            {
+                MessageBox.Show("Debes de seleccionar la tesis que quieres seleccionar");
+            }
+        }
+
+
         private void BtnEliminar_Click(object sender, RoutedEventArgs e)
         {
             if (selectedTesis != null)
@@ -400,9 +542,30 @@ namespace ContradiccionDeTesisCaptura
             }
         }
 
-        private void BtnSalir_Click(object sender, RoutedEventArgs e)
+
+        private void BtnVerTesis_Click(object sender, RoutedEventArgs e)
+        {
+            if (selectedTesis != null)
+            {
+                CapturaTesis captura = new CapturaTesis(selectedTesis, false);
+                captura.ShowDialog();
+            }
+            else
+            {
+                MessageBox.Show("Debes de seleccionar la tesis que quieres visualizar");
+            }
+        }
+
+        #endregion
+
+        private void BtnSalir_Click_1(object sender, RoutedEventArgs e)
         {
             this.Close();
         }
+
+       
+
+
+
     }
 }
