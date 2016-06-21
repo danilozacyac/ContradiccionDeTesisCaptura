@@ -8,6 +8,8 @@ using ContradiccionesDirectorioApi.Dao;
 using ContradiccionesDirectorioApi.Model;
 using ContradiccionesDirectorioApi.Utils;
 using TableWordToDb;
+using Telerik.Windows.Controls;
+using System.Windows.Media.Imaging;
 
 namespace ContradiccionDeTesisCaptura
 {
@@ -28,6 +30,17 @@ namespace ContradiccionDeTesisCaptura
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             RGridContradicciones.DataContext = contradicciones.Listado;
+            this.ShowInTaskbar(this, "Contradicción de tesis");
+        }
+
+        public void ShowInTaskbar(RadWindow control, string title)
+        {
+            control.Show();
+            var window = control.ParentOfType<Window>();
+            window.ShowInTaskbar = true;
+            window.Title = title;
+            var uri = new Uri("pack://application:,,,/ContradiccionDeTesisCaptura;component/Resources/updownbar.ico");
+            window.Icon = BitmapFrame.Create(uri);
         }
 
         private void CheckCorrectdelete(bool isDeleteComplete)

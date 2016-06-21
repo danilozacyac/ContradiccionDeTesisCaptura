@@ -105,7 +105,7 @@
                              AutoGenerateColumns="False"
                              CanUserDeleteRows="False"
                              CanUserInsertRows="False"
-                             IsReadOnly="False"
+                             IsReadOnly="True"
                              ItemsSource="{Binding}"
                              RowIndicatorVisibility="Collapsed"
                              SelectionChanged="RGridContradicciones_SelectionChanged"

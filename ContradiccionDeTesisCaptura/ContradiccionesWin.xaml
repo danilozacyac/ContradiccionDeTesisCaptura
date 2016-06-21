@@ -861,7 +861,8 @@
                 Margin="799,17,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
+                Click="BtnSalir_Click_1"
                 Content="Salir"
-                Style="{StaticResource BlueButton}" Click="BtnSalir_Click_1" />
+                Style="{StaticResource BlueButton}" />
     </Grid>
 </telerik:RadWindow>

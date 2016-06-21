@@ -32,7 +32,7 @@
                     <telerik:RadRibbonButton x:Name="RbtnLimpiarF"
                                              Content="Limpiar filtros"
                                              LargeImage="/ContradiccionDeTesisCaptura;component/Resources/escoba.png"
-                                             Size="Large" />
+                                             Size="Large" Click="RbtnLimpiarF_Click" />
                 </telerik:RadRibbonGroup>
                 <telerik:RadRibbonGroup Header="Exportar">
                     <telerik:RadRibbonButton x:Name="RBtnExportaExcel"
@@ -61,7 +61,7 @@
                                   HorizontalAlignment="Left"
                                   VerticalAlignment="Top"
                                   LabelText="Buscar por expediente, pleno de circuito o tema..."
-                                  TextWrapping="NoWrap" />
+                                  TextWrapping="NoWrap" Search="SearchTextBox_Search" />
 
 
 
@@ -73,7 +73,7 @@
                              AutoGenerateColumns="False"
                              CanUserDeleteRows="False"
                              CanUserInsertRows="False"
-                             IsReadOnly="False"
+                             IsReadOnly="True"
                              ItemsSource="{Binding}"
                              RowIndicatorVisibility="Collapsed"
                              ShowGroupPanel="False" SelectionChanged="RGridContradicciones_SelectionChanged">

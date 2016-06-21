@@ -1,5 +1,6 @@
 ﻿using ContradiccionesDirectorioApi.Dao;
 using ContradiccionesDirectorioApi.Model;
+using ScjnUtilities;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -35,7 +36,19 @@ namespace ContradiccionDeTesisCaptura.ConsultaViewa
         private void RadWindow_Loaded(object sender, RoutedEventArgs e)
         {
             RGridContradicciones.DataContext = contradicciones;
+            this.ShowInTaskbar(this, "Contradicción de tesis");
         }
+
+        public void ShowInTaskbar(RadWindow control, string title)
+        {
+            control.Show();
+            var window = control.ParentOfType<Window>();
+            window.ShowInTaskbar = true;
+            window.Title = title;
+            var uri = new Uri("pack://application:,,,/ContradiccionDeTesisCaptura;component/Resources/updownbar.ico");
+            window.Icon = BitmapFrame.Create(uri);
+        }
+
 
         private void RGridContradicciones_SelectionChanged(object sender, SelectionChangeEventArgs e)
         {
@@ -49,6 +62,35 @@ namespace ContradiccionDeTesisCaptura.ConsultaViewa
             ContradiccionesWin win = new ContradiccionesWin(selectedContradiccion, false);
             win.Owner = this;
             win.ShowDialog();
+        }
+
+        private void RbtnLimpiarF_Click(object sender, RoutedEventArgs e)
+        {
+            this.RGridContradicciones.FilterDescriptors.SuspendNotifications();
+            foreach (Telerik.Windows.Controls.GridViewColumn column in this.RGridContradicciones.Columns)
+            {
+                column.ClearFilters();
+            }
+            this.RGridContradicciones.FilterDescriptors.ResumeNotifications();
+        }
+
+        private void SearchTextBox_Search(object sender, RoutedEventArgs e)
+        {
+            String tempString = ((TextBox)sender).Text.ToUpper().Trim();
+
+            if (!String.IsNullOrEmpty(tempString))
+            {
+                //tempString = StringUtilities.PrepareToAlphabeticalOrder(tempString);
+
+                var temporal = (from n in contradicciones
+                                where n.Expediente.Contains(tempString) || n.Pleno.Contains(tempString) || n.Tema.Contains(tempString)
+                                select n).ToList();
+                RGridContradicciones.DataContext = temporal;
+            }
+            else
+            {
+                RGridContradicciones.DataContext = contradicciones;
+            }
         }
 
        

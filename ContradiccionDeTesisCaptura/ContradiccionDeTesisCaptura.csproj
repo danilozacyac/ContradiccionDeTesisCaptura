@@ -30,7 +30,7 @@
     <ProductName>Captura de contradicciones</ProductName>
     <PublisherName>Suprema Corte de Justicia de la Nación</PublisherName>
     <SuiteName>Contradicción de Tesis</SuiteName>
-    <ApplicationRevision>8</ApplicationRevision>
+    <ApplicationRevision>9</ApplicationRevision>
     <ApplicationVersion>2.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
@@ -401,6 +401,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Excel.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\updownbar.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

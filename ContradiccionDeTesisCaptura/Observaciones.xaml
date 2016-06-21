@@ -6,6 +6,7 @@
                    Height="300"
                    Header="Observaciones"
                    Loaded="Window_Loaded"
+                   ResizeMode="NoResize"
                    WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.RowDefinitions>
@@ -13,27 +14,30 @@
             <RowDefinition Height="50" />
         </Grid.RowDefinitions>
         <TextBox Name="TxtObservaciones"
+                 Margin="10"
                  HorizontalAlignment="Stretch"
                  VerticalAlignment="Stretch"
                  AcceptsReturn="True"
                  TextWrapping="Wrap" />
         <telerik:RadButton Name="BtnAceptar"
                            Grid.Row="1"
-                           Width="75"
+                           Width="80"
                            Height="23"
-                           Margin="0,15,90,0"
+                           Margin="0,15,99,0"
                            HorizontalAlignment="Right"
                            VerticalAlignment="Top"
                            Click="BtnAceptar_Click"
-                           Content="Aceptar" />
+                           Content="Guardar"
+                           Style="{StaticResource BlueButton}" />
         <telerik:RadButton Name="BtnCancelar"
                            Grid.Row="1"
-                           Width="75"
+                           Width="80"
                            Height="23"
                            Margin="0,15,10,0"
                            HorizontalAlignment="Right"
                            VerticalAlignment="Top"
                            Click="BtnCancelar_Click"
-                           Content="Cancelar" />
+                           Content="Cancelar"
+                           Style="{StaticResource BlueButton}" />
     </Grid>
 </telerik:RadWindow>
