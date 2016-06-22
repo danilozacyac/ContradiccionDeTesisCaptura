@@ -841,7 +841,7 @@
                              HorizontalAlignment="Left"
                              VerticalAlignment="Top"
                              AcceptsReturn="True"
-                             Text="{Binding Razones}"
+                             Text="{Binding MiEjecutoria.Razones,Mode=TwoWay}"
                              TextWrapping="Wrap" />
                 </Grid>
             </TabItem>

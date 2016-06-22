@@ -68,6 +68,7 @@ namespace ContradiccionDeTesisCaptura
                 new ContradiccionesModel().GetContradiccionComplementInfo(ref contradiccion);
                 contradiccion.IsUpdating = true;
                 ContradiccionesWin contra = new ContradiccionesWin(contradiccion, true);
+                contra.Owner = this;
                 contra.ShowDialog();
                 contradiccion.IsUpdating = false;
             }
@@ -84,6 +85,7 @@ namespace ContradiccionDeTesisCaptura
             new ContradiccionesModel().GetContradiccionComplementInfo(ref contra);
 
             ContradiccionesWin win = new ContradiccionesWin(contra, false);
+            win.Owner = this;
             win.ShowDialog();
 
         }

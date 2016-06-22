@@ -103,6 +103,12 @@ namespace ContradiccionDeTesisCaptura
 
         private void BtnAceptar_Click(object sender, RoutedEventArgs e)
         {
+            if (CbxOrganismos.SelectedIndex == -1)
+            {
+                MessageBox.Show("Antes de continuar debes seleccionar el órgano denunciante");
+                return;
+            }
+
             CriteriosModel model = new CriteriosModel();
             criterios.IdOrgano = ((Organismos)CbxOrganismos.SelectedItem).IdOrganismo;
             criterios.Organo = CbxOrganismos.Text;
