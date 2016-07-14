@@ -184,8 +184,12 @@
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  DisplayMemberPath="Organismo"
+                                 IsEditable="True"
+                                 IsFilteringEnabled="True"
+                                 IsTextSearchEnabled="True"
                                  ItemsSource="{Binding}"
-                                 SelectedValuePath="IdOrganismo" />
+                                 SelectedValuePath="IdOrganismo"
+                                 TextSearchMode="Contains" />
             <Label Name="label32"
                    Grid.Column="1"
                    Height="28"

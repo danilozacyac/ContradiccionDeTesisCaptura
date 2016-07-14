@@ -211,6 +211,76 @@ namespace ContradiccionDeTesisCaptura.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] Telerik_Windows_Controls {
+            get {
+                object obj = ResourceManager.GetObject("Telerik_Windows_Controls", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] Telerik_Windows_Controls_Docking {
+            get {
+                object obj = ResourceManager.GetObject("Telerik_Windows_Controls_Docking", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] Telerik_Windows_Controls_GridView {
+            get {
+                object obj = ResourceManager.GetObject("Telerik_Windows_Controls_GridView", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] Telerik_Windows_Controls_Input {
+            get {
+                object obj = ResourceManager.GetObject("Telerik_Windows_Controls_Input", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] Telerik_Windows_Controls_Navigation {
+            get {
+                object obj = ResourceManager.GetObject("Telerik_Windows_Controls_Navigation", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] Telerik_Windows_Controls_RibbonView {
+            get {
+                object obj = ResourceManager.GetObject("Telerik_Windows_Controls_RibbonView", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] Telerik_Windows_Data {
+            get {
+                object obj = ResourceManager.GetObject("Telerik_Windows_Data", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap uncheck {

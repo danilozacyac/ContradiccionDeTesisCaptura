@@ -17,10 +17,11 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="50" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <telerik:RadRibbonView ApplicationName="Contradicciones de Tesis">
+        <telerik:RadRibbonView ApplicationButtonVisibility="Collapsed" ApplicationName="Contradicciones de Tesis">
             <telerik:RadRibbonTab>
                 <telerik:RadRibbonGroup Header="Contradicciones">
                     <telerik:RadRibbonButton x:Name="RBtnAddContra"
@@ -86,6 +87,12 @@
                     </telerik:RadRibbonButton>
 
                 </telerik:RadRibbonGroup>
+                <telerik:RadRibbonGroup Header="Filtros">
+                    <telerik:RadRibbonButton x:Name="RBtnLimpiarFiltros"
+                                             Content="Limpiar"
+                                             Size="Large" LargeImage="Resources/escoba.png" Click="RBtnLimpiarFiltros_Click"/>
+
+                </telerik:RadRibbonGroup>
                 <telerik:RadRibbonGroup Header="Datos Externos">
                     <telerik:RadRibbonButton x:Name="RBtnImportarDatos"
                                              Click="RBtnImportarDatos_Click"
@@ -97,8 +104,29 @@
                 </telerik:RadRibbonGroup>
             </telerik:RadRibbonTab>
         </telerik:RadRibbonView>
-        <telerik:RadGridView Name="RGridContradicciones"
+        <Label Grid.Row="1"
+               Margin="10,10,0,0"
+               HorizontalAlignment="Left"
+               VerticalAlignment="Top"
+               Content="Pleno de Circuito:"
+               FontWeight="Bold" />
+        <telerik:RadComboBox Name="CbxPlenos"
                              Grid.Row="1"
+                             Width="281"
+                             Height="23"
+                             Margin="118,13,0,0"
+                             HorizontalAlignment="Left"
+                             VerticalAlignment="Top"
+                             DisplayMemberPath="Organismo"
+                             IsEditable="True"
+                             IsFilteringEnabled="True"
+                             IsTextSearchEnabled="True"
+                             ItemsSource="{Binding}"
+                             SelectedValuePath="IdOrganismo"
+                             SelectionChanged="CbxPlenos_SelectionChanged"
+                             TextSearchMode="Contains" />
+        <telerik:RadGridView Name="RGridContradicciones"
+                             Grid.Row="2"
                              Margin="0"
                              HorizontalAlignment="Stretch"
                              VerticalAlignment="Stretch"

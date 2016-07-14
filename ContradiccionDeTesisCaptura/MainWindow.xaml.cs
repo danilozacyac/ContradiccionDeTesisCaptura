@@ -1,15 +1,16 @@
-﻿using System;
+﻿using ContradiccionDeTesisCaptura.Report;
+using ContradiccionesDirectorioApi.Dao;
+using ContradiccionesDirectorioApi.Model;
+using ContradiccionesDirectorioApi.Singletons;
+using ContradiccionesDirectorioApi.Utils;
+using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows;
-using ContradiccionDeTesisCaptura.Report;
-using ContradiccionesDirectorioApi.Dao;
-using ContradiccionesDirectorioApi.Model;
-using ContradiccionesDirectorioApi.Utils;
+using System.Windows.Media.Imaging;
 using TableWordToDb;
 using Telerik.Windows.Controls;
-using System.Windows.Media.Imaging;
 
 namespace ContradiccionDeTesisCaptura
 {
@@ -30,6 +31,7 @@ namespace ContradiccionDeTesisCaptura
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             RGridContradicciones.DataContext = contradicciones.Listado;
+            CbxPlenos.DataContext = OrganismosSingleton.Plenos;
             this.ShowInTaskbar(this, "Contradicción de tesis");
         }
 
@@ -177,6 +179,21 @@ namespace ContradiccionDeTesisCaptura
             selectedContradiction.IsComplete = false;
 
             new ContradiccionesModel().UpdateContradiccionStatus(selectedContradiction);
+        }
+
+        private void CbxPlenos_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+            Organismos selectedPleno = CbxPlenos.SelectedItem as Organismos;
+
+            RGridContradicciones.DataContext = (from n in contradicciones.Listado
+                                                where n.IdPlenoCircuito == selectedPleno.IdOrganismo
+                                                orderby n.ExpedienteNumero, n.ExpedienteAnio
+                                                select n);
+        }
+
+        private void RBtnLimpiarFiltros_Click(object sender, RoutedEventArgs e)
+        {
+            RGridContradicciones.DataContext = contradicciones.Listado;
         }
 
 

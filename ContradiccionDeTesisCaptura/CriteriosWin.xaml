@@ -41,8 +41,12 @@
                              VerticalAlignment="Top"
                              DisplayMemberPath="Organismo"
                              FontSize="15"
+                             IsEditable="True"
+                             IsFilteringEnabled="True"
+                             IsTextSearchEnabled="True"
                              ItemsSource="{Binding}"
-                             SelectedValuePath="IdOrganismo" />
+                             SelectedValuePath="IdOrganismo"
+                             TextSearchMode="Contains" />
         <TextBox Name="TxtTesis"
                  Width="197"
                  Height="23"
@@ -58,7 +62,6 @@
                VerticalAlignment="Top"
                Content="Tesis contendientes:" />
         <ListBox Name="LstTesisContendientes"
-                 
                  Width="226"
                  Height="100"
                  Margin="28,373,0,0"
