@@ -5,7 +5,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using ContradiccionesDirectorioApi.Dao;
 using ScjnUtilities;
-using System.Data.OleDb;
+using System.Data.Sql;
 
 namespace ContradiccionesDirectorioApi.Model
 {
@@ -21,24 +21,24 @@ namespace ContradiccionesDirectorioApi.Model
         {
             ObservableCollection<Funcionarios> funcionarios = new ObservableCollection<Funcionarios>();
 
-            OleDbConnection connection = new OleDbConnection(ConfigurationManager.ConnectionStrings["Directorio"].ToString());
-            OleDbCommand cmd = null;
-            OleDbDataReader reader = null;
+            SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["Directorio"].ToString());
+            SqlCommand cmd = null;
+            SqlDataReader reader = null;
 
-            String sqlCadena = "SELECT F.*, R.IdOrg FROM Funcionarios F LEFT JOIN Rel_Org_Func R ON F.IdFunc = R.IdFunc  ORDER BY Apellidos";
+            String sqlCadena = "SELECT F.*, R.IdOrganismo FROM Funcionarios F LEFT JOIN Rel_Org_Func R ON F.IdFuncionario = R.IdFuncionario  ORDER BY Apellidos";
 
             if (tipoOrganismo == 0)
-                sqlCadena = "SELECT F.*, R.IdOrg FROM Funcionarios F LEFT JOIN Rel_Org_Func R ON F.IdFunc = R.IdFunc  ORDER BY Apellidos";
+                sqlCadena = "SELECT F.*, R.IdOrganismo FROM Funcionarios F LEFT JOIN Rel_Org_Func R ON F.IdFuncionario = R.IdFuncionario  ORDER BY Apellidos";
             else if (tipoOrganismo == 1 || tipoOrganismo == 2)
-                sqlCadena = "SELECT F.*, R.IdOrg FROM Funcionarios F LEFT JOIN Rel_Org_Func R ON F.IdFunc = R.IdFunc WHERE Puesto = 'Mgdo.' OR Puesto = 'Mgda.' ORDER BY Nombre";
+                sqlCadena = "SELECT F.*, R.IdOrganismo FROM Funcionarios F LEFT JOIN Rel_Org_Func R ON F.IdFuncionario = R.IdFuncionario WHERE Puesto = 'Mgdo.' OR Puesto = 'Mgda.' ORDER BY Nombre";
             else if (tipoOrganismo == 3)
-                sqlCadena = "SELECT F.*, R.IdOrg FROM Funcionarios F LEFT JOIN Rel_Org_Func R ON F.IdFunc = R.IdFunc WHERE Puesto = 'Juez' ORDER BY Apellidos";
+                sqlCadena = "SELECT F.*, R.IdOrganismo FROM Funcionarios F LEFT JOIN Rel_Org_Func R ON F.IdFuncionario = R.IdFuncionario WHERE Puesto = 'Juez' ORDER BY Apellidos";
 
             try
             {
                 connection.Open();
 
-                cmd = new OleDbCommand(sqlCadena, connection);
+                cmd = new SqlCommand(sqlCadena, connection);
                 reader = cmd.ExecuteReader();
 
                 if (reader.HasRows)
@@ -47,8 +47,8 @@ namespace ContradiccionesDirectorioApi.Model
                     {
                         Funcionarios funcionario = new Funcionarios()
                         {
-                            IdFuncionario = Convert.ToInt32(reader["idFunc"]),
-                            IdOrganismo = reader["IdOrg"] as int? ?? 0,
+                            IdFuncionario = Convert.ToInt32(reader["IdFuncionario"]),
+                            IdOrganismo = reader["IdOrganismo"] as int? ?? 0,
                             Puesto = reader["Puesto"].ToString(),
                             Apellidos = reader["Apellidos"].ToString(),
                             Nombre = reader["Nombre"].ToString(),

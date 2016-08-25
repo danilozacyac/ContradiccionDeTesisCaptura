@@ -25,19 +25,19 @@ namespace ContradiccionesDirectorioApi.Model
         {
             List<Organismos> organismos = new List<Organismos>();
 
-            OleDbConnection connection = new OleDbConnection(ConfigurationManager.ConnectionStrings["Directorio"].ToString());
-            OleDbCommand cmd = null;
-            OleDbDataReader reader = null;
+            SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["Directorio"].ToString());
+            SqlCommand cmd = null;
+            SqlDataReader reader = null;
 
             String sqlCadena = "SELECT O.*, C.Ciudad, E.Abrev " +
                                "FROM Organismos O INNER JOIN (Ciudades C INNER JOIN Estados E ON C.IdEstado = E.IdEstado) " + 
-                               "ON O.Ciudad = C.IdCiudad WHERE TpoOrg = @TipoOrg ORDER BY OrdenImpr";
+                               "ON O.IdCiudad = C.IdCiudad WHERE IdTpoOrg = @TipoOrg ORDER BY OrdenImpr";
 
             try
             {
                 connection.Open();
 
-                cmd = new OleDbCommand(sqlCadena, connection);
+                cmd = new SqlCommand(sqlCadena, connection);
                 cmd.Parameters.AddWithValue("@TipoOrg", tipoOrganismo);
                 reader = cmd.ExecuteReader();
 
@@ -47,15 +47,15 @@ namespace ContradiccionesDirectorioApi.Model
                     {
                         Organismos organismoAdd = new Organismos()
                         {
-                            IdOrganismo = reader["IdOrg"] as int? ?? -1,
-                            TipoOrganismo = reader["TpoOrg"] as int? ?? -1,
-                            Circuito = reader["Circuito"] as int? ?? -1,
-                            Ordinal = reader["Ordinal"] as int? ?? -1,
-                            Materia = reader["Materia"] as int? ?? -1,
+                            IdOrganismo = reader["IdOrganismo"] as int? ?? -1,
+                            TipoOrganismo = reader["IdTpoOrg"] as int? ?? -1,
+                            Circuito = reader["IdCircuito"] as int? ?? -1,
+                            Ordinal = reader["IdOrdinal"] as int? ?? -1,
+                            Materia = reader["IdMateria"] as int? ?? -1,
                             Organismo = reader["Organismo"].ToString(),
                             Direccion = reader["Direccion"].ToString(),
                             Telefonos = reader["Tels"].ToString(),
-                            Ciudad = reader["O.Ciudad"] as int? ?? -1,
+                            Ciudad = reader["IdCiudad"] as int? ?? -1,
                             Integrantes = reader["Integrantes"] as int? ?? -1,
                             OrdenImpresion = reader["OrdenImpr"] as int? ?? -1
                         };
@@ -66,7 +66,7 @@ namespace ContradiccionesDirectorioApi.Model
                 cmd.Dispose();
                 reader.Close();
             }
-            catch (OleDbException ex)
+            catch (SqlException ex)
             {
                 string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
                 ErrorUtilities.SetNewErrorMessage(ex, methodName + " Exception,OrganismosModel", "Contradicciones");
